@@ -55,7 +55,7 @@ bun install
 ### Custom Server Routes
 | Method | Route | Description |
 |--------|-------|-------------|
-| POST | `/server/` | Upload files |
+| POST | `/api/upload` | Upload files |
 | GET | `/d/:fileId` | Download a file by ID |
 
 > [!NOTE]
