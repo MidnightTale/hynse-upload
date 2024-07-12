@@ -32,7 +32,7 @@ jobs:
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v6
         with:
-          token: ${{ secrets.PAT_TOKEN }}
+          token: ${{ secrets.GITHUB_TOKEN }}
           title: 'chore(deps): update dependencies'
           body: 'This PR updates project dependencies using `bun update`.'
           branch: 'deps-update'
