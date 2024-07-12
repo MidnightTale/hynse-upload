@@ -1,3 +1,4 @@
+[![Banner](https://github.com/MidnightTale/hynse-upload/raw/main/public/img/hynse_long.png)](https://github.com/MidnightTale/hynse-upload/blob/main/public/img/banner.png)
 # 🚀 StellarFileServer
 
 StellarFileServer is a robust and efficient file upload server built with Next.js and Bun. It offers a seamless file sharing experience with temporary storage and easy management.
@@ -54,7 +55,7 @@ bun install
 ### Custom Server Routes
 | Method | Route | Description |
 |--------|-------|-------------|
-| POST | `/api/upload` | Upload files |
+| POST | `/server/` | Upload files |
 | GET | `/d/:fileId` | Download a file by ID |
 
 > [!NOTE]
