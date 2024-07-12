@@ -1,35 +1,57 @@
-```# File Upload with Next.js
+# StellarFileServer
 
-This project demonstrates how to implement file upload functionality in a Next.js application with a focus on performance. The uploaded files are temporarily stored on the server using multithreading and asynchronous processing.
+StellarFileServer is a robust and efficient file upload server built using Next.js. It allows users to upload files, which are then stored temporarily on the server. The project includes features for managing these files, such as listing, sorting, and downloading them.
 
-## Important Considerations
+## Features
 
-- Ensure file uploads are handled asynchronously using the provided form.
-- Store uploaded files temporarily on the server.
-- Utilize multithreading for server-side file handling to enhance performance.
-- Use Redis for caching and managing temporary file storage.
-- Implement proper error handling to manage failed uploads.
-- Ensure the server has sufficient storage capacity for temporary files.
-- Validate file types and sizes before processing uploads.
-- Consider that code should not be spaghetti; it should be organized.
-- Consider that the project should be modular and easy to configure from a config file.
+- File upload with drag-and-drop functionality
+- Temporary file storage using Redis
+- Asynchronous file handling for improved performance
+- Multithreading for server-side file processing
+- Command-line interface for administrative tasks
+- Proper error handling for failed uploads and other errors
+- Rate limiting to prevent abuse
+- Logging system with different log levels
+
+## Technologies Used
+
+- Next.js
+- Redis
+- Multer for file uploads
+- React-dropzone for the frontend upload interface
+- Worker threads for multithreading
+- Tailwind CSS for styling
 
 ## Getting Started
 
 1. Clone the repository:
-   ```bash
-   git clone https://github.com/midnighttale/hynse-upload.git
    ```
-2. Navigate to the project directory:
-   ```bash
-   cd hynse-upload
+   git clone https://github.com/yourusername/StellarFileServer.git
    ```
 
-### Running the Development Server
+2. Install dependencies:
+   ```
+   bun i
+   ```
 
-To start the development server, run the following command:
-   ```bash
+3. Set up Redis:
+   Ensure you have Redis installed and running on your system.
+
+4. Configure the application:
+   Edit the `config.js` file to set your desired configuration options.
+
+5. Run the development server:
+   ```
    bun --bun run dev
-   # or
-   bun run dev
    ```
+
+6. Open [http://localhost:3022](http://localhost:3022) in your browser to see the application.
+
+## API Routes
+
+- `POST /api/upload/requestUpload`: Upload files
+- `GET /api/download/[id]`: Download a file by its ID
+
+## CLI Commands
+
+- `node cli.js [command]`: Run administrative commands
