@@ -1,57 +1,79 @@
-# StellarFileServer
+# 🚀 StellarFileServer
 
-StellarFileServer is a robust and efficient file upload server built using Next.js. It allows users to upload files, which are then stored temporarily on the server. The project includes features for managing these files, such as listing, sorting, and downloading them.
+StellarFileServer is a robust and efficient file upload server built with Next.js and Bun. It offers a seamless file sharing experience with temporary storage and easy management.
 
-## Features
+![Next.js](https://img.shields.io/badge/Next.js-000000?style=for-the-badge&logo=next.js&logoColor=white)
+![Redis](https://img.shields.io/badge/Redis-DC382D?style=for-the-badge&logo=redis&logoColor=white)
+![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)
+![Bun](https://img.shields.io/badge/Bun-000000?style=for-the-badge&logo=bun&logoColor=white)
 
-- File upload with drag-and-drop functionality
-- Temporary file storage using Redis
-- Asynchronous file handling for improved performance
-- Multithreading for server-side file processing
-- Command-line interface for administrative tasks
-- Proper error handling for failed uploads and other errors
-- Rate limiting to prevent abuse
-- Logging system with different log levels
+> [!NOTE]
+> StellarFileServer is designed for temporary file storage. Files are automatically deleted after a set period.
 
-## Technologies Used
+## ✨ Features
 
-- Next.js
-- Redis
-- Multer for file uploads
-- React-dropzone for the frontend upload interface
-- Worker threads for multithreading
-- Tailwind CSS for styling
+- 📁 Drag-and-drop file uploads
+- ⏳ Temporary file storage with Redis
+- 🚀 Asynchronous file handling
+- 🧵 Multithreaded server-side processing
+- 🛡️ Rate limiting to prevent abuse
+- 📊 Comprehensive logging system
 
-## Getting Started
 
-1. Clone the repository:
-   ```
-   git clone https://github.com/yourusername/StellarFileServer.git
-   ```
+## 🚀 Getting Started
 
-2. Install dependencies:
-   ```
-   bun i
-   ```
+> [!IMPORTANT]
+> Ensure you have Redis installed and running on your system before starting the application.
 
-3. Set up Redis:
-   Ensure you have Redis installed and running on your system.
+1. **Clone the repository**
+```bash
+git clone https://github.com/yourusername/StellarFileServer.git
+cd StellarFileServer
+```
 
-4. Configure the application:
-   Edit the `config.js` file to set your desired configuration options.
+2. **Install dependencies**
+```bash
+bun install
+```
 
-5. Run the development server:
-   ```
-   bun --bun run dev
-   ```
+3. **Set up Redis**
+   Ensure Redis is installed and running on your system.
 
-6. Open [http://localhost:3022](http://localhost:3022) in your browser to see the application.
+4. **Configure the application**
+   Edit `config.js` to set your desired options.
 
-## API Routes
+5
+5. **Open the application**
+   Visit [http://localhost:3022](http://localhost:3022) in your browser.
 
-- `POST /api/upload/requestUpload`: Upload files
-- `GET /api/download/[id]`: Download a file by its ID
+> [!CAUTION]
+> Be careful when modifying the `config.js` file. Incorrect settings may cause the application to malfunction.
 
-## CLI Commands
+## 🔗 API Routes
 
-- `node cli.js [command]`: Run administrative commands
+
+### Custom Server Routes
+| Method | Route | Description |
+|--------|-------|-------------|
+| POST | `/api/upload` | Upload files |
+| GET | `/d/:fileId` | Download a file by ID |
+
+> [!NOTE]
+> The custom server routes are handled directly by Express, bypassing Next.js routing.
+## 💻 CLI Commands
+
+Run administrative commands using:
+```bash
+node cli.js [command]
+```
+
+> [!WARNING]
+> Some CLI commands may permanently delete files or clear data. Use with caution.
+
+## 🤝 Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.

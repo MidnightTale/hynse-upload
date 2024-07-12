@@ -44,7 +44,7 @@ const useFileUpload = () => {
       localStorage.setItem('uploadHistory', JSON.stringify(updatedHistory));
       return updatedHistory;
     });
-  }, [expirationTime]);
+  }, []);
 
   const onDrop = useCallback(async (acceptedFiles) => {
     if (acceptedFiles.length === 0) {
