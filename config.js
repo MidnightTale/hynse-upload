@@ -34,14 +34,22 @@ const config = {
   },
   // Secret key for encryption or session management
   secretKey: 'your_secret_key_here', // Replace with a strong, unique secret key
-  // Server hostname or IP address
-  hostname: 'localhost', // Can be 'localhost', IP address, or domain name
-  // Main application port
-  port: 3000, // Port number for the main application server
+  // Main application configuration
+  main: {
+    hostname: 'localhost',
+    port: 3000,
+    publicDomain: 'upload.hynse.net', // New public domain for the main app
+    usePublicDomain: true, // Set to true to use the public domain
+  },
+  // Download server configuration
+  download: {
+    hostname: 'localhost',
+    port: 3023,
+    publicDomain: 'share.hynse.net', // New public domain for the download server
+    usePublicDomain: true, // Set to true to use the public domain
+  },
   // Directory for storing uploaded files
   uploadDir: path.join(process.cwd(), 'uploads'), // Absolute path to upload directory
-  // Port for the download server
-  downloadPort: 3023, // Port number for the separate download server
   // Theme configuration
   theme: {
     default: 'system', // Default theme (options: 'light', 'dark', 'system')

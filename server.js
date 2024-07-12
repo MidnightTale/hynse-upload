@@ -41,7 +41,13 @@ const initializeServer = async () => {
     const httpServer = createServer(server);
     const downloadHttpServer = createServer(downloadServer);
     
-    httpServer.listen(config.port, (err) => {
+    const mainHostname = config.main.usePublicDomain ? config.main.publicDomain : config.main.hostname;
+    const mainPort = config.main.port;
+    
+    const downloadHostname = config.download.usePublicDomain ? config.download.publicDomain : config.download.hostname;
+    const downloadPort = config.download.port;
+
+    httpServer.listen(mainPort, (err) => {
       if (err) throw err;
       figlet('StellarFileServer', (err, data) => {
         if (err) {
@@ -49,13 +55,13 @@ const initializeServer = async () => {
         } else {
           console.log(data);
         }
-        logInfo(`Main server running on http://${config.hostname}:${config.port}`);
+        logInfo(`Main server running on http://${mainHostname}:${mainPort}`);
       });
     });
 
-    downloadHttpServer.listen(config.downloadPort, (err) => {
+    downloadHttpServer.listen(downloadPort, (err) => {
       if (err) throw err;
-      logInfo(`Download server running on http://${config.hostname}:${config.downloadPort}`);
+      logInfo(`Download server running on http://${downloadHostname}:${downloadPort}`);
     });
 
   } catch (error) {
