@@ -2,7 +2,7 @@
 // It renders the FileUpload component and other UI elements for the file upload service.
 
 import React from 'react';
-import FileUpload from '../components/FileUpload';
+import FileUpload from '../components/FileUpload/FileUpload';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import DonationSection from '../components/DonationSection';
