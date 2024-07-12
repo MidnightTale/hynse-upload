@@ -42,8 +42,11 @@ bun install
 
 4. **Configure the application**
    Edit `config.js` to set your desired options.
+5. **Run the development server**
+`bash
+bun --bun run dev`
 
-5. **Open the application**
+6. **Open the application**
    Visit [http://localhost:3000](http://localhost:3000) in your browser.
 
 > [!CAUTION]
