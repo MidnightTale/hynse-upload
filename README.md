@@ -1,7 +1,7 @@
-[![Banner](https://github.com/MidnightTale/hynse-upload/raw/main/public/img/hynse_long.png)](https://github.com/MidnightTale/hynse-upload/blob/main/public/img/banner.png)
-# 🚀 StellarFileServer
+[![Banner](https://github.com/MidnightTale/hynse-upload/raw/main/public/img/banner.png)](https://github.com/MidnightTale/hynse-upload/blob/main/public/img/banner.png)
+# 🚀 Hynse Upload
 
-StellarFileServer is a robust and efficient file upload server built with Next.js and Bun. It offers a seamless file sharing experience with temporary storage and easy management.
+Hynse Upload is a robust and efficient file upload server built with Next.js and Bun. It offers a seamless file sharing experience with temporary storage and easy management.
 
 ![Next.js](https://img.shields.io/badge/Next.js-000000?style=for-the-badge&logo=next.js&logoColor=white)
 ![Redis](https://img.shields.io/badge/Redis-DC382D?style=for-the-badge&logo=redis&logoColor=white)
@@ -9,7 +9,7 @@ StellarFileServer is a robust and efficient file upload server built with Next.j
 ![Bun](https://img.shields.io/badge/Bun-000000?style=for-the-badge&logo=bun&logoColor=white)
 
 > [!NOTE]
-> StellarFileServer is designed for temporary file storage. Files are automatically deleted after a set period.
+> Hynse Upload is designed for temporary file storage. Files are automatically deleted after a set period.
 
 ## ✨ Features
 
@@ -28,8 +28,8 @@ StellarFileServer is a robust and efficient file upload server built with Next.j
 
 1. **Clone the repository**
 ```bash
-git clone https://github.com/yourusername/StellarFileServer.git
-cd StellarFileServer
+git clone https://github.com/yourusername/Hynse Upload.git
+cd Hynse Upload
 ```
 
 2. **Install dependencies**
