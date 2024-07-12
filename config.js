@@ -35,7 +35,7 @@ const config = {
   // Secret key for encryption or session management
   secretKey: 'your_secret_key_here', // Replace with a strong, unique secret key
   // Server hostname or IP address
-  hostname: '103.174.191.149', // Can be 'localhost', IP address, or domain name
+  hostname: 'localhost', // Can be 'localhost', IP address, or domain name
   // Main application port
   port: 3000, // Port number for the main application server
   // Directory for storing uploaded files
