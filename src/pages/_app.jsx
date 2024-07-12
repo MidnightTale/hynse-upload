@@ -2,6 +2,8 @@
 // It includes global styles.
 
 import '../styles/globals.css';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 /**
  * Custom App component for Next.js.
@@ -11,7 +13,12 @@ import '../styles/globals.css';
  * @returns {JSX.Element} The rendered component.
  */
 function MyApp({ Component, pageProps }) {
-  return <Component {...pageProps} />;
+  return (
+    <>
+      <Component {...pageProps} />
+      <ToastContainer />
+    </>
+  );
 }
 
 export default MyApp;

@@ -37,6 +37,12 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
+.next
+README.md
+*.lockb
+
+/example_page
+
 # This project is a file upload server built using nextjs. It allows users to upload files, which are then stored temporarily on the server. The project also includes features for managing these files, such as listing, sorting, and downloading them. Redis is used for caching file metadata and managing temporary storage.
 # CLI: A command-line interface is provided for administrative tasks like listing files and clearing the console.
 # 5. Error Handling: Proper error handling mechanisms are in place to manage failed uploads and other errors.

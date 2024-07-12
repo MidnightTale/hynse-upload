@@ -34,6 +34,14 @@ const nextConfig = {
       },
     ],
   },
+  async rewrites() {
+    return [
+      {
+        source: '/d/:id',
+        destination: `http://localhost:${process.env.DOWNLOAD_PORT || 3023}/:id`,
+      },
+    ];
+  },
 };
 
 module.exports = nextConfig;

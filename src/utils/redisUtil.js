@@ -1,12 +1,13 @@
+// This utility provides a Redis client and functions to check the Redis connection status.
+
 import Redis from 'ioredis';
 import config from '../../config';
 
-/**
- * This utility provides a Redis client and functions to check the Redis connection status.
- */
-
 const redis = new Redis(config.redis);
 
+/**
+ * Check the Redis connection status.
+ */
 export const checkRedisStatus = async () => {
   try {
     await redis.ping();
@@ -27,6 +28,23 @@ export const storeFileMetadata = async (fileId, fileData, expiration) => {
     await redis.set(fileId, fileDataString, 'EX', expiration);
   } catch (error) {
     throw new Error(`Failed to store file metadata: ${error.message}`);
+  }
+};
+
+/**
+ * Retrieve a file's metadata from Redis.
+ * @param {string} id - The ID of the file.
+ * @returns {Object|null} - The file metadata or null if not found.
+ */
+export const getFile = async (id) => {
+  try {
+    const result = await redis.get(id);
+    if (!result) {
+      return null;
+    }
+    return JSON.parse(result);
+  } catch (error) {
+    throw new Error(`Failed to retrieve file metadata: ${error.message}`);
   }
 };
 

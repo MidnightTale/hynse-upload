@@ -1,69 +1,72 @@
-import { parse } from 'url';
+// @perama: This is the main server file that sets up the Express server and integrates it with Next.js
+// It handles custom routes for file uploads and downloads, and initializes necessary services
+
+import express from 'express';
 import next from 'next';
-import { logInfo, logError, logWarn, logDebug } from './src/utils/logUtil';
-import { getIp } from './src/utils/ipUtil';
-import config from './config';
-import figlet from 'figlet';
-import chalk from 'chalk';
-import { checkRedisStatus } from './src/utils/redisUtil';
 import { createServer } from 'http';
+import figlet from 'figlet';
+import config from './config';
+import { logInfo, logError } from './src/utils/logUtil';
+import { checkRedisStatus } from './src/utils/redisUtil';
+import fileRoutes from './src/routes/fileRoutes';
 
-const dev = process.env.NODE_ENV !== 'production'
-const hostname = config.hostname;
-const port = config.port;
+const dev = process.env.NODE_ENV !== 'production';
+const app = next({ dev });
+const handle = app.getRequestHandler();
 
-// Generate and log the MOTD
-figlet('StellarFileServer', (err, data) => {
-  if (err) {
-    logError('Error generating MOTD', { error: err.message });
-    return;
-  }
-  console.log(data);
+const server = express();
+const downloadServer = express();
 
-  const app = next({ dev, hostname, port });
-  const handle = app.getRequestHandler();
+// @perama: Middleware setup
+server.use(express.json());
+server.use(express.urlencoded({ extended: true }));
 
-  const checkServices = async () => {
-    const start = Date.now();
-    try {
-      logInfo('Starting server...');
+// @perama: Custom file routes
+server.use('/api', fileRoutes);
 
-      const redisCheck = (async () => {
-        logInfo('Connecting to Redis...');
-        const redisStart = Date.now();
-        await checkRedisStatus();
-        logInfo(`Redis done in ${Date.now() - redisStart}ms`);
-      })();
-
-      const nextCheck = (async () => {
-        logInfo('Starting Next.js...');
-        const nextStart = Date.now();
-        await app.prepare();
-        logInfo(`Next.js done in ${Date.now() - nextStart}ms`);
-      })();
-
-      await Promise.all([redisCheck, nextCheck]);
-
-      logInfo(`Server and all services are up and running. (${Date.now() - start}ms)`);
-    } catch (error) {
-      logError('Startup failed', { error: error.message });
-      process.exit(1);
-    }
-  };
-
-  checkServices().then(() => {
-    createServer((req, res) => {
-      const parsedUrl = parse(req.url, true);
-      const clientIp = getIp(req);
-      
-      handle(req, res, parsedUrl).catch((err) => {
-        logError(`Error occurred handling ${req.url}`, { error: err.message, clientIp });
-        res.statusCode = 500;
-        res.end('Internal Server Error');
-      });
-    }).listen(port, (err) => {
-      if (err) throw err;
-      logInfo(`StellarFileServer is ready on http://${hostname}:${port}`);
-    });
-  });
+// @perama: Handle Next.js requests
+server.all('*', (req, res) => {
+  return handle(req, res);
 });
+
+// @perama: Setup download server
+downloadServer.use('/', fileRoutes);
+
+// @perama: Initialize the server and required services
+const initializeServer = async () => {
+  try {
+    await app.prepare();
+    await checkRedisStatus();
+
+    const httpServer = createServer(server);
+    const downloadHttpServer = createServer(downloadServer);
+    
+    httpServer.listen(config.port, (err) => {
+      if (err) throw err;
+      figlet('StellarFileServer', (err, data) => {
+        if (err) {
+          logError('Error generating MOTD', { error: err.message });
+        } else {
+          console.log(data);
+        }
+        logInfo(`Main server running on http://${config.hostname}:${config.port}`);
+      });
+    });
+
+    downloadHttpServer.listen(config.downloadPort, (err) => {
+      if (err) throw err;
+      logInfo(`Download server running on http://${config.hostname}:${config.downloadPort}`);
+    });
+
+  } catch (error) {
+    logError('Error starting server', error);
+    process.exit(1);
+  }
+};
+
+// @perama: Handle unhandled rejections
+process.on('unhandledRejection', (reason, promise) => {
+  logError('Unhandled Rejection at:', promise, 'reason:', reason);
+});
+
+initializeServer();
