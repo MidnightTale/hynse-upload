@@ -1,0 +1,36 @@
+name: Update Dependencies
+
+on:
+  schedule:
+    - cron: '0 0 * * 0'  # Run weekly on Sunday at midnight
+  workflow_dispatch:  # Allow manual triggering
+
+jobs:
+  update-dependencies:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v1
+        with:
+          bun-version: canary
+
+      - name: Update dependencies
+        run: |
+          bun update
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git add .
+          git diff --quiet && git diff --staged --quiet || git commit -m "Update dependencies"
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v5
+        with:
+          title: 'chore(deps): update dependencies'
+          body: 'This PR updates project dependencies using `bun update`.'
+          branch: 'deps-update'
+          base: 'main'
+          labels: 'dependencies'
+          commit-message: 'chore(deps): update dependencies'
+          delete-branch: true
