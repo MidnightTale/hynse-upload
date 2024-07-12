@@ -1,0 +1,39 @@
+/* Base styles */
+body {
+    font-family: 'Noto Sans Thai', sans-serif;
+    background-color: var(--background-color);
+    color: var(--text-color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    overflow-x: hidden;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+h1 {
+    color: var(--primary-color);
+    transition: color 0.3s;
+}
+
+a {
+    color: var(--primary-color);
+    text-decoration: none;
+    transition: color 0.3s, text-decoration 0.3s;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+input[type="number"] {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid var(--input-border);
+    border-radius: 8px;
+    background-color: var(--input-background);
+    color: var(--input-text);
+    transition: width 0.3s, padding 0.3s, margin 0.3s, border 0.3s, border-radius 0.3s, background-color 0.3s, color 0.3s;
+}

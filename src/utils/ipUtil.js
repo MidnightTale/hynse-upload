@@ -3,17 +3,14 @@
 import { logDebug } from './logUtil';
 
 /**
- * Extract the client's IP address from the request.
+ * Get the client's IP address from the request object.
  * @param {Object} req - The request object.
  * @returns {string} - The client's IP address.
  */
 export const getIp = (req) => {
-  const forwarded = req.headers['x-forwarded-for'];
-  let ip = forwarded ? forwarded.split(',')[0].trim() : req.socket.remoteAddress;
-
-  // Convert IPv6-mapped IPv4 addresses to IPv4
-  if (ip.startsWith('::ffff:')) {
-    ip = ip.split(':').pop();
+  const forwardedFor = req.headers['x-forwarded-for'];
+  if (forwardedFor) {
+    return forwardedFor.split(',')[0].trim();
   }
-  return ip;
+  return req.socket.remoteAddress || 'Unknown';
 };

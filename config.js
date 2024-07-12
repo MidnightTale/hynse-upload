@@ -1,7 +1,6 @@
 // This file contains the configuration settings for the application.
 
 const config = {
-  nodeENV: 'dev',
   redis: {
     host: 'localhost',
     port: 6379,
@@ -23,8 +22,8 @@ const config = {
     level: 'debug', // Log level
   },
   secretKey: 'your_secret_key_here', // Add this line
-  hostname: 'localhost', // Add hostname
-  port: 3022, // Add port
+  hostname: '103.174.191.149', // Add hostname
+  port: 3000, // Add port
 };
 
 export default config;

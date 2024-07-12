@@ -1,17 +1,27 @@
 // This is the main page of the Next.js application.
-// It renders the FileUpload component for users to upload files.
+// It renders the FileUpload component and other UI elements for the file upload service.
 
+import React from 'react';
 import FileUpload from '../components/FileUpload';
+import Header from '../components/Header';
+import Footer from '../components/Footer';
+import DonationSection from '../components/DonationSection';
+import UploadHistory from '../components/UploadHistory';
 
 /**
  * The Home component is the main page of the Next.js application.
- * It renders the FileUpload component, which provides a file upload interface for users.
+ * It renders the FileUpload component and other UI elements for the file upload service.
  */
 export default function Home() {
   return (
-    <div>
-      <h1>File Upload Service</h1>
-      <FileUpload />
+    <div className="bg-app-background text-text-color min-h-screen">
+      <Header />
+      <main className="container mx-auto px-4 py-8">
+        <FileUpload />
+        <DonationSection />
+        <UploadHistory />
+      </main>
+      <Footer />
     </div>
   );
 }

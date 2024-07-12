@@ -1,0 +1,22 @@
+.donationSection {
+    background-color: var(--app-background);
+    padding: 10px;
+    border-radius: 0px;
+    text-align: center;
+    font-size: 1em;
+    color: var(--text-color);
+  }
+  
+  .donationSection a {
+    color: var(--primary-color);
+    text-decoration: none;
+    font-weight: bold;
+  }
+  
+  .donationSection a:hover {
+    text-decoration: underline;
+  }
+  
+  .supportTitle {
+    font-size: 2vw;
+  }

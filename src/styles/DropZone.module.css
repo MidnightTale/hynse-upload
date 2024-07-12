@@ -1,0 +1,26 @@
+.dropZone {
+  border: 2px dashed var(--dropzone-color);
+  padding: 20px;
+  border-radius: 0px;
+  background-color: var(--dropzone-background);
+  cursor: pointer;
+  transition: background-color 0.3s ease, border-color 0.3s ease, padding 0.3s ease, border-radius 0.3s ease;
+  height: 20vh;
+  width: 90%;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 3vw;
+  transition: font-size 0.3s ease;
+}
+
+.dropZone:hover {
+  background-color: var(--dropzone-hover-background);
+}
+
+@media (max-width: 767px) {
+  .dropZone {
+    height: 10vh;
+  }
+}

@@ -1,0 +1,102 @@
+/* Light theme variables */
+:root {
+    --background-color: #f5f5f5;
+    --text-color: #000000;
+    --app-background: #00000000;
+    --primary-color: #508652;
+    --dropzone-color: #fff;
+    --dropzone-background: #fafafa;
+    --dropzone-hover-background: #e8f5e9;
+    --progress-bar-background: #f0f0f0;
+    --input-border: #ccc;
+    --input-background: #fff;
+    --input-text: #333;
+    --popup-text: #000;
+    --primary-color-popup: #ffffffbd;
+    --button-text: #fff;
+    --button-background: #4caf4f57;
+    --button-border: #388e3c;
+    --button-hover: #1b3a1d;
+    --button-hover-background: #45a049;
+    --button-border-active: #fff;
+    --button-border-hover: #fff;
+    --history-item-border: #ddd;
+    --history-item-hover: #f9f9f9;
+    --history-item-text: #424242;
+    --status-tag-text: rgba(255, 255, 255, 0.726);
+    --expired-color: #5e5e5e;
+    --low-expiration-color: #df7e00;
+    --low-expiration-text: #000;
+    --active-button: #4caf50;
+    --copy-icon-color: grey;
+    --copy-icon-hover-colors: green;
+    --copy-icon-active-color: darkgreen;
+    --overlay-background-color: rgba(78, 78, 78, 0.438);
+    --overlay-content-background-color: rgba(197, 197, 197, 0.83);
+    --overlay-content-text-color: #000000;
+    --overlay-closebtn-color: #666;
+    --overlay-closebtn-hover-color: #333;
+}
+
+/* Dark theme variables */
+:root.dark {
+    --background-color: #151515;
+    --text-color: #e0e0e0;
+    --app-background: #00000000;
+    --primary-color: #9249c4;
+    --dropzone-color: #403f3f;
+    --dropzone-background: #151515;
+    --dropzone-hover-background: #1e1e1e;
+    --progress-bar-background: #333;
+    --input-border: #555;
+    --input-background: #2c2c2c;
+    --input-text: #e0e0e0;
+    --popup-text: #ffffff;
+    --primary-color-popup: #242424b0;
+    --button-text: #fff;
+    --button-background: #130e20;;
+    --button-border: #4a1e80;
+    --button-hover: #5b249e;
+    --button-hover-background: #45a049;
+    --button-border-active: #d697ff;
+    --button-border-hover: #7d2cb3;
+    --history-item-box: #151515;
+    --history-item-border: #1c1620;
+    --history-item-hover: #2c1c3f;
+    --history-item-text: #e4e4e4;
+    --history-item-box-border: #ffffff0a;
+    --status-tag-text: rgba(255, 255, 255, 0.726);
+    --expired-color: #5e5e5e;
+    --low-expiration-color: #df7e00;
+    --low-expiration-text: #000;
+    --active-button: #b07aff;
+    --copy-icon-color: grey;
+    --copy-icon-hover-color: green;
+    --copy-icon-active-color: darkgreen;
+    --overlay-background-color: rgba(0, 0, 0, 0.8);
+    --overlay-content-background-color: rgba(23, 23, 23, 0.53);
+    --overlay-content-text-color: #fff;
+    --overlay-closebtn-color: #aaa;
+    --overlay-closebtn-hover-color: #fff;
+}
+
+#themeSwitcher {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    transition: position 0.3s, top 0.3s, right 0.3s;
+    font-size: 1.4vw;
+}
+
+#themeSwitcher i {
+    cursor: pointer;
+    margin: 0 5px;
+    font-size: 1.5em;
+    color: var(--text-color);
+    transition: color 0.3s ease, margin 0.3s, font-size 0.3s;
+}
+
+#themeSwitcher i:hover {
+    color: var(--primary-color);
+    
+}

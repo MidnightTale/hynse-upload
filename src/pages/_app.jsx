@@ -1,5 +1,5 @@
 // This file is the custom App component for Next.js, used to initialize pages.
-// It renders the provided Component with the given pageProps.
+// It includes global styles.
 
 import '../styles/globals.css';
 

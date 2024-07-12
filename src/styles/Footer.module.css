@@ -1,0 +1,21 @@
+.footer {
+    margin-top: 20px;
+    text-align: center;
+    font-size: 1vw;
+  }
+  
+  .footer a {
+    color: var(--primary-color);
+    text-decoration: none;
+    margin: 0 5px;
+  }
+  
+  .footer a:hover {
+    text-decoration: underline;
+  }
+  
+  @media (max-width: 768px) {
+    .footer {
+      font-size: 3vw;
+    }
+  }

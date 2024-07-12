@@ -1,0 +1,55 @@
+.history {
+    margin-top: 20px;
+    text-align: left;
+    display: none;
+    transition: margin-top 0.3s, text-align 0.3s;
+  }
+  
+  .uploadHistoryHeader {
+    font-size: 2vw;
+    display: none;
+    transition: display 0.3s;
+  }
+  
+  .historyItem {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px;
+    border-bottom: 1px solid var(--history-item-border);
+    transition: background-color 0.3s ease, padding 0.3s, border-bottom 0.3s;
+    font-size: 1.4vw;
+  }
+  
+  .historyItem:hover {
+    background-color: var(--history-item-hover);
+  }
+  
+  .historyItem a {
+    color: var(--primary-color);
+    text-decoration: none;
+    flex-grow: 1;
+    transition: color 0.3s, text-decoration 0.3s;
+  }
+  
+  .historyItem a:hover {
+    text-decoration: underline;
+  }
+  
+  .historyItem span {
+    margin-left: 10px;
+    color: var(--history-item-text);
+    transition: margin-left 0.3s, color 0.3s;
+  }
+  
+  .copyIcon {
+    cursor: pointer;
+    margin-left: 10px;
+    color: var(--copy-icon-color);
+    font-size: 1.2em;
+    transition: color 0.3s ease, margin-left 0.3s, font-size 0.3s;
+  }
+  
+  .copyIcon:hover {
+    color: var(--copy-icon-hover-color);
+  }

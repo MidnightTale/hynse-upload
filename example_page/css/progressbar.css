@@ -1,0 +1,72 @@
+#progressBar {
+    position: relative; /* Ensure the container is positioned relatively */
+    width: 90%; /* Adjust width to be responsive */
+    max-width: 600px; /* Optional: set a max-width */
+    height: 20px;
+    background-color: var(--progress-bar-background);
+    margin-bottom: 10px;
+    border-radius: 8px;
+    overflow: hidden;
+    margin-left: auto;
+    margin-right: auto;
+    display: none;
+    transition: width 0.3s, height 0.3s, margin-bottom 0.3s, border-radius 0.3s;
+}
+
+#progress {
+    width: 0;
+    height: 20px;
+    background-color: var(--primary-color);
+    position: relative;
+    overflow: hidden;
+    transition: width 0.5s ease-in-out, height 0.3s;
+}
+
+#progress::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, rgba(255, 255, 255, 0.2) 25%, rgba(255, 255, 255, 0.4) 50%, rgba(255, 255, 255, 0.2) 75%);
+    animation: move 1s linear infinite;
+}
+
+@keyframes move {
+    0% {
+        left: -100%;
+    }
+    100% {
+        left: 100%;
+    }
+}
+
+#progress.complete::before {
+    animation: none;
+    left: 0;
+}
+
+#uploadStatus {
+    position: absolute; /* Position the status absolutely within the container */
+    left: 50%; /* Center horizontally */
+    transform: translateX(-50%); /* Adjust position to center */
+    color: var(--text-color); /* Ensure the text color is readable */
+    font-weight: bold; /* Make the text bold */
+    z-index: 1; /* Ensure it is on top of other elements */
+    white-space: nowrap; /* Prevent text from wrapping */
+    overflow: hidden; /* Hide overflow text */
+    text-overflow: ellipsis; /* Add ellipsis for overflow text */
+    max-width: 100%; /* Ensure the text does not exceed the width of the progress bar */
+    top: 0;
+    padding: 0;
+    margin: 0;
+    
+    /* Alternatively, use clamp for more control */
+    font-size: 1rem;
+}
+
+.progress-bar-fade-out::before {
+    opacity: 0;
+    transition: opacity 1s ease-out;
+}

@@ -1,0 +1,77 @@
+.app {
+  background: var(--app-background);
+  padding: 20px;
+  border-radius: 8px;
+  width: 100%;
+  max-width: 80%;
+  text-align: center;
+  position: absolute;
+  top: 0;
+  transition: background 0.3s, padding 0.3s, border-radius 0.3s, top 0.3s;
+}
+  
+  .hynseLong {
+    max-width: 100%;
+    height: 7vh;
+    display: block;
+    margin: 3vh auto;
+    object-fit: contain;
+    image-rendering: pixelated;
+  }
+  
+  :global(:root.light) .hynseLong {
+    filter: brightness(0.25);
+  }
+  
+  .donationSection {
+    background-color: var(--app-background);
+    padding: 10px;
+    border-radius: 0px;
+    text-align: center;
+    font-size: 1em;
+    color: var(--text-color);
+  }
+  
+  .donationSection a {
+    color: var(--primary-color);
+    text-decoration: none;
+    font-weight: bold;
+  }
+  
+  .donationSection a:hover {
+    text-decoration: underline;
+  }
+  
+  .supportTitle {
+    font-size: 2vw;
+  }
+  
+  .downloadLink {
+    font-size: 1.6vw;
+  }
+  
+  .stuffLink {
+    font-size: 1vw;
+  }
+  
+  .footer {
+    margin-top: 20px;
+    text-align: center;
+    font-size: 1vw;
+  }
+
+  .footer a {
+    color: var(--primary-color);
+    text-decoration: none;
+    margin: 0 5px;
+  }
+
+  .footer a:hover {
+    text-decoration: underline;
+  }
+
+  @media (max-width: 768px) {
+    .footer {
+      font-size: 3vw;
+    }
+  }

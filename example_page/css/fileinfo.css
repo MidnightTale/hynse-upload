@@ -1,0 +1,18 @@
+#fileInfo {
+    display: none;
+    margin-bottom: 20px;
+    transition: margin-bottom 0.3s;
+    width: 90%; /* Adjust width to be responsive */
+    max-width: 600px; /* Optional: set a max-width */
+    margin: 0 auto; /* Center the elements */
+}
+
+#fileName {
+    font-size: 1.7vw;
+}
+
+#expirationCountdown {
+    display: none;
+    transition: display 0.3s;
+    font-size: 1.5vw;
+}

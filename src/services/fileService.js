@@ -5,7 +5,6 @@ import { nanoid } from 'nanoid';
 import redis from '../utils/redisUtil';
 import appConfig from '../../config';
 import { logInfo, logError, logWarn, logDebug } from '../utils/logUtil';
-import masterService from './masterService';
 
 /**
  * Retrieve a file's metadata from Redis.

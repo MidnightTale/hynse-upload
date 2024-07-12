@@ -1,0 +1,28 @@
+#dropZone {
+    border: 2px dashed var(--dropzone-color);
+    padding: 20px;
+    border-radius: 0px;
+    background-color: var(--dropzone-background);
+    cursor: pointer;
+    transition: background-color 0.3s ease, border-color 0.3s ease, padding 0.3s ease, border-radius 0.3s ease;
+    height: 20vh; /* Use viewport height to make height work */
+    width: 90%; /* Adjust width to be responsive */
+    /* max-width: 600px; Optional: set a max-width */
+    margin: 0 auto; /* Center the drop zone */
+    display: flex; /* Add this line */
+    align-items: center; /* Add this line */
+    justify-content: center; /* Add this line */
+    font-size: 3vw; /* Make text bigger */
+    transition: font-size 0.3s ease;
+}
+
+#dropZone:hover {
+    background-color: var(--dropzone-hover-background);
+}
+
+/* Media query for compact version */
+@media (max-width: 767px) {
+    #dropZone {
+        height: 10vh; /* Set height to 10vh for compact version */
+    }
+}

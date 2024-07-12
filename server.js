@@ -1,16 +1,14 @@
-// This file sets up the StellarFileServer and handles incoming requests.
+import { parse } from 'url';
+import next from 'next';
+import { logInfo, logError, logWarn, logDebug } from './src/utils/logUtil';
+import { getIp } from './src/utils/ipUtil';
+import config from './config';
+import figlet from 'figlet';
+import chalk from 'chalk';
+import { checkRedisStatus } from './src/utils/redisUtil';
+import { createServer } from 'http';
 
-const { createServer } = require('http');
-const { parse } = require('url');
-const next = require('next');
-const { logInfo, logError, logWarn, logDebug } = require('./src/utils/logUtil');
-const { getIp } = require('./src/utils/ipUtil');
-const config = require('./config').default; // Import config
-const figlet = require('figlet'); // Import figlet
-const chalk = require('chalk'); // Import chalk
-const { checkRedisStatus } = require('./src/utils/redisUtil'); // Import checkRedisStatus
-
-const dev = config.nodeENV !== 'production';
+const dev = process.env.NODE_ENV !== 'production'
 const hostname = config.hostname;
 const port = config.port;
 
@@ -54,24 +52,18 @@ figlet('StellarFileServer', (err, data) => {
   };
 
   checkServices().then(() => {
-    createServer(async (req, res) => {
+    createServer((req, res) => {
+      const parsedUrl = parse(req.url, true);
       const clientIp = getIp(req);
-
-      try {
-        const parsedUrl = parse(req.url, true);
-        await handle(req, res, parsedUrl);
-      } catch (err) {
-        logError(`Error occurred handling ${req.url}`, { error: err.message });
+      
+      handle(req, res, parsedUrl).catch((err) => {
+        logError(`Error occurred handling ${req.url}`, { error: err.message, clientIp });
         res.statusCode = 500;
-        res.end('Internal server error');
-      }
-    })
-      .once('error', (err) => {
-        logError('Server error', { error: err.message });
-        process.exit(1);
-      })
-      .listen(port, hostname, () => {
-        logInfo(`StellarFileServer is ready on http://${hostname}:${port}`);
+        res.end('Internal Server Error');
       });
+    }).listen(port, (err) => {
+      if (err) throw err;
+      logInfo(`StellarFileServer is ready on http://${hostname}:${port}`);
+    });
   });
 });
