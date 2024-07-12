@@ -28,8 +28,8 @@ Hynse Upload is a robust and efficient file upload server built with Next.js and
 
 1. **Clone the repository**
 ```bash
-git clone https://github.com/yourusername/Hynse Upload.git
-cd Hynse Upload
+git clone https://github.com/MidnightTale/hynse-upload.git
+cd hynse-upload
 ```
 
 2. **Install dependencies**
@@ -43,8 +43,9 @@ bun install
 4. **Configure the application**
    Edit `config.js` to set your desired options.
 5. **Run the development server**
-`bash
-bun --bun run dev`
+```bash
+bun --bun run dev
+```
 
 6. **Open the application**
    Visit [http://localhost:3000](http://localhost:3000) in your browser.
