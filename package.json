@@ -1,0 +1,41 @@
+{
+  "name": "hynse-upload",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "bun server.js",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@fortawesome/free-solid-svg-icons": "^6.5.2",
+    "@fortawesome/react-fontawesome": "^0.2.2",
+    "@heroicons/react": "v1",
+    "@material-ui/core": "^4.12.4",
+    "@material-ui/icons": "^4.11.3",
+    "axios": "^1.7.2",
+    "chalk": "^5.3.0",
+    "date-fns": "^3.6.0",
+    "elliptic": "^6.5.5",
+    "express-rate-limit": "^7.3.1",
+    "figlet": "^1.7.0",
+    "fs": "^0.0.1-security",
+    "ioredis": "^5.4.1",
+    "multer": "^1.4.5-lts.1",
+    "next": "14.2.4",
+    "next-connect": "^1.0.0",
+    "react": "^18",
+    "react-dom": "^18",
+    "react-dropzone": "^14.2.3",
+    "react-fontawesome": "^1.7.1",
+    "redis": "^4.6.15",
+    "util": "^0.12.5",
+    "uuid": "^10.0.0",
+    "worker-threads": "^1.0.0"
+  },
+  "devDependencies": {
+    "postcss": "^8",
+    "tailwindcss": "^3.4.1"
+  }
+}
