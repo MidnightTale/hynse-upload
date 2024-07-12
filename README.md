@@ -42,7 +42,6 @@ bun install
 4. **Configure the application**
    Edit `config.js` to set your desired options.
 
-5
 5. **Open the application**
    Visit [http://localhost:3022](http://localhost:3022) in your browser.
 
