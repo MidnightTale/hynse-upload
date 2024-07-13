@@ -197,20 +197,28 @@ const UploadHistory = ({ history = [], updateHistory }) => {
   }
 
   return (
-    <div className="mt-8 [&_span[title]]:hover:underline">
+    <div className="mt-8">
       <h2 className="text-2xl mb-4">File Transfer Status</h2>
       <div className="space-y-4">
         {getCurrentPageItems().map((item, index) => (
-          <div key={index} className={`p-4 rounded-lg backdrop-blur-md bg-opacity-80 transition-all duration-300 ease-in-out ${
-            item.isDummy ? 'invisible' : 'hover:bg-opacity-90'
-          } bg-history-item-background text-history-item-text shadow-lg`}>
+          <div 
+            key={index} 
+            className={`p-4 rounded-lg backdrop-blur-md bg-opacity-80 transition-all duration-300 ease-in-out ${
+              item.isDummy ? 'invisible' : 'hover:bg-opacity-90'
+            } bg-history-item-background text-history-item-text shadow-lg`}
+            onMouseEnter={() => setHoveredIndex(index)}
+            onMouseLeave={() => setHoveredIndex(null)}
+          >
             <div className="flex items-center">
               <div className="flex items-center w-1/2">
                 {item.isDummy ? <FaFile className="text-3xl mr-4 text-gray-300" /> : getFileIcon(item.fileType)}
                 <div className="flex flex-col">
                   <span className="text-lg font-semibold truncate">{item.fileName || 'Dummy File'}</span>
                   <div className="text-sm opacity-70">
-                    <span className="cursor-default">
+                    <span 
+                      className="cursor-default no-underline"
+                      title={item.isDummy ? 'N/A' : new Date(item.timestamp).toLocaleString()}
+                    >
                       {item.isDummy ? 'N/A' : formatDate(item.timestamp, index)}
                     </span>
                     <span className="mx-2">•</span>

@@ -30,6 +30,9 @@
   --history-item-hover-background: rgba(51, 51, 51, 0.9);
   --history-item-text: #ffffff;
   --history-item-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  --progress-bar-background: #333333;
+  --progress-bar-fill: #3498db;
+  --progress-bar-text: #ffffff;
 }
 
 :root.light {
@@ -59,6 +62,9 @@
   --history-item-hover-background: rgba(230, 230, 230, 0.9);
   --history-item-text: #333333;
   --history-item-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  --progress-bar-background: #e0e0e0;
+  --progress-bar-fill: #3498db;
+  --progress-bar-text: #2d2d2d;
 }
 
 body {
@@ -105,4 +111,42 @@ header {
 .Toastify__progress-bar {
   height: 1px;
   background: var(--toast-progress-bar) !important;
+}
+
+.no-underline:hover {
+  text-decoration: none !important;
+}
+
+@keyframes pulse {
+  0% {
+    opacity: 0.6;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.6;
+  }
+}
+
+.animate-progress-bar {
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes fadeOut {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+
+.fade-in {
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+.fade-out {
+  animation: fadeOut 0.5s ease-in-out;
 }

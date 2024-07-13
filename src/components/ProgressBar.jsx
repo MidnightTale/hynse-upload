@@ -20,12 +20,12 @@ const ProgressBar = React.memo(({ progress, uploadStatus, speed }) => {
     }
 
     return (
-      <div className="relative w-full h-5 bg-gray-700 rounded-full overflow-hidden">
+      <div className="relative w-full h-5 bg-progress-bar-background rounded-full overflow-hidden">
         <div
-          className="h-full bg-blue-500 transition-all duration-300 ease-in-out"
+          className="h-full bg-progress-bar-fill transition-all duration-300 ease-in-out"
           style={{ width: `${Math.round(progress)}%` }}
         ></div>
-        <div className="absolute inset-0 flex items-center justify-center text-xs font-semibold text-white">
+        <div className="absolute inset-0 flex items-center justify-center text-xs font-semibold text-progress-bar-text">
           {uploadStatus} - {speed}
         </div>
       </div>

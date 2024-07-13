@@ -15,6 +15,8 @@ module.exports = {
         'dropzone-background': 'var(--dropzone-background)',
         'dropzone-hover-background': 'var(--dropzone-hover-background)',
         'progress-bar-background': 'var(--progress-bar-background)',
+        'progress-bar-fill': 'var(--progress-bar-fill)',
+        'progress-bar-text': 'var(--progress-bar-text)',
         'input-border': 'var(--input-border)',
         'input-background': 'var(--input-background)',
         'input-text': 'var(--input-text)',
