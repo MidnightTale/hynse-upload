@@ -3,7 +3,12 @@
 // Dummy items are added to ensure consistent layout across pages.
 
 import React, { useState, useCallback, useEffect, useRef } from 'react';
-import { FaFile, FaCopy, FaChevronLeft, FaChevronRight } from 'react-icons/fa';
+import { 
+  FaFile, FaCopy, FaChevronLeft, FaChevronRight, 
+  FaFileImage, FaFileAudio, FaFileVideo, FaFilePdf, 
+  FaFileWord, FaFileExcel, FaFilePowerpoint, FaFileArchive, 
+  FaFileCode, FaFileAlt
+} from 'react-icons/fa';
 import ProgressBar from './ProgressBar';
 import { formatDistanceToNow } from 'date-fns';
 import { toast } from 'react-toastify';
@@ -131,6 +136,38 @@ const UploadHistory = ({ history = [], updateHistory }) => {
     }
   }, [updateHistory]);
 
+  const getFileIcon = (fileType) => {
+    const iconProps = { className: "text-3xl mr-4" };
+    switch (true) {
+      case /^image\//.test(fileType):
+        return <FaFileImage {...iconProps} className={`${iconProps.className} text-green-500`} />;
+      case /^audio\//.test(fileType):
+        return <FaFileAudio {...iconProps} className={`${iconProps.className} text-purple-500`} />;
+      case /^video\//.test(fileType):
+        return <FaFileVideo {...iconProps} className={`${iconProps.className} text-red-500`} />;
+      case /^application\/pdf/.test(fileType):
+        return <FaFilePdf {...iconProps} className={`${iconProps.className} text-red-700`} />;
+      case /^application\/(msword|vnd.openxmlformats-officedocument.wordprocessingml|vnd.oasis.opendocument.text)/.test(fileType):
+        return <FaFileWord {...iconProps} className={`${iconProps.className} text-blue-700`} />;
+      case /^application\/(vnd.ms-excel|vnd.openxmlformats-officedocument.spreadsheetml|vnd.oasis.opendocument.spreadsheet)/.test(fileType):
+        return <FaFileExcel {...iconProps} className={`${iconProps.className} text-green-700`} />;
+      case /^application\/(vnd.ms-powerpoint|vnd.openxmlformats-officedocument.presentationml|vnd.oasis.opendocument.presentation)/.test(fileType):
+        return <FaFilePowerpoint {...iconProps} className={`${iconProps.className} text-orange-600`} />;
+      case /^application\/(zip|x-rar-compressed|x-7z-compressed|x-tar|x-gzip)/.test(fileType):
+        return <FaFileArchive {...iconProps} className={`${iconProps.className} text-yellow-600`} />;
+      case /^text\/(html|css|javascript|xml|x-python|x-java-source|x-c)/.test(fileType):
+        return <FaFileCode {...iconProps} className={`${iconProps.className} text-gray-600`} />;
+      case /^text\//.test(fileType):
+        return <FaFileAlt {...iconProps} className={`${iconProps.className} text-gray-500`} />;
+      case /^application\/(json|xml|javascript)/.test(fileType):
+        return <FaFileCode {...iconProps} className={`${iconProps.className} text-gray-600`} />;
+      case /^application\/(octet-stream|x-executable|x-msdownload)/.test(fileType):
+        return <FaFile {...iconProps} className={`${iconProps.className} text-blue-500`} />;
+      default:
+        return <FaFile {...iconProps} className={`${iconProps.className} text-blue-500`} />;
+    }
+  };
+
   if (history.length === 0) {
     return null;
   }
@@ -142,7 +179,7 @@ const UploadHistory = ({ history = [], updateHistory }) => {
         {getCurrentPageItems().map((item, index) => (
           <div key={index} className={`flex items-center py-4 border-b border-history-item-border hover:bg-history-item-hover transition-colors duration-300 ease-in-out ${item.isDummy ? 'invisible' : ''}`}>
             <div className="flex items-center w-1/2">
-              <FaFile className="text-3xl mr-4 text-blue-500" />
+              {item.isDummy ? <FaFile className="text-3xl mr-4 text-gray-300" /> : getFileIcon(item.fileType)}
               <div className="flex flex-col">
                 <span className="text-lg font-semibold text-blue-500 truncate">{item.fileName || 'Dummy File'}</span>
                 <div className="text-sm text-gray-500">
