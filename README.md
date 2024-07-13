@@ -17,10 +17,10 @@ Hynse Upload is a robust and efficient file upload server built with Next.js and
 ## ✨ Features
 
 - 📁 Drag-and-drop file uploads
-- ⏳ Temporary file storage with Redis
+- ⏳ ~~Temporary file storage with Redis~~ on rewrite
 - 🚀 Asynchronous file handling
-- 🧵 Multithreaded server-side processing
-- 🛡️ Rate limiting to prevent abuse
+- 🧵 ~~Multithreaded server-side processing~~ on rewrite
+- 🛡️ ~~Rate limiting to prevent abuse~~ on rewrite
 - 📊 Comprehensive logging system
 
 
