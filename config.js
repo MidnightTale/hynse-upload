@@ -20,8 +20,8 @@ const config = {
   upload: {
     expiration: 3 * 60, // Default file expiration time in minutes (3 hours)
     url: '/api/upload', // API endpoint for file uploads
-    defaultExpirationTime: 30, // Default expiration time option in minutes
-    expirationOptions: [30, 60, 180, 720, 1440, 4320], // Available expiration time options in minutes
+    defaultExpirationTime: 1, // Default expiration time option in minutes
+    expirationOptions: [ 1, 30, 60, 180, 720, 1440, 4320], // Available expiration time options in minutes
   },
   // Rate limiting configuration
   rateLimit: {

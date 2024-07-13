@@ -13,6 +13,15 @@ const ExpirationSelector = ({ expirationTime, setExpirationTime }) => {
     }
   };
 
+  const formatExpirationTime = (minutes) => {
+    if (minutes === 1) return '1 minute';
+    if (minutes < 60) return `${minutes} minutes`;
+    if (minutes === 60) return '1 hour';
+    if (minutes < 1440) return `${minutes / 60} hours`;
+    if (minutes === 1440) return '1 day';
+    return `${minutes / 1440} days`;
+  };
+
   return (
     <div className="mt-4">
       <label htmlFor="expiration" className="block mb-2">Select expiration time:</label>
@@ -27,11 +36,7 @@ const ExpirationSelector = ({ expirationTime, setExpirationTime }) => {
                 : 'bg-button-background text-button-text hover:bg-button-hover'
             }`}
           >
-            {minutes === 30 ? '30 minutes' :
-             minutes === 60 ? '1 hour' : 
-             minutes === 180 ? '3 hours' : 
-             minutes === 720 ? '12 hours' : 
-             minutes === 1440 ? '1 day' : '3 days'}
+            {formatExpirationTime(minutes)}
           </button>
         ))}
       </div>

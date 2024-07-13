@@ -16,13 +16,19 @@ const useFileUpload = () => {
   const [expirationTime, setExpirationTime] = useState(config.upload.defaultExpirationTime);
   const [history, setHistory] = useState([]);
 
-  // Load history from localStorage
+  // Load history from localStorage and remove expired items
   useEffect(() => {
     try {
       const savedHistory = JSON.parse(localStorage.getItem('uploadHistory') || '[]');
       if (Array.isArray(savedHistory)) {
-        setHistory(savedHistory);
-        logInfo('Upload history loaded from localStorage', { historyLength: savedHistory.length });
+        const currentTime = Date.now();
+        const updatedHistory = savedHistory.filter(item => {
+          const expirationTime = new Date(item.timestamp).getTime() + item.expirationTime * 60000;
+          return currentTime < expirationTime;
+        });
+        setHistory(updatedHistory);
+        localStorage.setItem('uploadHistory', JSON.stringify(updatedHistory));
+        logInfo('Upload history loaded and cleaned from localStorage', { historyLength: updatedHistory.length });
       } else {
         throw new Error('Invalid history format');
       }
@@ -53,8 +59,13 @@ const useFileUpload = () => {
         i === index ? { ...item, ...newData, expirationTime } : item
       );
       try {
-        localStorage.setItem('uploadHistory', JSON.stringify(updatedHistory));
-        logInfo('History item updated', { index, newData });
+        const currentTime = Date.now();
+        const cleanedHistory = updatedHistory.filter(item => {
+          const itemExpirationTime = new Date(item.timestamp).getTime() + item.expirationTime * 60000;
+          return currentTime < itemExpirationTime;
+        });
+        localStorage.setItem('uploadHistory', JSON.stringify(cleanedHistory));
+        logInfo('History item updated and expired items removed', { index, newData });
       } catch (error) {
         logError('Error updating history item', { error: error.message });
       }
