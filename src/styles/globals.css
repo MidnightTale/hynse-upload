@@ -39,6 +39,8 @@
   --status-tag-near-expiry: rgba(245, 158, 11, 0.75);
   --status-tag-active: rgba(16, 185, 129, 0.75);
   --status-tag-uploading: rgba(59, 130, 246, 0.75);
+  --history-item-border-color: rgba(255, 255, 255, 0.1);
+  --history-item-outline: 1px solid var(--history-item-border-color);
 }
 
 :root.light {
@@ -77,6 +79,8 @@
   --status-tag-near-expiry: rgba(245, 158, 11, 0.75);
   --status-tag-active: rgba(16, 185, 129, 0.75);
   --status-tag-uploading: rgba(59, 130, 246, 0.75);
+  --history-item-border-color: rgba(0, 0, 0, 0.1);
+  --history-item-outline: 1px solid var(--history-item-border-color);
 }
 
 body {
