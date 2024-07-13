@@ -33,6 +33,14 @@
   --progress-bar-background: #333333;
   --progress-bar-fill: #3498db;
   --progress-bar-text: #ffffff;
+  --status-tag-dummy: rgba(107, 114, 128, 0.75);
+  --status-tag-failed: rgba(239, 68, 68, 0.75);
+  --status-tag-expired: rgba(156, 163, 175, 0.75);
+  --status-tag-near-expiry: rgba(245, 158, 11, 0.75);
+  --status-tag-active: rgba(16, 185, 129, 0.75);
+  --status-tag-uploading: rgba(59, 130, 246, 0.75);
+  --history-item-border-color: rgba(255, 255, 255, 0.1);
+  --history-item-outline: 1px solid var(--history-item-border-color);
 }
 
 :root.light {
@@ -65,6 +73,14 @@
   --progress-bar-background: #e0e0e0;
   --progress-bar-fill: #3498db;
   --progress-bar-text: #2d2d2d;
+  --status-tag-dummy: rgba(107, 114, 128, 0.75);
+  --status-tag-failed: rgba(239, 68, 68, 0.75);
+  --status-tag-expired: rgba(156, 163, 175, 0.75);
+  --status-tag-near-expiry: rgba(245, 158, 11, 0.75);
+  --status-tag-active: rgba(16, 185, 129, 0.75);
+  --status-tag-uploading: rgba(59, 130, 246, 0.75);
+  --history-item-border-color: rgba(255, 255, 255, 0.1);
+  --history-item-outline: 1px solid var(--history-item-border-color);
 }
 
 body {
