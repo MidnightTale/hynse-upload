@@ -1,5 +1,6 @@
 // @perama: This custom hook manages the file upload state and logic.
 // It handles file uploads, expiration time selection, and upload history.
+// The hook integrates with localStorage for persistent history storage.
 
 import { useState, useEffect, useCallback, useRef } from 'react';
 import axios from 'axios';
@@ -8,15 +9,27 @@ import { formatFileSize, formatSpeed } from './formatUtils';
 import { logInfo, logError, logWarn } from '../clientLogUtil';
 import { toast } from 'react-toastify';
 
+// * Highlight: Upload URL is fetched from the config file for easy modification
 const UPLOAD_URL = config.upload.url;
 
+/**
+ * Custom hook for managing file upload functionality
+ * @returns {Object} An object containing upload-related state and functions
+ * 
+ * ! Alert: This hook assumes that the server can handle the file size and type.
+ * TODO: Implement client-side file size and type validation before upload.
+ */
 const useFileUpload = () => {
+  // @param uploadStatus: string - Current status of the upload process
   const [uploadStatus, setUploadStatus] = useState('');
+  // @param isUploading: boolean - Indicates if a file is currently being uploaded
   const [isUploading, setIsUploading] = useState(false);
+  // @param expirationTime: number - Selected expiration time for uploaded files
   const [expirationTime, setExpirationTime] = useState(config.upload.defaultExpirationTime);
+  // @param history: Array - Upload history of files
   const [history, setHistory] = useState([]);
 
-  // Load history from localStorage
+  // * Highlight: Load history from localStorage on component mount
   useEffect(() => {
     try {
       const savedHistory = JSON.parse(localStorage.getItem('uploadHistory') || '[]');
@@ -35,6 +48,7 @@ const useFileUpload = () => {
 
   const prevHistoryLengthRef = useRef(0);
 
+  // * Highlight: Save history to localStorage whenever it changes
   useEffect(() => {
     if (history.length > 0 && history.length !== prevHistoryLengthRef.current) {
       try {
@@ -47,6 +61,13 @@ const useFileUpload = () => {
     }
   }, [history]);
 
+  /**
+   * Updates a specific item in the upload history
+   * @param {number} index - Index of the history item to update
+   * @param {Object} newData - New data to merge with the existing history item
+   * 
+   * ! Alert: This function assumes that the index is valid and newData is properly formatted
+   */
   const updateHistoryItem = useCallback((index, newData) => {
     setHistory((prevHistory) => {
       const updatedHistory = prevHistory.map((item, i) =>
@@ -62,6 +83,13 @@ const useFileUpload = () => {
     });
   }, [expirationTime]);
 
+  /**
+   * Handles file drop event and initiates file upload
+   * @param {File[]} acceptedFiles - Array of accepted files from the drop event
+   * 
+   * ! Alert: This function assumes that the server can handle the file size and type
+   * TODO: Implement file type and size validation before upload
+   */
   const onDrop = useCallback(
     async (acceptedFiles) => {
       if (acceptedFiles.length === 0) {
@@ -125,6 +153,7 @@ const useFileUpload = () => {
           });
           setUploadStatus('File uploaded successfully');
 
+          // * Highlight: Generate download URL based on configuration
           const downloadUrl = config.usePublicDomain
             ? `https://${config.downloadHostname}/${response.data.fileIds[0]}`
             : `http://${config.main.hostname}:${config.download.port}/${response.data.fileIds[0]}`;

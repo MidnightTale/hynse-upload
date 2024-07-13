@@ -30,10 +30,12 @@ const upload = multer({ storage });
 
 /**
  * Handle file upload
- * @perama: This route handles file uploads, stores metadata in Redis, and schedules file deletion
+ * @param req - The Express request object
+ * @param res - The Express response object
  */
 router.post('/upload', upload.array('files'), async (req, res) => {
   const files = req.files;
+  // @param expiration: The expiration time for the uploaded file in minutes
   const expiration = parseInt(req.body.expiration) || 30; // Default to 30 minutes
 
   if (!files || files.length === 0) {
@@ -53,7 +55,8 @@ router.post('/upload', upload.array('files'), async (req, res) => {
         progress: 100,
       };
 
-      const uploadExpiration = expiration * 60; // Convert minutes to seconds
+      // * Highlight: Convert expiration from minutes to seconds
+      const uploadExpiration = expiration * 60;
       await storeFileMetadata(fileId, fileData, uploadExpiration);
       await scheduleFileDeletion(fileId, file.path, uploadExpiration);
 
@@ -74,11 +77,11 @@ router.post('/upload', upload.array('files'), async (req, res) => {
 
 /**
  * Handle file download
- * @perama: This route retrieves file metadata from Redis and sends the file to the client
+ * @param req - The Express request object
+ * @param res - The Express response object
  */
 router.get('/:id', async (req, res) => {
   const { id } = req.params;
-
   try {
     const fileData = await getFile(id);
     if (!fileData) {
@@ -116,5 +119,11 @@ router.get('/:id', async (req, res) => {
     }
   }
 });
+
+// ! Alert: Ensure proper error handling and logging throughout the file
+
+// TODO: Implement file deletion endpoint for manual removal of files
+
+// * Highlight: This router handles both file upload and download operations
 
 export default router;

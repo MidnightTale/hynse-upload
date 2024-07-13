@@ -1,11 +1,21 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  // ! Alert: Disabling React Strict Mode may hide potential issues
   reactStrictMode: false,
-  output: 'standalone',
+
+  // * Highlight: Set output to 'standalone' for improved performance
+   // output: 'standalone',
+
+  // * Highlight: Enable file system based routing
   useFileSystemPublicRoutes: true,
+
+  // * Highlight: Disable source maps in production for better performance
   productionBrowserSourceMaps: false,
+
+  // * Highlight: Custom webpack configuration
   webpack: (config, { isServer }) => {
     if (!isServer) {
+      // * Highlight: Add fallbacks for Node.js core modules
       config.resolve.fallback = {
         ...config.resolve.fallback,
         fs: false,
@@ -14,6 +24,7 @@ const nextConfig = {
       };
     }
 
+    // * Highlight: Add source-map-loader for better debugging
     config.module.rules.push({
       test: /\.js$/,
       enforce: 'pre',
@@ -26,6 +37,8 @@ const nextConfig = {
 
     return config;
   },
+
+  // * Highlight: Configure image optimization
   images: {
     remotePatterns: [
       {
@@ -34,6 +47,8 @@ const nextConfig = {
       },
     ],
   },
+
+  // * Highlight: Custom rewrites for API routes
   async rewrites() {
     return [
       {

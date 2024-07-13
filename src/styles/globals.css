@@ -1,8 +1,11 @@
+/* @perama: This file contains global CSS styles and custom properties for the application */
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 :root {
+  /* * Highlight: Define custom properties for dark theme */
   --app-background: #1a1a1a;
   --text-color: #ffffff;
   --primary-color: #3498db;
@@ -12,6 +15,8 @@
   --copy-icon-hover-color: #2980b9;
   --toast-background: #363636;
   --toast-text: #ffffff;
+
+  /* * Highlight: Toastify custom properties for dark theme */
   --toastify-color-light: var(--toast-background);
   --toastify-color-dark: var(--toast-background);
   --toastify-color-info: #3498db;
@@ -21,11 +26,14 @@
   --toastify-color-transparent: rgba(255, 255, 255, 0.7);
   --toastify-text-color-light: var(--toast-text);
   --toastify-text-color-dark: var(--toast-text);
+
+  /* * Highlight: Additional custom properties for toast styling */
   --toast-background-rgb: 54, 54, 54;
   --toast-border-rgb: 255, 255, 255;
   --toast-progress-bar: rgba(255, 255, 255, 0.7);
 }
 
+/* * Highlight: Light theme custom properties */
 :root.light {
   --app-background: #ffffff;
   --text-color: #333333;
@@ -36,6 +44,8 @@
   --copy-icon-hover-color: #2980b9;
   --toast-background: #f0f0f0;
   --toast-text: #333333;
+
+  /* * Highlight: Toastify custom properties for light theme */
   --toastify-color-light: var(--toast-background);
   --toastify-color-dark: var(--toast-background);
   --toastify-color-info: #3498db;
@@ -45,25 +55,30 @@
   --toastify-color-transparent: rgba(255, 255, 255, 0.7);
   --toastify-text-color-light: var(--toast-text);
   --toastify-text-color-dark: var(--toast-text);
+
+  /* * Highlight: Additional custom properties for toast styling in light theme */
   --toast-background-rgb: 240, 240, 240;
   --toast-border-rgb: 0, 0, 0;
   --toast-progress-bar: rgba(0, 0, 0, 0.7);
 }
 
+/* Apply background and text color to body */
 body {
   @apply bg-app-background text-text-color;
 }
 
+/* Style for the Hynse logo */
 .hynse_long {
   @apply max-w-full h-[7vh] block mx-auto my-[3vh] object-contain;
   image-rendering: pixelated;
 }
 
+/* Adjust brightness for Hynse logo in light theme */
 :root.light .hynse_long {
   @apply brightness-75;
 }
 
-/* Glassy toast styles */
+/* * Highlight: Glassy toast styles */
 .Toastify__toast {
   background: rgba(var(--toast-background-rgb), 0.7) !important;
   backdrop-filter: blur(10px) !important;
@@ -88,3 +103,16 @@ body {
 .Toastify__progress-bar {
   background: var(--toast-progress-bar) !important;
 }
+
+/* TODO: Consider adding responsive styles for different screen sizes */
+/* TODO: Implement dark mode toggle functionality */
+/* TODO: Optimize CSS for better performance */
+
+/* ! Alert: Ensure all custom properties are properly used throughout the application */
+/* ! Alert: Test color contrast ratios for accessibility compliance */
+
+/* @param --app-background: Main background color for the application */
+/* @param --text-color: Primary text color */
+/* @param --primary-color: Primary accent color */
+/* @param --toast-background: Background color for toast notifications */
+/* @param --toast-text: Text color for toast notifications */

@@ -3,6 +3,12 @@
 // The component uses a card-like style with rounded corners and a glassy effect.
 // It supports dark mode and provides a responsive layout for various screen sizes.
 
+// @integration: This file integrates with the Better Comments VSCode extension for improved readability.
+// * Highlights are used for important implementation details.
+// ! Alerts are used for potential issues or edge cases.
+// TODO: comments indicate future improvements or considerations.
+// @ param comments describe function parameters.
+
 import React, { useState, useCallback, useEffect, useRef } from 'react';
 import { 
   FaFile, FaCopy, FaChevronLeft, FaChevronRight, 
@@ -16,6 +22,7 @@ import { toast } from 'react-toastify';
 import copy from 'clipboard-copy';
 import { logInfo, logError } from './clientLogUtil';
 
+// * This constant defines the number of items to display per page
 const ITEMS_PER_PAGE = 5;
 
 /**
@@ -23,6 +30,8 @@ const ITEMS_PER_PAGE = 5;
  * @param {Object} props - The component props.
  * @param {Array} props.history - The array of upload history items.
  * @param {Function} props.updateHistory - The function to update the history state.
+ * ! Alert: Ensure that the history array is properly formatted and contains all required fields.
+ * TODO: Consider adding sorting and filtering options for the history items.
  */
 const UploadHistory = ({ history = [], updateHistory }) => {
   const [hoveredIndex, setHoveredIndex] = useState(null);
@@ -35,13 +44,16 @@ const UploadHistory = ({ history = [], updateHistory }) => {
   /**
    * Get the current page items with dummy items added if needed.
    * @returns {Array} Array of history items for the current page.
+   * * This function slices the history array based on the current page and adds dummy items if needed.
+   * ! Alert: Ensure that the history array is not modified directly to avoid unintended side effects.
+   * TODO: Consider implementing virtual scrolling for better performance with large datasets.
    */
   const getCurrentPageItems = useCallback(() => {
     const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
     const endIndex = startIndex + ITEMS_PER_PAGE;
     const pageItems = history.slice(startIndex, endIndex);
     
-    // Add dummy items if needed
+    // * Add dummy items if needed to maintain consistent page size
     const dummyItemsCount = ITEMS_PER_PAGE - pageItems.length;
     for (let i = 0; i < dummyItemsCount; i++) {
       pageItems.push({ isDummy: true });
@@ -74,6 +86,7 @@ const UploadHistory = ({ history = [], updateHistory }) => {
    * @param {number} timestamp - The timestamp to format.
    * @param {number} index - The index of the history item.
    * @returns {string} Formatted date string.
+   * * bruh
    */
   const formatDate = useCallback((timestamp, index) => {
     if (!timestamp) return 'N/A';
@@ -156,10 +169,13 @@ const UploadHistory = ({ history = [], updateHistory }) => {
   }, [updateHistory]);
 
   /**
-   * Get the appropriate icon based on the file type.
-   * @param {string} fileType - The MIME type of the file.
-   * @returns {JSX.Element} The icon component for the file type.
-   */
+ * Get the appropriate icon based on the file type.
+ * @param {string} fileType - The MIME type of the file.
+ * @returns {JSX.Element} The icon component for the file type.
+ * * This function uses a switch statement with regex tests to determine the appropriate icon.
+ * ! Alert: Ensure that all possible file types are handled to avoid unexpected icon assignments.
+ * TODO: Consider adding more specific icons for additional file types.
+ */
   const getFileIcon = (fileType) => {
     const iconProps = { className: "text-3xl mr-4" };
     switch (true) {

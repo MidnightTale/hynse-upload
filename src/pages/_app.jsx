@@ -12,6 +12,7 @@ import CustomToast from '../components/CustomToast';
  * @returns {JSX.Element} The rendered component with CustomToast.
  */
 function MyApp({ Component, pageProps }) {
+  // * Highlight: Wrap the Component with CustomToast for global notification handling
   return (
     <>
       <Component {...pageProps} />
@@ -19,5 +20,10 @@ function MyApp({ Component, pageProps }) {
     </>
   );
 }
+
+// ! Alert: Ensure that CustomToast is properly configured in the project
+// TODO: Consider adding error boundary and/or loading indicator at this level
+// @param Component: The top-level component for the current page
+// @param pageProps: The initial props for the page, can be extended with custom data
 
 export default MyApp;

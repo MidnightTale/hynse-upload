@@ -1,9 +1,11 @@
 // @perama: This utility provides logging functions for client-side use.
 // It mimics the server-side logUtil but is adapted for browser environments.
+// * Highlight: This module integrates with react-toastify for error notifications
 
 import { toast } from 'react-toastify';
 import config from '../../config';
 
+// * Highlight: Custom error icons for different HTTP status codes
 const errorIcons = {
   403: 'https://raw.githubusercontent.com/SAWARATSUKI/KawaiiLogos/main/ResponseCode/403%20Forbidden.png',
   404: 'https://raw.githubusercontent.com/SAWARATSUKI/KawaiiLogos/main/ResponseCode/404%20NotFound.png',
@@ -18,6 +20,8 @@ const errorIcons = {
  * @param {string} message - The log message.
  * @param {Object} [details] - Additional details to log.
  * @returns {string} Formatted log message.
+ * 
+ * ! Alert: This function assumes that JSON.stringify can handle all types in the details object
  */
 const formatLog = (level, message, details) => {
   const time = new Date().toLocaleTimeString();
@@ -29,6 +33,8 @@ const formatLog = (level, message, details) => {
  * Log an info message.
  * @param {string} message - The log message.
  * @param {Object} [details] - Additional details to log.
+ * 
+ * * Highlight: This function respects the log level set in the config
  */
 export const logInfo = (message, details) => {
   if (['info', 'debug'].includes(config.log.level)) {
@@ -40,6 +46,8 @@ export const logInfo = (message, details) => {
  * Log a warning message.
  * @param {string} message - The log message.
  * @param {Object} [details] - Additional details to log.
+ * 
+ * * Highlight: This function respects the log level set in the config
  */
 export const logWarn = (message, details) => {
   if (['warn', 'debug'].includes(config.log.level)) {
@@ -52,6 +60,9 @@ export const logWarn = (message, details) => {
  * @param {string} message - The error message.
  * @param {Object} [details] - Additional error details.
  * @param {number} [statusCode] - HTTP status code of the error.
+ * 
+ * ! Alert: This function will always log to console regardless of log level
+ * TODO: Consider adding a severity level to errors for more granular control
  */
 export const logError = (message, details, statusCode) => {
   console.error(formatLog('ERROR', message, details));
@@ -84,9 +95,14 @@ export const logError = (message, details, statusCode) => {
  * Log a debug message.
  * @param {string} message - The log message.
  * @param {Object} [details] - Additional details to log.
+ * 
+ * * Highlight: This function only logs when the log level is set to 'debug'
  */
 export const logDebug = (message, details) => {
   if (config.log.level === 'debug') {
     console.debug(formatLog('DEBUG', message, details));
   }
 };
+
+// TODO: Implement log rotation or limiting for client-side logs to prevent console clutter
+// TODO: Consider adding a way to send critical client-side logs to the server for monitoring
