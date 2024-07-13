@@ -78,6 +78,9 @@ const useFileUpload = () => {
       if (acceptedFiles.length === 0) {
         setUploadStatus('No file selected');
         logWarn('No file selected for upload');
+        toast.error('No file selected for upload', {
+          className: 'bg-toast-background text-toast-text',
+        });
         return;
       }
 
@@ -102,7 +105,7 @@ const useFileUpload = () => {
       setUploadStatus('Uploading...');
       setIsUploading(true);
 
-      const toastId = toast.loading('Starting file upload...', {
+      const toastId = toast.loading(`Starting upload: ${file.name}`, {
         className: 'bg-toast-background text-toast-text',
       });
 
@@ -119,11 +122,11 @@ const useFileUpload = () => {
               progress: percentCompleted,
               speed: speed,
             });
-            setUploadStatus(`Uploading... ${percentCompleted}%`);
+            setUploadStatus(`${percentCompleted}%`);
             logInfo('Upload progress', { percentCompleted, speed });
             
             toast.update(toastId, {
-              render: `Uploading... ${percentCompleted}%`,
+              render: `Uploading ${file.name}: ${percentCompleted}%`,
             });
           },
         });
@@ -146,7 +149,7 @@ const useFileUpload = () => {
           logInfo('File upload completed successfully', { fileId: response.data.fileIds[0] });
 
           toast.update(toastId, {
-            render: 'File uploaded successfully!',
+            render: `${file.name} uploaded successfully!`,
             type: 'success',
             isLoading: false,
             autoClose: 5000,
@@ -160,7 +163,7 @@ const useFileUpload = () => {
         logError('File upload failed', { error: errorMessage }, statusCode);
 
         toast.update(toastId, {
-          render: 'File upload failed. Please try again.',
+          render: `${file.name} upload failed. Please try again.`,
           type: 'error',
           isLoading: false,
           autoClose: 5000,

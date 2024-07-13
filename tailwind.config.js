@@ -50,7 +50,7 @@ module.exports = {
         'overlay-closebtn-hover-color': 'var(--overlay-closebtn-hover-color)',
         'toast-background': 'rgba(var(--toast-background-rgb), 0.7)',
         'toast-border': 'rgba(var(--toast-border-rgb), 0.2)',
-        'toast-progress-bar': 'var(--toast-progress-bar)',
+        'toast-progress-bar': 'var(--toast-progress-bar)'
       },
     },
   },

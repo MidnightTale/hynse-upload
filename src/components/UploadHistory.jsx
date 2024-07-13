@@ -121,9 +121,6 @@ const UploadHistory = ({ history = [], updateHistory }) => {
         const uploadDate = new Date(item.timestamp);
         const expirationDate = new Date(uploadDate.getTime() + item.expirationTime * 60000);
         if (now > expirationDate && !item.hasShownExpirationToast) {
-          toast.info(`File "${item.fileName}" has expired.`, {
-            className: 'bg-toast-background text-toast-text',
-          });
           updateHistory(prevHistory => {
             const newHistory = [...prevHistory];
             newHistory[index] = { ...newHistory[index], hasShownExpirationToast: true };
@@ -236,11 +233,18 @@ const UploadHistory = ({ history = [], updateHistory }) => {
                 )}
               </div>
               <div className="flex items-center justify-end w-1/6">
-                <span className="px-2 py-1 rounded bg-blue-500 text-white text-sm mr-2">
-                  {item.isDummy ? 'N/A' : (item.status === 'Completed' 
-                    ? calculateTimeLeft(item.timestamp, item.expirationTime) 
-                    : item.status)}
-                </span>
+              <span className={`px-2 py-1 rounded text-white text-sm mr-2 ${
+                item.isDummy ? 'bg-[var(--status-tag-dummy)]' :
+                item.status === 'Failed' ? 'bg-[var(--status-tag-failed)]' :
+                item.status === 'Completed' ? 
+                  (calculateTimeLeft(item.timestamp, item.expirationTime) === 'Expired' ? 'bg-[var(--status-tag-expired)]' :
+                  calculateTimeLeft(item.timestamp, item.expirationTime).split(':')[0] <= '1' ? 'bg-[var(--status-tag-near-expiry)]' : 'bg-[var(--status-tag-active)]') :
+                'bg-[var(--status-tag-uploading)]'
+              }`}>
+                {item.isDummy ? 'N/A' : (item.status === 'Completed' 
+                  ? calculateTimeLeft(item.timestamp, item.expirationTime) 
+                  : item.status)}
+              </span>
                 {!item.isDummy && (
                   <button
                     className="text-gray-400 hover:text-gray-600 cursor-pointer"
