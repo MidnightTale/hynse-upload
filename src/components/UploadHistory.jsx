@@ -1,6 +1,7 @@
 // @perama: This component displays the upload history of the user with pagination.
 // It shows a list of uploaded files with their status, progress, and download links.
-// Dummy items are added to ensure consistent layout across pages.
+// The component uses a card-like style with rounded corners and a glassy effect.
+// It supports dark mode and provides a responsive layout for various screen sizes.
 
 import React, { useState, useCallback, useEffect, useRef } from 'react';
 import { 
@@ -31,7 +32,10 @@ const UploadHistory = ({ history = [], updateHistory }) => {
   // Calculate total pages
   const totalPages = Math.ceil(history.length / ITEMS_PER_PAGE);
 
-  // Get current page items with dummy items
+  /**
+   * Get the current page items with dummy items added if needed.
+   * @returns {Array} Array of history items for the current page.
+   */
   const getCurrentPageItems = useCallback(() => {
     const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
     const endIndex = startIndex + ITEMS_PER_PAGE;
@@ -47,8 +51,8 @@ const UploadHistory = ({ history = [], updateHistory }) => {
   }, [currentPage, history]);
 
   /**
-   * Copy the given text to the clipboard.
-   * @param {string} text - The text to copy.
+   * Copy the given text to the clipboard and show a toast notification.
+   * @param {string} text - The text to copy to the clipboard.
    */
   const copyToClipboard = async (text) => {
     try {
@@ -65,6 +69,12 @@ const UploadHistory = ({ history = [], updateHistory }) => {
     }
   };
 
+  /**
+   * Format the date for display, showing relative time or full date based on hover state.
+   * @param {number} timestamp - The timestamp to format.
+   * @param {number} index - The index of the history item.
+   * @returns {string} Formatted date string.
+   */
   const formatDate = useCallback((timestamp, index) => {
     if (!timestamp) return 'N/A';
     const date = new Date(timestamp);
@@ -76,6 +86,12 @@ const UploadHistory = ({ history = [], updateHistory }) => {
       : formatDistanceToNow(date, { addSuffix: true });
   }, [hoveredIndex]);
 
+  /**
+   * Calculate the time left before file expiration.
+   * @param {number} timestamp - The upload timestamp.
+   * @param {number} expirationTime - The expiration time in minutes.
+   * @returns {string} Formatted time left or 'Expired' if the file has expired.
+   */
   const calculateTimeLeft = useCallback((timestamp, expirationTime) => {
     if (!timestamp || !expirationTime) return 'N/A';
     const now = new Date();
@@ -95,6 +111,9 @@ const UploadHistory = ({ history = [], updateHistory }) => {
     return timeString;
   }, []);
 
+  /**
+   * Check for expired files and show toast notifications for newly expired files.
+   */
   const checkForExpiredFiles = useCallback(() => {
     const now = new Date();
     history.forEach((item, index) => {
@@ -136,6 +155,11 @@ const UploadHistory = ({ history = [], updateHistory }) => {
     }
   }, [updateHistory]);
 
+  /**
+   * Get the appropriate icon based on the file type.
+   * @param {string} fileType - The MIME type of the file.
+   * @returns {JSX.Element} The icon component for the file type.
+   */
   const getFileIcon = (fileType) => {
     const iconProps = { className: "text-3xl mr-4" };
     switch (true) {
@@ -175,45 +199,47 @@ const UploadHistory = ({ history = [], updateHistory }) => {
   return (
     <div className="mt-8 [&_span[title]]:hover:underline">
       <h2 className="text-2xl mb-4">File Transfer Status</h2>
-      <div>
+      <div className="space-y-4">
         {getCurrentPageItems().map((item, index) => (
-          <div key={index} className={`flex items-center py-4 border-b border-history-item-border hover:bg-history-item-hover transition-colors duration-300 ease-in-out ${item.isDummy ? 'invisible' : ''}`}>
-            <div className="flex items-center w-1/2">
-              {item.isDummy ? <FaFile className="text-3xl mr-4 text-gray-300" /> : getFileIcon(item.fileType)}
-              <div className="flex flex-col">
-                <span className="text-lg font-semibold text-blue-500 truncate">{item.fileName || 'Dummy File'}</span>
-                <div className="text-sm text-gray-500">
-                  <span className="cursor-default">
-                    {item.isDummy ? 'N/A' : formatDate(item.timestamp, index)}
-                  </span>
-                  <span className="mx-2">•</span>
-                  <span>{item.fileSize || 'N/A'}</span>
+          <div key={index} className={`p-4 rounded-lg backdrop-blur-md bg-opacity-30 bg-white dark:bg-opacity-30 dark:bg-gray-800 shadow-lg transition-all duration-300 ease-in-out ${item.isDummy ? 'invisible' : 'hover:bg-opacity-40 dark:hover:bg-opacity-40'}`}>
+            <div className="flex items-center">
+              <div className="flex items-center w-1/2">
+                {item.isDummy ? <FaFile className="text-3xl mr-4 text-gray-300" /> : getFileIcon(item.fileType)}
+                <div className="flex flex-col">
+                  <span className="text-lg font-semibold text-blue-500 truncate">{item.fileName || 'Dummy File'}</span>
+                  <div className="text-sm text-gray-500">
+                    <span className="cursor-default">
+                      {item.isDummy ? 'N/A' : formatDate(item.timestamp, index)}
+                    </span>
+                    <span className="mx-2">•</span>
+                    <span>{item.fileSize || 'N/A'}</span>
+                  </div>
                 </div>
               </div>
-            </div>
-            <div className="w-1/3">
-              {!item.isDummy && (
-                <ProgressBar 
-                  progress={item.status === 'Completed' ? 100 : item.progress} 
-                  uploadStatus={item.status} 
-                  speed={item.speed} 
-                />
-              )}
-            </div>
-            <div className="flex items-center justify-end w-1/6">
-              <span className="px-2 py-1 rounded bg-blue-500 text-white text-sm mr-2">
-                {item.isDummy ? 'N/A' : (item.status === 'Completed' 
-                  ? calculateTimeLeft(item.timestamp, item.expirationTime) 
-                  : item.status)}
-              </span>
-              {!item.isDummy && (
-                <button
-                  className="text-gray-400 hover:text-gray-600 cursor-pointer"
-                  onClick={() => copyToClipboard(item.link)}
-                >
-                  <FaCopy />
-                </button>
-              )}
+              <div className="w-1/3">
+                {!item.isDummy && (
+                  <ProgressBar 
+                    progress={item.status === 'Completed' ? 100 : item.progress} 
+                    uploadStatus={item.status} 
+                    speed={item.speed} 
+                  />
+                )}
+              </div>
+              <div className="flex items-center justify-end w-1/6">
+                <span className="px-2 py-1 rounded bg-blue-500 text-white text-sm mr-2">
+                  {item.isDummy ? 'N/A' : (item.status === 'Completed' 
+                    ? calculateTimeLeft(item.timestamp, item.expirationTime) 
+                    : item.status)}
+                </span>
+                {!item.isDummy && (
+                  <button
+                    className="text-gray-400 hover:text-gray-600 cursor-pointer"
+                    onClick={() => copyToClipboard(item.link)}
+                  >
+                    <FaCopy />
+                  </button>
+                )}
+              </div>
             </div>
           </div>
         ))}
