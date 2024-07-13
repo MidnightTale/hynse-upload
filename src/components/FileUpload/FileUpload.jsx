@@ -6,10 +6,10 @@ import UploadForm from './UploadForm';
 import ExpirationSelector from './ExpirationSelector';
 import UploadHistory from '../UploadHistory';
 import useFileUpload from './useFileUpload';
+import { logError } from '../clientLogUtil';
 
 const FileUpload = () => {
   const {
-    uploadStatus,
     isUploading,
     expirationTime,
     history,
@@ -18,15 +18,30 @@ const FileUpload = () => {
     setHistory
   } = useFileUpload();
 
+  const handleExpirationChange = (newExpirationTime) => {
+    try {
+      setExpirationTime(newExpirationTime);
+    } catch (error) {
+      logError('Error setting expiration time', { error: error.message });
+    }
+  };
+
+  const handleHistoryUpdate = (newHistory) => {
+    try {
+      setHistory(newHistory);
+    } catch (error) {
+      logError('Error updating history', { error: error.message });
+    }
+  };
+
   return (
     <div className="w-full max-w-4xl mx-auto">
       <UploadForm isUploading={isUploading} onDrop={onDrop} />
       <ExpirationSelector 
         expirationTime={expirationTime} 
-        setExpirationTime={setExpirationTime} 
+        setExpirationTime={handleExpirationChange} 
       />
-      <p className="mt-4 text-center">{uploadStatus}</p>
-      <UploadHistory history={history} updateHistory={setHistory} />
+      <UploadHistory history={history} updateHistory={handleHistoryUpdate} />
     </div>
   );
 };

@@ -7,6 +7,7 @@ import Header from '../components/Header';
 import Footer from '../components/Footer';
 import DonationSection from '../components/DonationSection';
 import UploadHistory from '../components/UploadHistory';
+import CustomToast from '../components/CustomToast';
 
 /**
  * The Home component is the main page of the Next.js application.
@@ -15,6 +16,7 @@ import UploadHistory from '../components/UploadHistory';
 export default function Home() {
   return (
     <div className="bg-app-background text-text-color min-h-screen">
+      <CustomToast />
       <Header />
       <main className="container mx-auto px-4 py-8">
         <FileUpload />

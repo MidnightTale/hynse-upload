@@ -2,8 +2,17 @@
 
 import React from 'react';
 import config from '../../../config';
+import { logError } from '../clientLogUtil';
 
 const ExpirationSelector = ({ expirationTime, setExpirationTime }) => {
+  const handleExpirationChange = (minutes) => {
+    try {
+      setExpirationTime(minutes);
+    } catch (error) {
+      logError('Error setting expiration time', { error: error.message }, 500);
+    }
+  };
+
   return (
     <div className="mt-4">
       <label htmlFor="expiration" className="block mb-2">Select expiration time:</label>
@@ -11,7 +20,7 @@ const ExpirationSelector = ({ expirationTime, setExpirationTime }) => {
         {config.upload.expirationOptions.map((minutes) => (
           <button
             key={minutes}
-            onClick={() => setExpirationTime(minutes)}
+            onClick={() => handleExpirationChange(minutes)}
             className={`px-4 py-2 rounded mb-2 ${
               expirationTime === minutes
                 ? 'bg-active-button text-button-text'

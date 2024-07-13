@@ -2,9 +2,18 @@
 
 import React from 'react';
 import { useDropzone } from 'react-dropzone';
+import { logError } from '../clientLogUtil';
 
 const UploadForm = ({ isUploading, onDrop }) => {
-  const { getRootProps, getInputProps } = useDropzone({ onDrop });
+  const handleDrop = (acceptedFiles) => {
+    try {
+      onDrop(acceptedFiles);
+    } catch (error) {
+      logError('Error handling file drop', { error: error.message }, 500);
+    }
+  };
+
+  const { getRootProps, getInputProps } = useDropzone({ onDrop: handleDrop });
 
   return (
     <div

@@ -10,6 +10,20 @@
   --history-item-hover: #333333;
   --copy-icon-color: #3498db;
   --copy-icon-hover-color: #2980b9;
+  --toast-background: #363636;
+  --toast-text: #ffffff;
+  --toastify-color-light: var(--toast-background);
+  --toastify-color-dark: var(--toast-background);
+  --toastify-color-info: #3498db;
+  --toastify-color-success: #07bc0c;
+  --toastify-color-warning: #f1c40f;
+  --toastify-color-error: #e74c3c;
+  --toastify-color-transparent: rgba(255, 255, 255, 0.7);
+  --toastify-text-color-light: var(--toast-text);
+  --toastify-text-color-dark: var(--toast-text);
+  --toast-background-rgb: 54, 54, 54;
+  --toast-border-rgb: 255, 255, 255;
+  --toast-progress-bar: rgba(255, 255, 255, 0.7);
 }
 
 :root.light {
@@ -20,6 +34,20 @@
   --history-item-hover: #e6e6e6;
   --copy-icon-color: #3498db;
   --copy-icon-hover-color: #2980b9;
+  --toast-background: #f0f0f0;
+  --toast-text: #333333;
+  --toastify-color-light: var(--toast-background);
+  --toastify-color-dark: var(--toast-background);
+  --toastify-color-info: #3498db;
+  --toastify-color-success: #07bc0c;
+  --toastify-color-warning: #f1c40f;
+  --toastify-color-error: #e74c3c;
+  --toastify-color-transparent: rgba(255, 255, 255, 0.7);
+  --toastify-text-color-light: var(--toast-text);
+  --toastify-text-color-dark: var(--toast-text);
+  --toast-background-rgb: 240, 240, 240;
+  --toast-border-rgb: 0, 0, 0;
+  --toast-progress-bar: rgba(0, 0, 0, 0.7);
 }
 
 body {
@@ -33,4 +61,30 @@ body {
 
 :root.light .hynse_long {
   @apply brightness-75;
+}
+
+/* Glassy toast styles */
+.Toastify__toast {
+  background: rgba(var(--toast-background-rgb), 0.7) !important;
+  backdrop-filter: blur(10px) !important;
+  -webkit-backdrop-filter: blur(10px) !important;
+  border: 1px solid rgba(var(--toast-border-rgb), 0.2) !important;
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37) !important;
+}
+
+.Toastify__toast-body {
+  color: var(--toast-text) !important;
+}
+
+.Toastify__close-button {
+  color: var(--toast-text) !important;
+  opacity: 0.7;
+}
+
+.Toastify__close-button:hover {
+  opacity: 1;
+}
+
+.Toastify__progress-bar {
+  background: var(--toast-progress-bar) !important;
 }

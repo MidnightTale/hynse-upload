@@ -1,4 +1,5 @@
-// This component provides a button to switch between light, dark, and system themes.
+// @perama: This component provides a button to switch between light, dark, and system themes.
+// It also updates the theme in local storage and triggers a custom event for theme changes.
 
 import React, { useState, useEffect } from 'react';
 import { FaSun, FaMoon, FaDesktop } from 'react-icons/fa';
@@ -16,25 +17,38 @@ const ThemeSwitcher = () => {
     applyTheme(savedTheme);
   }, []);
 
+  /**
+   * Apply the selected theme to the document and trigger a custom event.
+   * @param {string} newTheme - The new theme to apply.
+   */
   const applyTheme = (newTheme) => {
     if (newTheme === 'system') {
       const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
       document.documentElement.classList.remove('light', 'dark');
       document.documentElement.classList.add(systemTheme);
+      localStorage.setItem('theme', systemTheme);
     } else {
       document.documentElement.classList.remove('light', 'dark');
       document.documentElement.classList.add(newTheme);
+      localStorage.setItem('theme', newTheme);
     }
+    window.dispatchEvent(new Event('storage'));
   };
 
+  /**
+   * Toggle between themes and apply the new theme.
+   */
   const toggleTheme = () => {
     const themes = ['light', 'dark', 'system'];
     const nextTheme = themes[(themes.indexOf(theme) + 1) % themes.length];
     setTheme(nextTheme);
-    localStorage.setItem('theme', nextTheme);
     applyTheme(nextTheme);
   };
 
+  /**
+   * Get the appropriate icon for the current theme.
+   * @returns {JSX.Element} The theme icon component.
+   */
   const getThemeIcon = () => {
     switch (theme) {
       case 'light':

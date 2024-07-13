@@ -5,9 +5,10 @@
 import React, { useState, useCallback, useEffect, useRef } from 'react';
 import { FaFile, FaCopy, FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 import ProgressBar from './ProgressBar';
-import { format, formatDistanceToNow } from 'date-fns';
+import { formatDistanceToNow } from 'date-fns';
 import { toast } from 'react-toastify';
 import copy from 'clipboard-copy';
+import { logInfo, logError } from './clientLogUtil';
 
 const ITEMS_PER_PAGE = 5;
 
@@ -26,7 +27,7 @@ const UploadHistory = ({ history = [], updateHistory }) => {
   const totalPages = Math.ceil(history.length / ITEMS_PER_PAGE);
 
   // Get current page items with dummy items
-  const getCurrentPageItems = () => {
+  const getCurrentPageItems = useCallback(() => {
     const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
     const endIndex = startIndex + ITEMS_PER_PAGE;
     const pageItems = history.slice(startIndex, endIndex);
@@ -38,7 +39,7 @@ const UploadHistory = ({ history = [], updateHistory }) => {
     }
     
     return pageItems;
-  };
+  }, [currentPage, history]);
 
   /**
    * Copy the given text to the clipboard.
@@ -47,10 +48,15 @@ const UploadHistory = ({ history = [], updateHistory }) => {
   const copyToClipboard = async (text) => {
     try {
       await copy(text);
-      toast.success('Link copied to clipboard');
+      toast.success('Link copied to clipboard', {
+        className: 'bg-toast-background text-toast-text',
+      });
+      logInfo('Link copied to clipboard', { text });
     } catch (err) {
-      console.error('Failed to copy text: ', err);
-      toast.error('Failed to copy link');
+      logError('Failed to copy text to clipboard', { error: err.message });
+      toast.error('Failed to copy link', {
+        className: 'bg-toast-background text-toast-text',
+      });
     }
   };
 
@@ -83,6 +89,31 @@ const UploadHistory = ({ history = [], updateHistory }) => {
     
     return timeString;
   }, []);
+
+  const checkForExpiredFiles = useCallback(() => {
+    const now = new Date();
+    history.forEach((item, index) => {
+      if (!item.isDummy && item.status === 'Completed') {
+        const uploadDate = new Date(item.timestamp);
+        const expirationDate = new Date(uploadDate.getTime() + item.expirationTime * 60000);
+        if (now > expirationDate && !item.hasShownExpirationToast) {
+          toast.info(`File "${item.fileName}" has expired.`, {
+            className: 'bg-toast-background text-toast-text',
+          });
+          updateHistory(prevHistory => {
+            const newHistory = [...prevHistory];
+            newHistory[index] = { ...newHistory[index], hasShownExpirationToast: true };
+            return newHistory;
+          });
+        }
+      }
+    });
+  }, [history, updateHistory]);
+
+  useEffect(() => {
+    const interval = setInterval(checkForExpiredFiles, 60000); // Check every minute
+    return () => clearInterval(interval);
+  }, [checkForExpiredFiles]);
 
   useEffect(() => {
     if (typeof updateHistory === 'function') {
@@ -124,7 +155,13 @@ const UploadHistory = ({ history = [], updateHistory }) => {
               </div>
             </div>
             <div className="w-1/3">
-              {!item.isDummy && <ProgressBar progress={item.progress} uploadStatus={item.status} speed={item.speed} />}
+              {!item.isDummy && (
+                <ProgressBar 
+                  progress={item.status === 'Completed' ? 100 : item.progress} 
+                  uploadStatus={item.status} 
+                  speed={item.speed} 
+                />
+              )}
             </div>
             <div className="flex items-center justify-end w-1/6">
               <span className="px-2 py-1 rounded bg-blue-500 text-white text-sm mr-2">

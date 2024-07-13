@@ -1,6 +1,7 @@
 // This component renders a progress bar for file uploads.
 
 import React from 'react';
+import { logError } from './clientLogUtil';
 
 /**
  * ProgressBar component to display upload progress.
@@ -11,23 +12,28 @@ import React from 'react';
  * @returns {JSX.Element} The rendered component.
  */
 const ProgressBar = React.memo(({ progress, uploadStatus, speed }) => {
-  const isCompleted = progress === 100;
+  try {
+    const isCompleted = progress === 100;
 
-  if (isCompleted) {
+    if (isCompleted) {
+      return null;
+    }
+
+    return (
+      <div className="relative w-full h-5 bg-gray-700 rounded-full overflow-hidden">
+        <div
+          className="h-full bg-blue-500 transition-all duration-300 ease-in-out"
+          style={{ width: `${Math.round(progress)}%` }}
+        ></div>
+        <div className="absolute inset-0 flex items-center justify-center text-xs font-semibold text-white">
+          {uploadStatus} - {speed}
+        </div>
+      </div>
+    );
+  } catch (error) {
+    logError('Error rendering ProgressBar', { error: error.message });
     return null;
   }
-
-  return (
-    <div className="relative w-full h-5 bg-gray-700 rounded-full overflow-hidden">
-      <div
-        className="h-full bg-blue-500 transition-all duration-300 ease-in-out"
-        style={{ width: `${Math.round(progress)}%` }}
-      ></div>
-      <div className="absolute inset-0 flex items-center justify-center text-xs font-semibold text-white">
-        {uploadStatus} - {speed}
-      </div>
-    </div>
-  );
 }, (prevProps, nextProps) => {
   return (
     Math.abs(prevProps.progress - nextProps.progress) < 1 &&
