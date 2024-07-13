@@ -1,4 +1,7 @@
 [![Banner](https://github.com/MidnightTale/hynse-upload/raw/main/public/img/banner.png)](https://github.com/MidnightTale/hynse-upload/blob/main/public/img/banner.png)
+> [!WARNING]
+> This project is currently under active development. While it's functional, some features may be incomplete or subject to change. Use with caution in production environments.
+
 # 🚀 Hynse Upload
 
 Hynse Upload is a robust and efficient file upload server built with Next.js and Bun. It offers a seamless file sharing experience with temporary storage and easy management.
