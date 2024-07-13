@@ -90,7 +90,9 @@ const useFileUpload = () => {
       });
 
       if (response.status === 200) {
-        const downloadUrl = `http://${window.location.hostname}:${config.downloadPort}/${response.data.fileIds[0]}`;
+        const downloadUrl = config.usePublicDomain
+          ? `https://${config.downloadHostname}/${response.data.fileIds[0]}`
+          : `http://${config.location.hostname}:${configUtil.downloadPort}/${response.data.fileIds[0]}`;
         updateHistoryItem(0, {
           link: downloadUrl,
           fileId: response.data.fileIds[0],
