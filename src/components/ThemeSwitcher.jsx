@@ -1,12 +1,16 @@
-// @perama: This component provides a button to switch between light, dark, and system themes.
-// It also updates the theme in local storage and triggers a custom event for theme changes.
-
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useTheme } from 'next-themes';
 import { FaSun, FaMoon, FaDesktop } from 'react-icons/fa';
 
 const ThemeSwitcher = () => {
   const { theme, setTheme } = useTheme();
+
+  useEffect(() => {
+    document.documentElement.classList.add('theme-transition');
+    return () => {
+      document.documentElement.classList.remove('theme-transition');
+    };
+  }, []);
 
   const toggleTheme = () => {
     const themes = ['light', 'dark', 'system'];
@@ -27,7 +31,11 @@ const ThemeSwitcher = () => {
   };
 
   return (
-    <button onClick={toggleTheme} className="bg-transparent border-none cursor-pointer text-2xl text-gray-800 dark:text-gray-200 hover:text-blue-500 transition-colors duration-300">
+    <button
+      onClick={toggleTheme}
+      className="bg-transparent border-none cursor-pointer text-2xl text-gray-800 dark:text-gray-200 hover:text-blue-500 transition-colors duration-300"
+      aria-label="Toggle theme"
+    >
       {getThemeIcon()}
     </button>
   );
