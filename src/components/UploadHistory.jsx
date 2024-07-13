@@ -90,7 +90,7 @@ const UploadHistory = ({ history = [], updateHistory }) => {
    * Calculate the time left before file expiration.
    * @param {number} timestamp - The upload timestamp.
    * @param {number} expirationTime - The expiration time in minutes.
-   * @returns {string} Formatted time left or 'Expired' if the file has expired.
+   * @returns {Object} An object with the formatted time left and a boolean indicating if the time is near expiry.
    */
   const calculateTimeLeft = useCallback((timestamp, expirationTime) => {
     if (!timestamp || !expirationTime) return 'N/A';
@@ -99,16 +99,19 @@ const UploadHistory = ({ history = [], updateHistory }) => {
     const expirationDate = new Date(uploadDate.getTime() + expirationTime * 60000);
     const timeLeft = expirationDate - now;
     if (timeLeft <= 0) return 'Expired';
-    const hours = Math.floor(timeLeft / 3600000);
+    
+    const days = Math.floor(timeLeft / (24 * 3600000));
+    const hours = Math.floor((timeLeft % (24 * 3600000)) / 3600000);
     const minutes = Math.floor((timeLeft % 3600000) / 60000);
     const seconds = Math.floor((timeLeft % 60000) / 1000);
     
-    let timeString = '';
-    if (hours > 0) timeString += `${hours}:`;
-    if (hours > 0 || minutes > 0) timeString += `${minutes.toString().padStart(2, '0')}:`;
-    timeString += seconds.toString().padStart(2, '0');
-    
-    return timeString;
+    if (days > 0) {
+      return { text: days === 1 ? '1 Day' : `${days} Days`, isNearExpiry: false };
+    } else if (hours > 0 || minutes > 30) {
+      return { text: `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`, isNearExpiry: false };
+    } else {
+      return { text: `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`, isNearExpiry: true };
+    }
   }, []);
 
   /**
@@ -207,7 +210,7 @@ const UploadHistory = ({ history = [], updateHistory }) => {
             onMouseLeave={() => setHoveredIndex(null)}
           >
             <div className="flex items-center">
-              <div className="flex items-center w-1/2">
+              <div className="flex items-center w-2/5">
                 {item.isDummy ? <FaFile className="text-3xl mr-4 text-gray-300" /> : getFileIcon(item.fileType)}
                 <div className="flex flex-col">
                   <span className="text-lg font-semibold truncate">{item.fileName || 'Dummy File'}</span>
@@ -232,22 +235,26 @@ const UploadHistory = ({ history = [], updateHistory }) => {
                   />
                 )}
               </div>
-              <div className="flex items-center justify-end w-1/6">
-              <span className={`px-2 py-1 rounded text-white text-sm mr-2 ${
-                item.isDummy ? 'bg-[var(--status-tag-dummy)]' :
-                item.status === 'Failed' ? 'bg-[var(--status-tag-failed)]' :
-                item.status === 'Completed' ? 
-                  (calculateTimeLeft(item.timestamp, item.expirationTime) === 'Expired' ? 'bg-[var(--status-tag-expired)]' :
-                  calculateTimeLeft(item.timestamp, item.expirationTime).split(':')[0] <= '1' ? 'bg-[var(--status-tag-near-expiry)]' : 'bg-[var(--status-tag-active)]') :
-                'bg-[var(--status-tag-uploading)]'
-              }`}>
-                {item.isDummy ? 'N/A' : (item.status === 'Completed' 
-                  ? calculateTimeLeft(item.timestamp, item.expirationTime) 
-                  : item.status)}
-              </span>
+              <div className="flex items-center justify-end w-1/4">
+                <span className={`px-2 py-1 rounded text-white text-sm mr-2 ${
+                  item.isDummy ? 'bg-[var(--status-tag-dummy)]' :
+                  item.status === 'Failed' ? 'bg-[var(--status-tag-failed)]' :
+                  item.status === 'Completed' ? 
+                    (() => {
+                      const timeLeft = calculateTimeLeft(item.timestamp, item.expirationTime);
+                      if (timeLeft === 'Expired') return 'bg-[var(--status-tag-expired)]';
+                      if (timeLeft.isNearExpiry) return 'bg-[var(--status-tag-near-expiry)]';
+                      return 'bg-[var(--status-tag-active)]';
+                    })() :
+                  'bg-[var(--status-tag-uploading)]'
+                }`}>
+                  {item.isDummy ? 'N/A' : (item.status === 'Completed' 
+                    ? calculateTimeLeft(item.timestamp, item.expirationTime).text 
+                    : item.status)}
+                </span>
                 {!item.isDummy && (
                   <button
-                    className="text-gray-400 hover:text-gray-600 cursor-pointer"
+                    className="text-gray-400 hover:text-gray-600 cursor-pointer ml-2"
                     onClick={() => copyToClipboard(item.link)}
                   >
                     <FaCopy />
