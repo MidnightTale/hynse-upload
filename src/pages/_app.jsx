@@ -3,20 +3,21 @@
 
 import '../styles/globals.css';
 import CustomToast from '../components/CustomToast';
+import { ThemeProvider } from '../components/ThemeProvider';
 
 /**
  * Custom App component for Next.js.
  * @param {Object} props - The component props.
  * @param {React.Component} props.Component - The component to render.
  * @param {Object} props.pageProps - The props to pass to the component.
- * @returns {JSX.Element} The rendered component with CustomToast.
+ * @returns {JSX.Element} The rendered component with CustomToast and ThemeProvider.
  */
 function MyApp({ Component, pageProps }) {
   return (
-    <>
+    <ThemeProvider>
       <Component {...pageProps} />
       <CustomToast />
-    </>
+    </ThemeProvider>
   );
 }
 
