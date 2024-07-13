@@ -14,16 +14,18 @@ const CustomToast = () => {
   return (
     <ToastContainer
       position="bottom-right"
-      autoClose={5000}
-      hideProgressBar={false}
+      autoClose={3000}
+      hideProgressBar={true}
       newestOnTop={false}
-      closeOnClick
+      closeOnClick={true}
       rtl={false}
-      pauseOnFocusLoss
-      draggable
-      pauseOnHover
-      theme="colored"
+      pauseOnFocusLoss={false}
+      draggable={true}
+      pauseOnHover={true}
       toastClassName="bg-toast-background text-toast-text backdrop-blur-md bg-opacity-80"
+      bodyClassName="text-sm py-2 px-3"
+      progressClassName="bg-blue-500"
+      style={{ width: '280px' }}
     />
   );
 };

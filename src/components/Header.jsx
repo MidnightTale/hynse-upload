@@ -10,15 +10,19 @@ import ThemeSwitcher from './ThemeSwitcher';
  */
 const Header = () => {
   return (
-    <header className="flex justify-between items-center p-4 bg-app-background">
-      <Image
-        src={Logo}
-        alt="Hynse Logo"
-        width={200}
-        height={50}
-        className="max-w-full h-[7vh] object-contain filter dark:brightness-100 light:brightness-25"
-      />
-      <ThemeSwitcher />
+    <header className="flex flex-col items-center p-4 bg-app-background relative">
+      <div className="absolute top-4 right-4">
+        <ThemeSwitcher />
+      </div>
+      <div className="mb-4">
+        <Image
+          src={Logo}
+          alt="Hynse Logo"
+          width={500}
+          height={125}
+          className="max-w-full h-auto object-contain [filter:var(--logo-filter)] [image-rendering:_pixelated]"
+        />
+      </div>
     </header>
   );
 };

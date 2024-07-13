@@ -24,6 +24,12 @@
   --toast-background-rgb: 54, 54, 54;
   --toast-border-rgb: 255, 255, 255;
   --toast-progress-bar: rgba(255, 255, 255, 0.7);
+  --logo-brightness: 1;
+  --logo-filter: brightness(var(--logo-brightness));
+  --history-item-background: rgba(42, 42, 42, 0.8);
+  --history-item-hover-background: rgba(51, 51, 51, 0.9);
+  --history-item-text: #ffffff;
+  --history-item-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 :root.light {
@@ -48,43 +54,55 @@
   --toast-background-rgb: 240, 240, 240;
   --toast-border-rgb: 0, 0, 0;
   --toast-progress-bar: rgba(0, 0, 0, 0.7);
+  --logo-brightness: 0.2;
+  --history-item-background: rgba(240, 240, 240, 0.8);
+  --history-item-hover-background: rgba(230, 230, 230, 0.9);
+  --history-item-text: #333333;
+  --history-item-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
 }
 
 body {
   @apply bg-app-background text-text-color;
 }
 
-.hynse_long {
-  @apply max-w-full h-[7vh] block mx-auto my-[3vh] object-contain;
-  image-rendering: pixelated;
+header {
+  min-height: 3vh;
 }
 
-:root.light .hynse_long {
-  @apply brightness-75;
+/* Smaller toast styles */
+.Toastify__toast-container {
+  width: 280px;
 }
 
-/* Glassy toast styles */
 .Toastify__toast {
-  background: rgba(var(--toast-background-rgb), 0.7) !important;
-  backdrop-filter: blur(10px) !important;
-  -webkit-backdrop-filter: blur(10px) !important;
+  min-height: 40px;
+  padding: 4px;
+  background: rgba(var(--toast-background-rgb), 0.5) !important;
+  backdrop-filter: blur(8px) !important;
+  -webkit-backdrop-filter: blur(8px) !important;
   border: 1px solid rgba(var(--toast-border-rgb), 0.2) !important;
-  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37) !important;
+  box-shadow: 0 4px 16px 0 rgba(0, 0, 0, 0.05) !important;
 }
 
 .Toastify__toast-body {
   color: var(--toast-text) !important;
+  font-size: 0.875rem;
+  padding: 4px 8px;
 }
 
 .Toastify__close-button {
   color: var(--toast-text) !important;
   opacity: 0.7;
+  padding: 4px;
+  display: none;
 }
 
 .Toastify__close-button:hover {
   opacity: 1;
+  display: none;
 }
 
 .Toastify__progress-bar {
+  height: 1px;
   background: var(--toast-progress-bar) !important;
 }

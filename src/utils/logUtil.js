@@ -16,7 +16,7 @@ const getTime = () => new Date().toLocaleTimeString();
  * @returns {string} - The formatted log message.
  */
 const formatLog = (level, message, details) => {
-  const time = chalk.grey(`[${getTime()}]`);
+  const time = chalk.grey(`${getTime()}`);
   const levelColor = level === 'INFO' ? chalk.blue : level === 'ERROR' ? chalk.red : level === 'WARN' ? chalk.yellow : chalk.green;
   const levelText = levelColor(`[${level}]`);
   const threadText = chalk.grey(`[Thread ${threadId}]`);

@@ -22,7 +22,7 @@ const errorIcons = {
 const formatLog = (level, message, details) => {
   const time = new Date().toLocaleTimeString();
   const detailsText = details ? JSON.stringify(details) : '';
-  return `[${time}] [${level}] ${message} ${detailsText}`;
+  return `${time} [${level}] ${message} ${detailsText}`;
 };
 
 /**
