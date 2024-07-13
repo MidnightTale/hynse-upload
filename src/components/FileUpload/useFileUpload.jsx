@@ -86,7 +86,7 @@ const useFileUpload = () => {
 
       const file = acceptedFiles[0];
       const formData = new FormData();
-      formData.append('files', file);
+      formData.append('file', file);
       formData.append('expiration', expirationTime.toString());
 
       const newHistoryItem = {
