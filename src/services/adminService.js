@@ -1,7 +1,7 @@
 // @perama: This service provides administrative functionalities like listing and clearing files.
 // It uses the Better Comments VSCode extension for improved readability.
 
-import { listFiles } from './fileService';
+import { listFiles2 } from './fileService';
 import redis from '../utils/redisUtil';
 import { logInfo, logError } from '../utils/logUtil';
 
@@ -9,7 +9,7 @@ import { logInfo, logError } from '../utils/logUtil';
  * List all files in the system
  * @returns {Promise<void>}
  */
-export const listFiles = async () => {
+export const listFiles2 = async () => {
   try {
     // * Highlight: Retrieve all files from the file service
     const files = await listFiles();
