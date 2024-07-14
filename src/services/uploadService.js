@@ -34,9 +34,17 @@ export const uploadMiddleware = multer({ storage }).array('files');
  */
 export const handleFileUpload = async (req, res, ip) => {
   const files = req.files;
-  const expiration = parseInt(req.body.expiration) || 30; // Default to 30 minutes if not provided
+  const expiration = parseInt(req.body.expiration) || 30;
 
-  logDebug('File upload initiated', { ip, files: files.map(file => file.originalname), expiration });
+  logInfo('File upload initiated', { 
+    ip, 
+    files: files.map(file => ({
+      name: file.originalname,
+      size: formatFileSize(file.size),
+      type: file.mimetype
+    })), 
+    expiration 
+  });
 
   if (!files || files.length === 0) {
     logWarn('No files uploaded', { ip });
@@ -68,7 +76,15 @@ export const handleFileUpload = async (req, res, ip) => {
       await storeFileMetadata(fileId, fileData, uploadExpiration);
       await scheduleFileDeletion(fileId, filePath, uploadExpiration);
 
-      logInfo(`File upload completed for ID: ${fileId}`);
+      logInfo(`File upload completed`, {
+        ip,
+        fileId,
+        fileName: file.originalname,
+        fileSize: formatFileSize(file.size),
+        fileType: file.mimetype,
+        expirationTime: `${expiration} minutes`,
+        expirationDate: new Date(Date.now() + uploadExpiration * 1000).toISOString()
+      });
       return { fileId, success: true };
     });
 
@@ -77,11 +93,38 @@ export const handleFileUpload = async (req, res, ip) => {
       ? `https://${appConfig.download.publicDomain}` 
       : `http://${appConfig.download.hostname}:${appConfig.download.port}`;
     const fileUrls = results.map(result => `${downloadDomain}/${result.fileId}`);
-    logInfo('Files uploaded successfully', { ip, fileUrls });
+    logInfo('Files uploaded successfully', { 
+      ip, 
+      fileUrls,
+      files: results.map((result, index) => ({
+        fileId: result.fileId,
+        fileName: files[index].originalname,
+        fileSize: formatFileSize(files[index].size),
+        fileType: files[index].mimetype,
+        expirationTime: `${expiration} minutes`,
+        expirationDate: new Date(Date.now() + expiration * 60 * 1000).toISOString()
+      }))
+    });
 
     res.status(200).json({ urls: fileUrls, fileIds: results.map(result => result.fileId) });
   } catch (error) {
-    logError('File processing failed', { error: error.message, ip });
+    logError('File processing failed', { 
+      error: error.message, 
+      ip,
+      files: files.map(file => ({
+        name: file.originalname,
+        size: formatFileSize(file.size),
+        type: file.mimetype
+      }))
+    });
     res.status(500).json({ error: 'File processing failed' });
   }
 };
+
+function formatFileSize(bytes) {
+  if (bytes === 0) return '0 Bytes';
+  const k = 1024;
+  const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
+  const i = Math.floor(Math.log(bytes) / Math.log(k));
+  return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+}

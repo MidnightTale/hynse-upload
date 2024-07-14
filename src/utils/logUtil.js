@@ -12,60 +12,53 @@ const getTime = () => new Date().toLocaleTimeString();
  * Format the log message with time, thread ID, log level, message, and details.
  * @param {string} level - The log level (INFO, WARN, ERROR, DEBUG).
  * @param {string} message - The log message.
- * @param {Object} [details] - Additional details to log.
  * @returns {string} - The formatted log message.
  */
-const formatLog = (level, message, details) => {
+const formatLog = (level, message) => {
   const time = chalk.grey(`${getTime()}`);
   const levelColor = level === 'INFO' ? chalk.blue : level === 'ERROR' ? chalk.red : level === 'WARN' ? chalk.yellow : chalk.green;
   const levelText = levelColor(`[${level}]`);
   const threadText = chalk.grey(`[Thread ${threadId}]`);
-  const msgText = chalk.white(message);
-  const detailsText = details ? chalk.grey(JSON.stringify(details, null, 2)) : '';
 
-  return `${time} ${threadText} ${levelText} ${msgText} ${detailsText}`;
+  return `${time} ${threadText} ${levelText} ${message}`;
 };
 
 /**
  * Log an info message.
  * @param {string} message - The log message.
- * @param {Object} [details] - Additional details to log.
  */
-export const logInfo = (message, details) => {
+export const logInfo = (message) => {
   if (['info', 'debug'].includes(appConfig.log.level)) {
-    console.info(formatLog('INFO', message, details));
+    console.info(formatLog('INFO', message));
   }
 };
 
 /**
  * Log a warning message.
  * @param {string} message - The log message.
- * @param {Object} [details] - Additional details to log.
  */
-export const logWarn = (message, details) => {
+export const logWarn = (message) => {
   if (['warn', 'debug'].includes(appConfig.log.level)) {
-    console.warn(formatLog('WARN', message, details));
+    console.warn(formatLog('WARN', message));
   }
 };
 
 /**
  * Log an error message.
  * @param {string} message - The log message.
- * @param {Object} [details] - Additional details to log.
  */
 export const logError = (message, details) => {
   if (['error', 'debug'].includes(appConfig.log.level)) {
-    console.error(formatLog('ERROR', message, details));
+    console.error(formatLog('ERROR', message));
   }
 };
 
 /**
  * Log a debug message.
  * @param {string} message - The log message.
- * @param {Object} [details] - Additional details to log.
  */
-export const logDebug = (message, details) => {
+export const logDebug = (message) => {
   if (appConfig.log.level === 'debug') {
-    console.debug(formatLog('DEBUG', message, details));
+    console.debug(formatLog('DEBUG', message));
   }
 };
