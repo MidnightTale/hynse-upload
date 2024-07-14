@@ -9,6 +9,7 @@ import config from './config';
 import { logInfo, logError, logWarn } from './src/utils/logUtil';
 import { checkRedisStatus } from './src/utils/redisUtil';
 import fileRoutes from './src/routes/fileRoutes';
+import { logRequest } from './src/utils/requestLogUtil';
 
 const checkConfigFile = () => {
   const configPath = path.join(process.cwd(), 'config.js');
@@ -29,8 +30,12 @@ const downloadServer = express();
 server.use(express.json());
 server.use(express.urlencoded({ extended: true }));
 
+// Add request logging middleware
+server.use(logRequest);
+
 // Custom file routes
 server.use('/api', fileRoutes);
+
 
 // Handle Next.js requests
 server.all('*', (req, res) => {
@@ -39,6 +44,9 @@ server.all('*', (req, res) => {
 
 // Setup download server
 downloadServer.use('/', fileRoutes);
+
+// Add request logging middleware to download server
+downloadServer.use(logRequest);
 
 // Function to list all routes
 const listRoutes = (app) => {

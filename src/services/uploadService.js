@@ -1,7 +1,7 @@
 // @perama: This service handles file uploads using multer and stores file metadata in Redis.
 
 import multer from 'multer';
-import { logInfo, logWarn, logError, logDebug } from '../utils/logUtil';
+import { logInfo, logWarn, logError, logDebug, logTrace } from '../utils/logUtil';
 import appConfig from '../../config';
 import { nanoid } from 'nanoid';
 import fs from 'fs';
@@ -108,15 +108,14 @@ export const handleFileUpload = async (req, res, ip) => {
 
     res.status(200).json({ urls: fileUrls, fileIds: results.map(result => result.fileId) });
   } catch (error) {
-    logError('File processing failed', { 
-      error: error.message, 
+    logTrace('File processing failed', { 
       ip,
       files: files.map(file => ({
         name: file.originalname,
         size: formatFileSize(file.size),
         type: file.mimetype
       }))
-    });
+    }, error);
     res.status(500).json({ error: 'File processing failed' });
   }
 };

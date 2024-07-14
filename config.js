@@ -30,7 +30,19 @@ const config = {
   },
   // Logging configuration
   log: {
-    level: 'debug', // Log level (options: 'error', 'warn', 'info', 'debug', 'trace')
+    level: 'trace', // Log level (options: 'error', 'warn', 'info', 'debug', 'trace')
+    sanitize: false, // Set to false to disable log sanitization
+    logUploads: true, // Set to true to log upload requests
+    logDownloads: true, // Set to true to log download requests
+    logRequests: true, // Set to true to log incoming requests
+    traceErrors: true, // Set to true to include stack traces for errors
+  },
+  // Error simulation configuration
+  errorSimulation: {
+    enabled: false, // Set to true to enable error simulation
+    probability: 0.5, // Probability of simulating an error (0.1 = 10% chance)
+    uploadError: true, // Simulate errors during file upload
+    downloadError: true, // Simulate errors during file download
   },
   // Secret key for encryption or session management
   secretKey: 'your_secret_key_here', // Replace with a strong, unique secret key
@@ -53,6 +65,12 @@ const config = {
   // Theme configuration
   theme: {
     default: 'system', // Default theme (options: 'light', 'dark', 'system')
+  },
+  // Admin configuration
+  admin: {
+    enabled: true, // Set to true to enable admin features
+    username: 'admin', // Default admin username
+    password: 'changeme', // Default admin password (change this!)
   },
 };
 

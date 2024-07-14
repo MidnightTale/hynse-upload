@@ -4,6 +4,7 @@
 import '../styles/globals.css';
 import CustomToast from '../components/CustomToast';
 import { ThemeProvider } from '../components/ThemeProvider';
+import React from 'react';
 
 /**
  * Custom App component for Next.js.

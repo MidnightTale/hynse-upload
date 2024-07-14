@@ -2,12 +2,12 @@
 
 import { handleFileUpload } from '../services/uploadService';
 import { handleFileDownload } from '../services/downloadService';
-import { logError } from '../utils/logUtil';
+import { logError, logTrace } from '../utils/logUtil';
 export const uploadFile = async (req, res) => {
   try {
     await handleFileUpload(req, res, req.ip);
   } catch (error) {
-    logError('Error in upload controller', { error, ip: req.ip });
+    logTrace('Error in upload controller', { ip: req.ip }, error);
     res.status(500).json({ error: 'Internal Server Error' });
   }
 };
@@ -16,7 +16,7 @@ export const downloadFile = async (req, res) => {
   try {
     await handleFileDownload(req, res);
   } catch (error) {
-    logError('Error in download controller', { error, ip: req.ip });
+    logTrace('Error in download controller', { ip: req.ip }, error);
     res.status(500).json({ error: 'Internal Server Error' });
   }
 };
