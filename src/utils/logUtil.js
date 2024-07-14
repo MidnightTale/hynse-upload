@@ -21,7 +21,7 @@ const formatLog = (level, message, details) => {
   const levelText = levelColor(`[${level}]`);
   const threadText = chalk.grey(`[Thread ${threadId}]`);
   const msgText = chalk.white(message);
-  const detailsText = details ? chalk.grey(JSON.stringify(details)) : '';
+  const detailsText = details ? chalk.grey(JSON.stringify(details, null, 2)) : '';
 
   return `${time} ${threadText} ${levelText} ${msgText} ${detailsText}`;
 };
