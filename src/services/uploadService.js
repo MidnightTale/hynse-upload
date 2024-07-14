@@ -73,7 +73,10 @@ export const handleFileUpload = async (req, res, ip) => {
     });
 
     const results = await Promise.all(fileUploadPromises);
-    const fileUrls = results.map(result => `${req.headers.origin}/d/${result.fileId}`);
+    const downloadDomain = appConfig.download.usePublicDomain 
+      ? `https://${appConfig.download.publicDomain}` 
+      : `http://${appConfig.download.hostname}:${appConfig.download.port}`;
+    const fileUrls = results.map(result => `${downloadDomain}/${result.fileId}`);
     logInfo('Files uploaded successfully', { ip, fileUrls });
 
     res.status(200).json({ urls: fileUrls, fileIds: results.map(result => result.fileId) });

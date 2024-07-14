@@ -15,6 +15,7 @@ import { formatDistanceToNow } from 'date-fns';
 import { toast } from 'react-toastify';
 import copy from 'clipboard-copy';
 import { logInfo, logError } from './clientLogUtil';
+import appConfig from '../../config';
 
 const ITEMS_PER_PAGE = 5;
 
@@ -54,13 +55,18 @@ const UploadHistory = ({ history = [], updateHistory }) => {
    * Copy the given text to the clipboard and show a toast notification.
    * @param {string} text - The text to copy to the clipboard.
    */
-  const copyToClipboard = async (text) => {
+  const copyToClipboard = async (fileId) => {
     try {
-      await copy(text);
+      const downloadDomain = appConfig.download.usePublicDomain 
+        ? `https://${appConfig.download.publicDomain}` 
+        : `http://${appConfig.download.hostname}:${appConfig.download.port}`;
+      const downloadUrl = `${downloadDomain}/${fileId}`;
+      
+      await copy(downloadUrl);
       toast.success('Link copied to clipboard', {
         className: 'bg-toast-background text-toast-text',
       });
-      logInfo('Link copied to clipboard', { text });
+      logInfo('Link copied to clipboard', { downloadUrl });
     } catch (err) {
       logError('Failed to copy text to clipboard', { error: err.message });
       toast.error('Failed to copy link', {
@@ -255,7 +261,7 @@ const UploadHistory = ({ history = [], updateHistory }) => {
                 {!item.isDummy && (
                   <button
                     className="text-gray-400 hover:text-gray-600 cursor-pointer ml-2"
-                    onClick={() => copyToClipboard(item.link)}
+                    onClick={() => copyToClipboard(item.fileId)}
                   >
                     <FaCopy />
                   </button>
