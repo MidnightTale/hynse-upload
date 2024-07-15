@@ -50,7 +50,20 @@ module.exports = {
         'overlay-closebtn-hover-color': 'var(--overlay-closebtn-hover-color)',
         'toast-background': 'rgba(var(--toast-background-rgb), 0.7)',
         'toast-border': 'rgba(var(--toast-border-rgb), 0.2)',
-        'toast-progress-bar': 'var(--toast-progress-bar)'
+        'toast-progress-bar': 'var(--toast-progress-bar)',
+        'dropzone-card-background': 'var(--dropzone-card-background)',
+        'dropzone-active-color': 'var(--dropzone-active-color)',
+        'dropzone-icon-color': 'var(--dropzone-icon-color)',
+        'dropzone-subtext-color': 'var(--dropzone-subtext-color)',
+      },
+      animation: {
+        bounce: 'bounce 1s infinite',
+      },
+      keyframes: {
+        bounce: {
+          '0%, 100%': { transform: 'translateY(-25%)', animationTimingFunction: 'cubic-bezier(0.8, 0, 1, 1)' },
+          '50%': { transform: 'translateY(0)', animationTimingFunction: 'cubic-bezier(0, 0, 0.2, 1)' },
+        },
       },
     },
   },

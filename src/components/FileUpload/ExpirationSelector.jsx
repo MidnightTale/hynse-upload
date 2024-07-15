@@ -1,4 +1,5 @@
 // @perama: This component allows users to select the expiration time for uploaded files.
+// It now uses custom CSS classes defined in globals.css for easier styling.
 
 import React from 'react';
 import config from '../../../config';
@@ -23,18 +24,16 @@ const ExpirationSelector = ({ expirationTime, setExpirationTime }) => {
   };
 
   return (
-    <div className="mt-4">
-      <label htmlFor="expiration" className="block mb-2">Select expiration time:</label>
-      <div className="flex space-x-2 flex-wrap">
+    <div className="expiration-selector">
+      <label htmlFor="expiration" className="expiration-label">
+        Select expiration time:
+      </label>
+      <div className="expiration-buttons">
         {config.upload.expirationOptions.map((minutes) => (
           <button
             key={minutes}
             onClick={() => handleExpirationChange(minutes)}
-            className={`px-4 py-2 rounded mb-2 ${
-              expirationTime === minutes
-                ? 'bg-active-button text-button-text'
-                : 'bg-button-background text-button-text hover:bg-button-hover'
-            }`}
+            className={`expiration-button ${expirationTime === minutes ? 'active' : ''}`}
           >
             {formatExpirationTime(minutes)}
           </button>

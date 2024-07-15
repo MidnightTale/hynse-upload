@@ -206,67 +206,69 @@ const UploadHistory = ({ history = [], updateHistory }) => {
     <div className="mt-8">
       <h2 className="text-2xl mb-4">File Transfer Status</h2>
       <div className="space-y-4">
-        {getCurrentPageItems().map((item, index) => (
-            <div 
-            key={index} 
-            className={`p-4 rounded-lg backdrop-blur-md bg-opacity-80 transition-all duration-300 ease-in-out ${
-              item.isDummy ? 'invisible' : 'hover:bg-history-item-hover-background'
-            } bg-history-item-background text-history-item-text shadow-[0_0_0_1px_var(--history-item-border-color),0_2px_4px_rgba(0,0,0,0.1)] border-[var(--history-item-outline)]`}
-            onMouseEnter={() => setHoveredIndex(index)}
-            onMouseLeave={() => setHoveredIndex(null)}
-          >
-            <div className="flex items-center">
-              <div className="flex items-center w-2/5">
-                {item.isDummy ? <FaFile className="text-3xl mr-4 text-gray-300" /> : getFileIcon(item.fileType)}
-                <div className="flex flex-col">
-                  <span className="text-lg font-semibold truncate">{item.fileName || 'Dummy File'}</span>
-                  <div className="text-sm opacity-70">
-                    <span 
-                      className="cursor-default no-underline"
-                      title={item.isDummy ? 'N/A' : new Date(item.timestamp).toLocaleString()}
-                    >
-                      {item.isDummy ? 'N/A' : formatDate(item.timestamp, index)}
-                    </span>
-                    <span className="mx-2">•</span>
-                    <span>{item.fileSize || 'N/A'}</span>
-                  </div>
+      {getCurrentPageItems().map((item, index) => (
+        <div 
+          key={index} 
+          className={`p-4 rounded-lg backdrop-blur-md bg-opacity-80 transition-all duration-300 ease-in-out ${
+            item.isDummy ? 'invisible' : 'hover:bg-history-item-hover-background'
+          } bg-history-item-background text-history-item-text shadow-[0_0_0_1px_var(--history-item-border-color),0_2px_4px_rgba(0,0,0,0.1)] border-[var(--history-item-outline)]`}
+          onMouseEnter={() => setHoveredIndex(index)}
+          onMouseLeave={() => setHoveredIndex(null)}
+        >
+          <div className="flex items-center">
+            <div className={`flex items-center w-3/5 transition-all duration-300`}>
+              {item.isDummy ? <FaFile className="text-3xl mr-4 text-gray-300" /> : getFileIcon(item.fileType)}
+              <div className="flex flex-col overflow-hidden">
+                <span 
+                  className="text-lg font-semibold truncate"
+                  title={item.fileName || 'Dummy File'}
+                >
+                  {item.fileName || 'Dummy File'}
+                </span>
+                <div className="text-sm opacity-70">
+                  <span className="cursor-default no-underline">
+                    {item.isDummy ? 'N/A' : formatDate(item.timestamp, index)}
+                  </span>
+                  <span className="mx-2">•</span>
+                  <span>{item.fileSize || 'N/A'}</span>
                 </div>
               </div>
-              <div className="w-1/3">
-                {!item.isDummy && (
-                  <ProgressBar 
-                    progress={item.status === 'Completed' ? 100 : item.progress} 
-                    uploadStatus={item.status} 
-                    speed={item.speed} 
-                  />
-                )}
-              </div>
-              <div className="flex items-center justify-end w-1/4">
-                <span className={`px-2 py-1 rounded text-white text-sm mr-2 ${
-                  item.isDummy ? 'bg-[var(--status-tag-dummy)]' :
-                  item.status === 'Failed' ? 'bg-[var(--status-tag-failed)]' :
-                  item.status === 'Completed' ? 
-                    (() => {
-                      const timeLeft = calculateTimeLeft(item.timestamp, item.expirationTime);
-                      if (timeLeft === 'Expired') return 'bg-[var(--status-tag-expired)]';
-                      if (timeLeft.isNearExpiry) return 'bg-[var(--status-tag-near-expiry)]';
-                      return 'bg-[var(--status-tag-active)]';
-                    })() :
-                  'bg-[var(--status-tag-uploading)]'
-                }`}>
-                  {item.isDummy ? 'N/A' : (item.status === 'Completed' 
-                    ? calculateTimeLeft(item.timestamp, item.expirationTime).text 
-                    : item.status)}
-                </span>
-                {!item.isDummy && (
-                  <button
-                    className="text-gray-400 hover:text-gray-600 cursor-pointer ml-2"
-                    onClick={() => copyToClipboard(item.fileId)}
-                  >
-                    <FaCopy />
-                  </button>
-                )}
-              </div>
+            </div>
+            <div className={`${item.status === 'Completed' ? 'w-1/5' : 'w-1/3'} transition-all duration-300`}>
+              {!item.isDummy && item.status !== 'Completed' && (
+                <ProgressBar 
+                  progress={item.progress} 
+                  uploadStatus={item.status} 
+                  speed={item.speed} 
+                />
+              )}
+            </div>
+            <div className="flex items-center justify-end w-1/5 space-x-2">
+              <span className={`px-2 py-1 rounded text-white text-sm ${
+                item.isDummy ? 'bg-[var(--status-tag-dummy)]' :
+                item.status === 'Failed' ? 'bg-[var(--status-tag-failed)]' :
+                item.status === 'Completed' ? 
+                  (() => {
+                    const timeLeft = calculateTimeLeft(item.timestamp, item.expirationTime);
+                    if (timeLeft === 'Expired') return 'bg-[var(--status-tag-expired)]';
+                    if (timeLeft.isNearExpiry) return 'bg-[var(--status-tag-near-expiry)]';
+                    return 'bg-[var(--status-tag-active)]';
+                  })() :
+                'bg-[var(--status-tag-uploading)]'
+              }`}>
+                {item.isDummy ? 'N/A' : (item.status === 'Completed' 
+                  ? calculateTimeLeft(item.timestamp, item.expirationTime).text 
+                  : item.status)}
+              </span>
+              {!item.isDummy && (
+                <button
+                  className="text-gray-400 hover:text-gray-600 cursor-pointer"
+                  onClick={() => copyToClipboard(item.fileId)}
+                >
+                  <FaCopy />
+                </button>
+              )}
+            </div>
             </div>
           </div>
         ))}
