@@ -211,7 +211,7 @@ const UploadHistory = ({ history = [], updateHistory }) => {
         <div 
           key={index} 
           className={`p-4 rounded-lg backdrop-blur-md bg-opacity-80 transition-all duration-300 ease-in-out ${
-            item.isDummy ? 'invisible' : 'hover:bg-history-item-hover-background'
+            item.isDummy ? 'invisible opacity-0' : 'hover:bg-history-item-hover-background'
           } bg-history-item-background text-history-item-text shadow-[0_0_0_1px_var(--history-item-border-color),0_2px_4px_rgba(0,0,0,0.1)] border-[var(--history-item-outline)]`}
           onMouseEnter={() => setHoveredIndex(index)}
           onMouseLeave={() => setHoveredIndex(null)}
