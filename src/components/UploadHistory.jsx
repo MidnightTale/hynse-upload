@@ -2,13 +2,14 @@
 // It shows a list of uploaded files with their status, progress, and download links.
 // The component uses a card-like style with rounded corners and a glassy effect.
 // It supports dark mode and provides a responsive layout for various screen sizes.
+// A download button has been added to allow direct file downloads from the history item.
 
 import React, { useState, useCallback, useEffect, useRef } from 'react';
 import { 
   FaFile, FaCopy, FaChevronLeft, FaChevronRight, 
   FaFileImage, FaFileAudio, FaFileVideo, FaFilePdf, 
   FaFileWord, FaFileExcel, FaFilePowerpoint, FaFileArchive, 
-  FaFileCode, FaFileAlt
+  FaFileCode, FaFileAlt, FaDownload
 } from 'react-icons/fa';
 import ProgressBar from './ProgressBar';
 import { formatDistanceToNow } from 'date-fns';
@@ -261,12 +262,25 @@ const UploadHistory = ({ history = [], updateHistory }) => {
                   : item.status)}
               </span>
               {!item.isDummy && (
-                <button
-                  className="text-gray-400 hover:text-gray-600 cursor-pointer"
-                  onClick={() => copyToClipboard(item.fileId)}
-                >
-                  <FaCopy />
-                </button>
+                <>
+                  <button
+                    className="text-gray-400 hover:text-gray-600 cursor-pointer"
+                    onClick={() => copyToClipboard(item.fileId)}
+                    title="Copy download link"
+                  >
+                    <FaCopy />
+                  </button>
+                  <a
+                    href={`${appConfig.download.usePublicDomain 
+                      ? `https://${appConfig.download.publicDomain}` 
+                      : `http://${appConfig.download.hostname}:${appConfig.download.port}`}/${item.fileId}`}
+                    download
+                    className="text-gray-400 hover:text-gray-600 cursor-pointer"
+                    title="Download file"
+                  >
+                    <FaDownload />
+                  </a>
+                </>
               )}
             </div>
             </div>
