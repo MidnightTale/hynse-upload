@@ -1,5 +1,5 @@
-// @perama: This custom hook manages the file upload state and logic.
-// It handles file uploads, expiration time selection, and upload history.
+// @perama: This custom hook manages file uploads, including multi-file compression with progress indication.
+// It uses promise-based toasts to show compression and upload progress.
 
 import { useState, useEffect, useCallback, useRef } from 'react';
 import axios from 'axios';
@@ -76,23 +76,78 @@ const useFileUpload = () => {
   const onDrop = useCallback(
     async (acceptedFiles) => {
       if (acceptedFiles.length === 0) {
-        setUploadStatus('No file selected');
-        logWarn('No file selected for upload');
-        toast.error('No file selected for upload', {
+        setUploadStatus('No files selected');
+        logWarn('No files selected for upload');
+        toast.error('No files selected for upload', {
           className: 'bg-toast-background text-toast-text',
         });
         return;
       }
 
-      const file = acceptedFiles[0];
+      setIsUploading(true);
+
+      let filesToUpload;
+      let fileName;
+
+      if (acceptedFiles.length > 1) {
+        // Start a promise-based toast for compression
+        const compressToastId = toast.loading('Compressing files...', {
+          className: 'bg-toast-background text-toast-text',
+        });
+
+        try {
+          const JSZip = (await import('jszip')).default;
+          const zip = new JSZip();
+          
+          // Add files to the zip
+          acceptedFiles.forEach((file) => {
+            zip.file(file.name, file);
+          });
+
+          // Generate the zip file with progress updates
+          const content = await zip.generateAsync({ type: 'blob' }, (metadata) => {
+            const progress = Math.round(metadata.percent);
+            toast.update(compressToastId, {
+              render: `Compressing files: ${progress}%`,
+            });
+          });
+
+          const randomString = Math.random().toString(36).substring(2, 8);
+          const timestamp = Date.now();
+          fileName = `archive_${timestamp}_${randomString}.zip`;
+          filesToUpload = [new File([content], fileName, { type: 'application/zip' })];
+
+          // Update toast to show completion
+          toast.update(compressToastId, {
+            render: 'Files compressed successfully',
+            type: 'success',
+            isLoading: false,
+            autoClose: 2000,
+          });
+        } catch (error) {
+          logError('Error compressing files', { error: error.message });
+          toast.update(compressToastId, {
+            render: 'Error compressing files. Please try again.',
+            type: 'error',
+            isLoading: false,
+            autoClose: 5000,
+          });
+          setIsUploading(false);
+          return;
+        }
+      } else {
+        filesToUpload = acceptedFiles;
+        fileName = acceptedFiles[0].name;
+      }
+
       const formData = new FormData();
-      formData.append('files', file);
+      formData.append('files', filesToUpload[0]);
       formData.append('expiration', expirationTime.toString());
 
       const newHistoryItem = {
-        fileName: file.name,
-        fileSize: formatFileSize(file.size),
-        fileType: file.type,
+        fileName: fileName,
+        fileSize: formatFileSize(filesToUpload[0].size),
+        fileType: filesToUpload[0].type,
         link: '',
         timestamp: Date.now(),
         expirationTime: expirationTime * 60,
@@ -103,14 +158,13 @@ const useFileUpload = () => {
 
       setHistory((prevHistory) => [newHistoryItem, ...prevHistory]);
       setUploadStatus('Uploading...');
-      setIsUploading(true);
 
-      const toastId = toast.loading(`Starting upload: ${file.name}`, {
+      const toastId = toast.loading(`Starting upload: ${fileName}`, {
         className: 'bg-toast-background text-toast-text',
       });
 
       try {
-        logInfo('Starting file upload', { fileName: file.name, fileSize: file.size });
+        logInfo('Starting file upload', { fileName: fileName, fileSize: filesToUpload[0].size });
         const response = await axios.post(UPLOAD_URL, formData, {
           headers: {
             'Content-Type': 'multipart/form-data',
@@ -123,10 +177,10 @@ const useFileUpload = () => {
               speed: speed,
             });
             setUploadStatus(`${percentCompleted}%`);
-            logInfo('Upload progress', { percentCompleted, speed });
+            logInfo('Upload progress', { fileName: fileName, percentCompleted, speed });
             
             toast.update(toastId, {
-              render: `Uploading ${file.name}: ${percentCompleted}%`,
+              render: `Uploading ${fileName}: ${percentCompleted}%`,
             });
           },
         });
@@ -137,7 +191,6 @@ const useFileUpload = () => {
             speed: '0 KB/s',
             status: 'Completed',
           });
-          setUploadStatus('File uploaded successfully');
 
           const downloadUrl = config.usePublicDomain
             ? `https://${config.downloadHostname}/${response.data.fileIds[0]}`
@@ -146,10 +199,10 @@ const useFileUpload = () => {
             link: downloadUrl,
             fileId: response.data.fileIds[0],
           });
-          logInfo('File upload completed successfully', { fileId: response.data.fileIds[0] });
+          logInfo('File upload completed successfully', { fileName: fileName, fileId: response.data.fileIds[0] });
 
           toast.update(toastId, {
-            render: `${file.name} uploaded successfully!`,
+            render: `${fileName} uploaded successfully!`,
             type: 'success',
             isLoading: false,
             autoClose: 5000,
@@ -160,17 +213,17 @@ const useFileUpload = () => {
         const errorMessage = error.response?.data?.error || error.message;
         const statusCode = error.response?.status || 500;
         setUploadStatus(`Upload failed: ${errorMessage}`);
-        logError('File upload failed', { error: errorMessage }, statusCode);
+        logError('File upload failed', { fileName: fileName, error: errorMessage }, statusCode);
 
         toast.update(toastId, {
-          render: `${file.name} upload failed. Please try again.`,
+          render: `${fileName} upload failed. Please try again.`,
           type: 'error',
           isLoading: false,
           autoClose: 5000,
         });
-      } finally {
-        setIsUploading(false);
       }
+
+      setIsUploading(false);
     },
     [expirationTime, updateHistoryItem]
   );

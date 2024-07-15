@@ -18,7 +18,8 @@ const UploadForm = ({ isUploading, onDrop }) => {
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ 
     onDrop: handleDrop,
-    disabled: isUploading
+    disabled: isUploading,
+    multiple: true
   });
 
   const animationVariants = {
@@ -45,8 +46,8 @@ const UploadForm = ({ isUploading, onDrop }) => {
             {isUploading
               ? 'Upload in progress...'
               : isDragActive
-              ? 'Release to upload the file'
-              : "Drag 'n' drop a file here, or click to select a file"}
+              ? 'Release to upload the files'
+              : "Drag 'n' drop files here, or click to select files"}
           </p>
           <p className="text-sm text-dropzone-subtext-color">
             {isUploading ? 'Please wait' : 'Supported file types: Any'}
