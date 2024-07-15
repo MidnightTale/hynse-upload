@@ -18,7 +18,7 @@ import copy from 'clipboard-copy';
 import { logInfo, logError } from './clientLogUtil';
 import appConfig from '../../config';
 
-const ITEMS_PER_PAGE = 10;
+const ITEMS_PER_PAGE = 7;
 
 /**
  * UploadHistory component displays a paginated list of uploaded files and their status.
