@@ -50,6 +50,12 @@
   --dropzone-icon-color: var(--primary-color);
   --dropzone-subtext-color: #888888;
   --dropzone-color: rgba(228, 135, 255, 0.31);
+  --footer-background: rgba(42, 42, 42, 0.8);
+  --footer-text-color: #ffffff;
+  --footer-border-color: rgba(255, 255, 255, 0.1);
+  --ribbon-background: #f1194624;
+  --ribbon-text-color: #ffffff;
+  --loading-bar-color: var(--primary-color);
 }
 
 :root.light {
@@ -99,6 +105,12 @@
   --dropzone-icon-color: var(--primary-color);
   --dropzone-subtext-color: #666666;
   --dropzone-color: rgba(168, 139, 254, 0.31);
+  --footer-background: rgba(240, 240, 240, 0.8);
+  --footer-text-color: #333333;
+  --footer-border-color: rgba(255, 255, 255, 0.1);
+  --ribbon-background: #f1194624;
+  --ribbon-text-color: #333333;
+  --loading-bar-color: var(--primary-color);
 }
 
 body {
@@ -289,4 +301,8 @@ body {
 }
 .invisible.opacity-0 {
   opacity: 0 !important;
+}
+
+.glowing-loading-bar {
+  box-shadow: 0 0 10px var(--loading-bar-color), 0 0 20px var(--loading-bar-color), 0 0 30px var(--loading-bar-color);
 }

@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "bun --bun server.js",
     "build": "next build",
-    "start": "NODE_ENV=production bun .next/standalone/server.js",
+    "start": "NODE_ENV=production bun server.js",
     "lint": "next lint"
   },
   "dependencies": {
@@ -29,11 +29,13 @@
     "next": "14.2.4",
     "next-connect": "^1.0.0",
     "next-themes": "^0.3.0",
+    "nextjs-toploader": "^1.6.12",
     "ora": "^8.0.1",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-dropzone": "^14.2.3",
     "react-toastify": "^10.0.5",
+    "react-top-loading-bar": "^2.3.1",
     "redis": "^4.6.15",
     "sharp": "^0.33.4",
     "source-map-loader": "^5.0.0",

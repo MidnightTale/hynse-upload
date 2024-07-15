@@ -1,13 +1,15 @@
 // @perama: This component provides the drag and drop interface for file uploads.
 // It now features a glassy card-like design similar to history items.
 
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { FaCloudUploadAlt } from 'react-icons/fa';
 import { logError } from '../clientLogUtil';
 import { motion } from 'framer-motion';
+import { useTheme } from 'next-themes'; // Import useTheme
 
 const UploadForm = ({ isUploading, onDrop }) => {
+  const { theme } = useTheme(); // Get the current theme
   const handleDrop = useCallback((acceptedFiles) => {
     try {
       onDrop(acceptedFiles);
@@ -28,7 +30,7 @@ const UploadForm = ({ isUploading, onDrop }) => {
   };
 
   return (
-    <div className="mb-8">
+    <div className="mb-8 relative">
       <motion.div
         {...getRootProps({
           className: `p-8 rounded-lg backdrop-blur-md bg-opacity-80 transition-all duration-300 ease-in-out flex flex-col items-center justify-center h-64 text-center cursor-pointer
