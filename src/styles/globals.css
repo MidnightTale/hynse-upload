@@ -6,11 +6,11 @@
   --transition-duration: 0.3s;
   --app-background: #1a1a1a;
   --text-color: #ffffff;
-  --primary-color: #3498db;
+  --primary-color: #e487ff;
   --history-item-border: #2c2c2c;
   --history-item-hover: #333333;
-  --copy-icon-color: #3498db;
-  --copy-icon-hover-color: #2980b9;
+  --copy-icon-color: #e48aff;
+  --copy-icon-hover-color: #e59eff;
   --toast-background: #363636;
   --toast-text: #ffffff;
   --toastify-color-light: var(--toast-background);
@@ -25,44 +25,41 @@
   --toast-background-rgb: 54, 54, 54;
   --toast-border-rgb: 255, 255, 255;
   --toast-progress-bar: rgba(255, 255, 255, 0.7);
-  --logo-brightness: 1;
-  --logo-filter: brightness(var(--logo-brightness));
   --history-item-background: rgba(42, 42, 42, 0.8);
   --history-item-hover-background: rgba(51, 51, 51, 0.9);
   --history-item-text: #ffffff;
   --history-item-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   --progress-bar-background: #333333;
-  --progress-bar-fill: #3498db;
+  --progress-bar-fill: #f986fd;
   --progress-bar-text: #ffffff;
   --status-tag-dummy: rgba(107, 114, 128, 0.75);
   --status-tag-failed: rgba(239, 68, 68, 0.75);
   --status-tag-expired: rgba(156, 163, 175, 0.75);
   --status-tag-near-expiry: rgba(245, 158, 11, 0.75);
   --status-tag-active: rgba(16, 185, 129, 0.75);
-  --status-tag-uploading: rgba(59, 130, 246, 0.75);
+  --status-tag-uploading: rgb(228, 135, 255);
   --history-item-border-color: rgba(255, 255, 255, 0.1);
   --history-item-outline: 1px solid var(--history-item-border-color);
-   /* Button styles */
   --button-bg: rgba(0, 0, 0, 0.2);
   --button-text: var(--text-color);
   --button-hover-bg: rgba(255, 255, 255, 0.1);
   --button-active-bg: var(--primary-color);
   --button-active-text: white;
   --dropzone-card-background: #2a2a2a;
-  --dropzone-active-color: #3498db;
+  --dropzone-active-color: #e487ffba;
   --dropzone-icon-color: var(--primary-color);
   --dropzone-subtext-color: #888888;
-  --dropzone-color: rgba(52, 152, 219, 0.5);
+  --dropzone-color: rgba(228, 135, 255, 0.31);
 }
 
 :root.light {
   --app-background: #ffffff;
   --text-color: #333333;
-  --primary-color: #3498db;
+  --primary-color: #a88bfe;
   --history-item-border: #e0e0e0;
   --history-item-hover: #e6e6e6;
-  --copy-icon-color: #3498db;
-  --copy-icon-hover-color: #2980b9;
+  --copy-icon-color: #8864ff;
+  --copy-icon-hover-color: #8461fe;
   --toast-background: #f0f0f0;
   --toast-text: #333333;
   --toastify-color-light: var(--toast-background);
@@ -77,33 +74,31 @@
   --toast-background-rgb: 240, 240, 240;
   --toast-border-rgb: 0, 0, 0;
   --toast-progress-bar: rgba(0, 0, 0, 0.7);
-  --logo-brightness: 0.2;
   --history-item-background: rgba(240, 240, 240, 0.8);
   --history-item-hover-background: rgba(230, 230, 230, 0.9);
   --history-item-text: #333333;
   --history-item-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
   --progress-bar-background: #e0e0e0;
-  --progress-bar-fill: #3498db;
+  --progress-bar-fill: #a88bfe;
   --progress-bar-text: #2d2d2d;
   --status-tag-dummy: rgba(107, 114, 128, 0.75);
   --status-tag-failed: rgba(239, 68, 68, 0.75);
   --status-tag-expired: rgba(156, 163, 175, 0.75);
   --status-tag-near-expiry: rgba(245, 158, 11, 0.75);
   --status-tag-active: rgba(16, 185, 129, 0.75);
-  --status-tag-uploading: rgba(59, 130, 246, 0.75);
+  --status-tag-uploading: rgb(168, 139, 254);
   --history-item-border-color: rgba(255, 255, 255, 0.1);
   --history-item-outline: 1px solid var(--history-item-border-color);
-  /* Button styles */
   --button-bg: rgba(255, 255, 255, 0.1);
   --button-text: var(--text-color);
   --button-hover-bg: rgba(255, 255, 255, 0.2);
   --button-active-bg: var(--primary-color);
   --button-active-text: white;
   --dropzone-card-background: #f0f0f0;
-  --dropzone-active-color: #2980b9;
+  --dropzone-active-color: #8663fca3;
   --dropzone-icon-color: var(--primary-color);
   --dropzone-subtext-color: #666666;
-  --dropzone-color: rgba(52, 152, 219, 0.5);
+  --dropzone-color: rgba(168, 139, 254, 0.31);
 }
 
 body {
@@ -117,10 +112,6 @@ body {
               color var(--transition-duration) ease,
               border-color var(--transition-duration) ease,
               box-shadow var(--transition-duration) ease;
-}
-
-header {
-  min-height: 3vh;
 }
 
 /* Smaller toast styles */

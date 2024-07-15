@@ -1,8 +1,7 @@
 // This component renders the header of the application, including the logo and theme switcher.
 
 import React from 'react';
-import Image from 'next/image';
-import Logo from "/public/img/hynse_long.png";
+import Logo from './Logo';
 import ThemeSwitcher from './ThemeSwitcher';
 
 /**
@@ -15,13 +14,7 @@ const Header = () => {
         <ThemeSwitcher />
       </div>
       <div className="mb-4">
-        <Image
-          src={Logo}
-          alt="Hynse Logo"
-          width={500}
-          height={125}
-          className="max-w-full h-auto object-contain [filter:var(--logo-filter)] [image-rendering:_pixelated]"
-        />
+        <Logo />
       </div>
     </header>
   );
