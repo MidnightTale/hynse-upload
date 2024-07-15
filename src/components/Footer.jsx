@@ -2,33 +2,48 @@
 
 import React from 'react';
 import Image from 'next/image';
-import Logo from '/public/img/hynse_long.png';
+import { FaCoffee, FaGithub, FaDiscord, FaQuestionCircle } from 'react-icons/fa';
+import Logo from '/public/img/hynse_kaiiwa.svg';
+import ThemeSwitcher from './ThemeSwitcher';
 
 /**
  * The Footer component renders links to various pages and external resources.
  */
 const Footer = () => {
   return (
-    <footer className="m-4 sm:m-6 md:m-8 lg:m-12 p-4 sm:p-6 md:p-8 lg:p-12 bg-[var(--footer-background)] text-[var(--footer-text-color)] rounded-lg shadow-[0_0_0_1px_var(--footer-border-color),0_2px_4px_rgba(0,0,0,0.1)]">
-      <div className="flex justify-between items-center mb-4">
-        <div className="flex items-center">
+    <footer className="footer">
+      <div className="footer-content">
+        <div className="footer-logo">
           <Image src={Logo} alt="Logo" width={100} height={50} />
         </div>
-        <div className="flex space-x-4">
-          <a href="https://ko-fi.com/midnighttale" target="_blank" rel="noopener noreferrer" className="hover:underline">Ko-Fi</a>
-          <a href="https://github.com/MidnightTale" target="_blank" rel="noopener noreferrer" className="hover:underline">GitHub</a>
-          <a href="https://discord.gg/txn8QF9yDc" target="_blank" rel="noopener noreferrer" className="hover:underline">Discord</a>
-          <a href="#" onClick={() => openFAQ()} className="hover:underline">FAQ</a>
+        <div className="footer-links">
+          <a href="https://ko-fi.com/midnighttale" target="_blank" rel="noopener noreferrer" className="footer-link">
+            <FaCoffee className="footer-icon" />
+            <span className="footer-link-text">Ko-Fi</span>
+          </a>
+          <a href="https://github.com/MidnightTale" target="_blank" rel="noopener noreferrer" className="footer-link">
+            <FaGithub className="footer-icon" />
+            <span className="footer-link-text">GitHub</span>
+          </a>
+          <a href="https://discord.gg/txn8QF9yDc" target="_blank" rel="noopener noreferrer" className="footer-link">
+            <FaDiscord className="footer-icon" />
+            <span className="footer-link-text">Discord</span>
+          </a>
+          <a href="#" onClick={() => openFAQ()} className="footer-link">
+            <FaQuestionCircle className="footer-icon" />
+            <span className="footer-link-text">FAQ</span>
+          </a>
+          <ThemeSwitcher />
         </div>
       </div>
-      <hr className="border-[var(--footer-border-color)] my-4" />
-      <div className="flex justify-between items-center">
-        <div className="flex space-x-4">
-          <a href="#" onClick={() => openTermsOfService()} className="hover:underline">Terms of Service</a>
-          <a href="#" onClick={() => openAcceptableUsePolicy()} className="hover:underline">Acceptable Use Policy</a>
-          <a href="#" onClick={() => openDMCAIPPolicy()} className="hover:underline">DMCA/IP Policy</a>
+      <hr className="footer-divider" />
+      <div className="footer-bottom">
+        <div className="footer-bottom-links">
+          <a href="#" onClick={() => openTermsOfService()} className="footer-bottom-link">Terms of Service</a>
+          <a href="#" onClick={() => openAcceptableUsePolicy()} className="footer-bottom-link">Acceptable Use Policy</a>
+          <a href="#" onClick={() => openDMCAIPPolicy()} className="footer-bottom-link">DMCA/IP Policy</a>
         </div>
-        <div className="text-right">
+        <div className="footer-bottom-iframe">
           <iframe src="https://ko-fi.com/streamalerts/goaloverlay/sa_bd9a46e4-66c2-4ec2-9726-dbcc2c2ec84e" width="100%" height="100" style={{ border: 'none' }}></iframe>
         </div>
       </div>

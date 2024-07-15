@@ -33,7 +33,7 @@ const ThemeSwitcher = () => {
   return (
     <button
       onClick={toggleTheme}
-      className="bg-transparent border-none cursor-pointer text-2xl text-gray-800 dark:text-gray-200 hover:text-blue-500 transition-colors duration-300"
+      className="bg-transparent border-none cursor-pointer text-2xl theme-icon"
       aria-label="Toggle theme"
     >
       {getThemeIcon()}

@@ -244,8 +244,9 @@ const UploadHistory = ({ history = [], updateHistory }) => {
                 />
               )}
             </div>
-            <div className="flex items-center justify-end w-1/5 space-x-2">
-              <span className={`px-2 py-1 rounded text-white text-sm ${
+            <div className="flex items-center justify-end w-1/5 space-x-4">
+              {/* Status tag - always on one line */}
+              <span className={`px-2 py-1 rounded text-white text-sm whitespace-nowrap ${
                 item.isDummy ? 'bg-[var(--status-tag-dummy)]' :
                 item.status === 'Failed' ? 'bg-[var(--status-tag-failed)]' :
                 item.status === 'Completed' ? 
@@ -262,14 +263,8 @@ const UploadHistory = ({ history = [], updateHistory }) => {
                   : item.status)}
               </span>
               {!item.isDummy && (
-                <>
-                  <button
-                    className="text-gray-400 hover:text-gray-600 cursor-pointer"
-                    onClick={() => copyToClipboard(item.fileId)}
-                    title="Copy download link"
-                  >
-                    <FaCopy />
-                  </button>
+                <div className="flex items-center space-x-2">
+                  {/* Download button */}
                   <a
                     href={`${appConfig.download.usePublicDomain 
                       ? `https://${appConfig.download.publicDomain}` 
@@ -280,7 +275,15 @@ const UploadHistory = ({ history = [], updateHistory }) => {
                   >
                     <FaDownload />
                   </a>
-                </>
+                  {/* Copy link button */}
+                  <button
+                    className="text-gray-400 hover:text-gray-600 cursor-pointer"
+                    onClick={() => copyToClipboard(item.fileId)}
+                    title="Copy download link"
+                  >
+                    <FaCopy />
+                  </button>
+                </div>
               )}
             </div>
             </div>

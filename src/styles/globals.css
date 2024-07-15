@@ -9,8 +9,12 @@
   --primary-color: #e487ff;
   --history-item-border: #2c2c2c;
   --history-item-hover: #333333;
-  --copy-icon-color: #e48aff;
-  --copy-icon-hover-color: #e59eff;
+  --copy-icon-color: #999;
+  --copy-icon-hover-color: #e59fff;
+  --download-icon-color: #999;
+  --download-icon-hover-color: #e59fff;
+  --theme-icon-color: #999;
+  --theme-icon-hover-color: #e59fff;
   --toast-background: #363636;
   --toast-text: #ffffff;
   --toastify-color-light: var(--toast-background);
@@ -64,8 +68,12 @@
   --primary-color: #a88bfe;
   --history-item-border: #e0e0e0;
   --history-item-hover: #e6e6e6;
-  --copy-icon-color: #8864ff;
-  --copy-icon-hover-color: #8461fe;
+  --copy-icon-color:#999;
+  --copy-icon-hover-color: #a990ff;
+  --download-icon-color: #999;
+  --download-icon-hover-color: #a990ff;
+  --theme-icon-color: #999;
+  --theme-icon-hover-color: #a990ff;;
   --toast-background: #f0f0f0;
   --toast-text: #333333;
   --toastify-color-light: var(--toast-background);
@@ -274,30 +282,6 @@ body {
 
 [title]:hover::after {
   opacity: 1;
-}[title] {
-  position: relative;
-  cursor: help;
-}
-
-[title]:hover::after {
-  content: attr(title);
-  position: absolute;
-  bottom: 100%;
-  left: 50%;
-  transform: translateX(-50%);
-  padding: 5px 10px;
-  background-color: var(--toast-background);
-  color: var(--toast-text);
-  border-radius: 4px;
-  font-size: 14px;
-  white-space: nowrap;
-  z-index: 10;
-  opacity: 0;
-  transition: opacity 0.3s;
-}
-
-[title]:hover::after {
-  opacity: 1;
 }
 .invisible.opacity-0 {
   opacity: 0 !important;
@@ -305,4 +289,150 @@ body {
 
 .glowing-loading-bar {
   box-shadow: 0 0 10px var(--loading-bar-color), 0 0 20px var(--loading-bar-color), 0 0 30px var(--loading-bar-color);
+}
+
+.icon {
+  color: var(--copy-icon-color);
+  transition: color var(--transition-duration) ease;
+}
+
+.icon:hover {
+  color: var(--copy-icon-hover-color);
+}
+
+.download-icon {
+  color: var(--download-icon-color);
+  transition: color var(--transition-duration) ease;
+}
+
+.download-icon:hover {
+  color: var(--download-icon-hover-color);
+}
+
+.theme-icon {
+  color: var(--theme-icon-color);
+  transition: color var(--transition-duration) ease;
+}
+
+.theme-icon:hover {
+  color: var(--theme-icon-hover-color);
+}
+
+/* Footer styles */
+.footer {
+  margin: 1rem;
+  padding: 1rem;
+  background-color: var(--footer-background);
+  color: var(--footer-text-color);
+  border-radius: 0.5rem;
+  box-shadow: 0 0 0 1px var(--footer-border-color), 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.footer-content {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  flex-wrap: nowrap;
+}
+
+.footer-logo {
+  margin-right: 1rem;
+}
+
+.footer-links {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.footer-link {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  color: var(--footer-text-color);
+  text-decoration: none;
+  transition: color var(--transition-duration) ease;
+  padding-right: 7px;
+}
+
+.footer-link:hover {
+  color: var(--primary-color);
+}
+
+.footer-icon {
+  font-size: 1.5rem;
+}
+
+.footer-link-text {
+  display: none;
+}
+
+.footer-divider {
+  border-color: var(--footer-border-color);
+  margin: 1rem 0;
+}
+
+.footer-bottom {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.footer-bottom-links {
+  display: flex;
+  flex-direction: row;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.footer-bottom-link {
+  color: var(--footer-text-color);
+  text-decoration: none;
+}
+
+.footer-bottom-link:hover {
+  text-decoration: underline;
+}
+
+.footer-bottom-iframe {
+  text-align: center;
+}
+
+/* Media queries */
+@media (min-width: 481px) {
+  .footer {
+    margin: 1.5rem;
+    padding: 1.5rem;
+  }
+
+  .footer-link-text {
+    display: inline;
+  }
+}
+
+@media (min-width: 769px) {
+  .footer {
+    margin: 2rem;
+    padding: 2rem;
+  }
+
+  .footer-bottom {
+    flex-direction: row;
+  }
+
+  .footer-bottom-links {
+    flex-direction: row;
+    margin-bottom: 0;
+  }
+}
+
+@media (min-width: 1025px) {
+  .footer {
+    margin: 3rem;
+    padding: 3rem;
+  }
 }
