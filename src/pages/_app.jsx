@@ -2,10 +2,10 @@
 // It includes global styles, the CustomToast component for notifications, and the TopLoadingBar component for loading feedback.
 
 import '../styles/globals.css';
-import CustomToast from '../components/CustomToast';
-import { ThemeProvider } from '../components/ThemeProvider';
+import CustomToast from '../components/notifications/CustomToast';
+import { ThemeProvider } from '../components/common/ThemeProvider';
 import React from 'react';
-import TopLoadingBar from '../components/TopLoadingBar';
+import TopLoadingBar from '../components/common/TopLoadingBar';
 
 /**
  * Custom App component for Next.js.

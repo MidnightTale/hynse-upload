@@ -4,7 +4,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { FaCloudUploadAlt } from 'react-icons/fa';
-import { logError } from '../clientLogUtil';
+import { logError } from '../utils/clientLogUtil';
 import { motion } from 'framer-motion';
 import { useTheme } from 'next-themes'; // Import useTheme
 

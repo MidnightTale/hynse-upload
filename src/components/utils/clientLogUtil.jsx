@@ -2,7 +2,7 @@
 // It mimics the server-side logUtil but is adapted for browser environments.
 
 import { toast } from 'react-toastify';
-import config from '../../config';
+import config from '../../../config';
 
 const errorIcons = {
   403: 'https://raw.githubusercontent.com/SAWARATSUKI/KawaiiLogos/main/ResponseCode/403%20Forbidden.png',

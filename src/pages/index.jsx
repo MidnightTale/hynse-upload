@@ -2,16 +2,16 @@
 // It renders the FileUpload component and other UI elements for the file upload service.
 
 import React, { useEffect, useState, useRef } from 'react';
-import FileUpload from '../components/FileUpload/FileUpload';
-import Header from '../components/Header';
-import Footer from '../components/Footer';
-import UploadHistory from '../components/UploadHistory';
-import CustomToast from '../components/CustomToast';
+import FileUpload from '../components/upload/FileUpload';
+import Header from '../components/common/Header';
+import Footer from '../components/common/Footer';
+import UploadHistory from '../components/history/UploadHistory';
+import CustomToast from '../components/notifications/CustomToast';
 import Image from 'next/image';
 import ShigureUi from "/public/img/shigure-ui.webp";
 import { useTheme } from 'next-themes';
-import RibbonAnnouncement from '../components/RibbonAnnouncement';
-import TopLoadingBar from '../components/TopLoadingBar';
+import RibbonAnnouncement from '../components/common/RibbonAnnouncement';
+import TopLoadingBar from '../components/common/TopLoadingBar';
 
 /**
  * The Home component is the main page of the Next.js application.

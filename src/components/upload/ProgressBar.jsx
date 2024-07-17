@@ -1,7 +1,7 @@
 // This component renders a progress bar for file uploads.
 
 import React from 'react';
-import { logError } from './clientLogUtil';
+import { logError } from '../utils/clientLogUtil';
 
 /**
  * ProgressBar component to display upload progress.

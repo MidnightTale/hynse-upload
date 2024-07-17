@@ -63,7 +63,7 @@
 }
 
 :root.light {
-  --app-background: #ffffff;
+  --app-background: #eae9e9;
   --text-color: #333333;
   --primary-color: #a88bfe;
   --history-item-border: #e0e0e0;

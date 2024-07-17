@@ -7,14 +7,14 @@
 /.pnp
 .pnp.js
 .yarn/install-state.gz
-
+node_modules
 # testing
 /coverage
 
 # next.js
 /.next/
 /out/
-
+uploads
 # production
 /build
 

@@ -11,12 +11,12 @@ import {
   FaFileWord, FaFileExcel, FaFilePowerpoint, FaFileArchive, 
   FaFileCode, FaFileAlt, FaDownload
 } from 'react-icons/fa';
-import ProgressBar from './ProgressBar';
+import ProgressBar from '../upload/ProgressBar';
 import { formatDistanceToNow } from 'date-fns';
 import { toast } from 'react-toastify';
 import copy from 'clipboard-copy';
-import { logInfo, logError } from './clientLogUtil';
-import appConfig from '../../config';
+import { logInfo, logError } from '../utils/clientLogUtil';
+import appConfig from '../../../config';
 
 const ITEMS_PER_PAGE = 7;
 

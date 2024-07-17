@@ -4,9 +4,9 @@
 import React from 'react';
 import UploadForm from './UploadForm';
 import ExpirationSelector from './ExpirationSelector';
-import UploadHistory from '../UploadHistory';
+import UploadHistory from '../history/UploadHistory';
 import useFileUpload from './useFileUpload';
-import { logError } from '../clientLogUtil';
+import { logError } from '../utils/clientLogUtil';
 
 const FileUpload = () => {
   const {

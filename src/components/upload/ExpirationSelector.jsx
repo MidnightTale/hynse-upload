@@ -3,7 +3,7 @@
 
 import React from 'react';
 import config from '../../../config';
-import { logError } from '../clientLogUtil';
+import { logError } from '../utils/clientLogUtil';
 
 const ExpirationSelector = ({ expirationTime, setExpirationTime }) => {
   const handleExpirationChange = (minutes) => {

@@ -4,8 +4,8 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import axios from 'axios';
 import config from '../../../config';
-import { formatFileSize, formatSpeed } from './formatUtils';
-import { logInfo, logError, logWarn } from '../clientLogUtil';
+import { formatFileSize, formatSpeed } from '../utils/formatUtils';
+import { logInfo, logError, logWarn } from '../utils/clientLogUtil';
 import { toast } from 'react-toastify';
 
 const UPLOAD_URL = config.upload.url;
