@@ -14,6 +14,13 @@ const config = {
     limits: { fileSize: 1024 * 1024 * 1024 }, // 1GB max file size (in bytes)
     forbiddenExtensions: ['.exe', '.scr', '.cpl', '.jar'],
     forbiddenPrefixes: ['.doc'],
+    forbiddenMimeTypes: [
+      'application/x-msdownload',
+      'application/x-executable',
+      'application/x-dosexec',
+      'application/java-archive',
+      'application/vnd.microsoft.portable-executable'
+    ],
     fileFilter: (req, file, cb) => {
       // This will be implemented in fileRoutes.js
     },

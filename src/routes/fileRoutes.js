@@ -39,8 +39,12 @@ const storage = multer.diskStorage({
 
 const fileFilter = (req, file, cb) => {
   const ext = path.extname(file.originalname).toLowerCase();
+  const mimeType = file.mimetype.toLowerCase();
+
+  // Check both extension and MIME type
   if (config.multer.forbiddenExtensions.includes(ext) || 
-      config.multer.forbiddenPrefixes.some(prefix => ext.startsWith(prefix))) {
+      config.multer.forbiddenPrefixes.some(prefix => ext.startsWith(prefix)) ||
+      config.multer.forbiddenMimeTypes.includes(mimeType)) {
     return cb(new Error('File type not allowed'), false);
   }
   cb(null, true);

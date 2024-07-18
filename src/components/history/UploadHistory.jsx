@@ -49,7 +49,11 @@ const UploadHistory = ({ history = [], updateHistory }) => {
       pageItems.push({ isDummy: true });
     }
     
-    return pageItems;
+    return pageItems.map((item, index) => ({
+      ...item,
+      key: item.fileId || `dummy-${index}`,
+      className: `fade-in ${item.isRemoving ? 'fade-out' : ''}`
+    }));
   }, [currentPage, history]);
 
   /**
@@ -133,7 +137,10 @@ const UploadHistory = ({ history = [], updateHistory }) => {
         if (now > expirationDate && !item.hasShownExpirationToast) {
           updateHistory(prevHistory => {
             const newHistory = [...prevHistory];
-            newHistory[index] = { ...newHistory[index], hasShownExpirationToast: true };
+            newHistory[index] = { ...newHistory[index], hasShownExpirationToast: true, isRemoving: true };
+            setTimeout(() => {
+              updateHistory(prev => prev.filter(h => h.fileId !== item.fileId));
+            }, 500); // Wait for the fade-out animation to complete
             return newHistory;
           });
         }
@@ -242,13 +249,13 @@ const UploadHistory = ({ history = [], updateHistory }) => {
       <div className="space-y-4">
         {getCurrentPageItems().map((item, index) => (
           <div 
-            key={index} 
+            key={item.key} 
             className={`p-4 rounded-lg backdrop-blur-md bg-opacity-80 transition-all duration-300 ease-in-out ${
               item.isDummy ? 'invisible opacity-0' : 
               item.status === 'Failed' || calculateTimeLeft(item.timestamp, item.expirationTime) === 'Expired' 
                 ? 'opacity-50 bg-history-item-background' 
                 : 'hover:bg-history-item-hover-background bg-history-item-background'
-            } text-history-item-text shadow-[0_0_0_1px_var(--history-item-border-color),0_2px_4px_rgba(0,0,0,0.1)] border-[var(--history-item-outline)]`}
+            } text-history-item-text shadow-[0_0_0_1px_var(--history-item-border-color),0_2px_4px_rgba(0,0,0,0.1)] border-[var(--history-item-outline)] ${item.className}`}
             onMouseEnter={() => setHoveredIndex(index)}
             onMouseLeave={() => setHoveredIndex(null)}
           >
@@ -297,7 +304,7 @@ const UploadHistory = ({ history = [], updateHistory }) => {
                   {item.isDummy ? 'N/A' : (item.status === 'Completed' 
                     ? (() => {
                         const timeLeft = calculateTimeLeft(item.timestamp, item.expirationTime);
-                        return typeof timeLeft === 'string' ? timeLeft : timeLeft.text;
+                        return timeLeft === 'Expired' ? 'Expired' : timeLeft.text;
                       })()
                     : item.status)}
                 </span>
