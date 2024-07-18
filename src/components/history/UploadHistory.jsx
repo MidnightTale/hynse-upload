@@ -297,7 +297,7 @@ const UploadHistory = ({ history = [], updateHistory }) => {
                   {item.isDummy ? 'N/A' : (item.status === 'Completed' 
                     ? (() => {
                         const timeLeft = calculateTimeLeft(item.timestamp, item.expirationTime);
-                        return timeLeft === 'Expired' ? 'Expired' : timeLeft.text;
+                        return typeof timeLeft === 'string' ? timeLeft : timeLeft.text;
                       })()
                     : item.status)}
                 </span>
