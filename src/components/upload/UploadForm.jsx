@@ -10,13 +10,35 @@ import { useTheme } from 'next-themes'; // Import useTheme
 import config from '../../../config';
 import { toast } from 'react-toastify';
 import path from 'path';
+import TermsOfService from '../common/TermsOfService';
 
 const forbiddenExtensions = config.multer.forbiddenExtensions;
 const forbiddenPrefixes = config.multer.forbiddenPrefixes;
 
+const TOS_LAST_UPDATED = "2024-07-18"; // Replace with the actual last update date
+
 const UploadForm = ({ isUploading, onDrop }) => {
-  const { theme } = useTheme(); // Get the current theme
+  const [isTOSOpen, setIsTOSOpen] = useState(false);
+  const [hasTOSAccepted, setHasTOSAccepted] = useState(false);
+  const { theme } = useTheme();
+
+  useEffect(() => {
+    const tosAccepted = localStorage.getItem('tosAccepted') === 'true';
+    setHasTOSAccepted(tosAccepted);
+  }, []);
+
+  const handleTOSAccept = useCallback(() => {
+    setHasTOSAccepted(true);
+    localStorage.setItem('tosAccepted', 'true');
+    setIsTOSOpen(false);
+  }, []);
+
   const onDropHandler = useCallback((acceptedFiles) => {
+    if (!hasTOSAccepted) {
+      setIsTOSOpen(true);
+      return;
+    }
+
     const invalidFiles = acceptedFiles.filter(file => {
       const ext = path.extname(file.name).toLowerCase();
       return forbiddenExtensions.includes(ext) || 
@@ -29,12 +51,13 @@ const UploadForm = ({ isUploading, onDrop }) => {
     }
 
     onDrop(acceptedFiles);
-  }, [onDrop]);
+  }, [onDrop, hasTOSAccepted]);
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ 
     onDrop: onDropHandler,
-    disabled: isUploading,
-    multiple: true
+    disabled: isUploading || !hasTOSAccepted,
+    multiple: true,
+    noClick: !hasTOSAccepted
   });
 
   const animationVariants = {
@@ -59,15 +82,30 @@ const UploadForm = ({ isUploading, onDrop }) => {
           <p className="text-lg mb-2 text-history-item-text">
             {isUploading
               ? 'Upload in progress...'
+              : !hasTOSAccepted
+              ? 'Please accept the Terms of Service to upload'
               : isDragActive
               ? 'Release to upload the files'
               : "Drag 'n' drop files here, or click to select files"}
           </p>
           <p className="text-sm text-dropzone-subtext-color">
-            {isUploading ? 'Please wait' : 'By uploading, you accept our Terms of Service'}
+            {!hasTOSAccepted && (
+              <button
+                onClick={() => setIsTOSOpen(true)}
+                className="text-primary-color hover:underline focus:outline-none"
+              >
+                View Terms of Service
+              </button>
+            )}
           </p>
         </div>
       </motion.div>
+      <TermsOfService 
+        isOpen={isTOSOpen} 
+        onClose={() => setIsTOSOpen(false)} 
+        onAccept={handleTOSAccept} 
+        lastUpdated={TOS_LAST_UPDATED}
+      />
     </div>
   );
 };
