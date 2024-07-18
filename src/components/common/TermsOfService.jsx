@@ -1,7 +1,7 @@
 import React, { useRef, useEffect } from 'react';
 import { FaTimes } from 'react-icons/fa';
 
-const TermsOfService = ({ isOpen, onClose, onAccept, lastUpdated }) => {
+const TermsOfService = ({ isOpen, onClose, onAccept, lastUpdated, hasAccepted }) => {
   const overlayRef = useRef(null);
 
   useEffect(() => {
@@ -47,12 +47,14 @@ const TermsOfService = ({ isOpen, onClose, onAccept, lastUpdated }) => {
           <p>10. Respect other people's work! Don't upload stuff that belongs to someone else without permission.</p>
         </div>
         <div className="mt-6 flex justify-end">
-          <button
-            onClick={onAccept}
-            className="bg-primary-color text-white px-4 py-2 rounded hover:bg-opacity-80 transition-colors duration-200"
-          >
-            I Accept These Terms
-          </button>
+          {!hasAccepted && (
+            <button
+              onClick={onAccept}
+              className="bg-primary-color text-white px-4 py-2 rounded hover:bg-opacity-80 transition-colors duration-200"
+            >
+              I Accept These Terms
+            </button>
+          )}
         </div>
       </div>
     </div>
