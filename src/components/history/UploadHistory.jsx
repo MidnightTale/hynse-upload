@@ -18,7 +18,7 @@ import copy from 'clipboard-copy';
 import { logInfo, logError } from '../utils/clientLogUtil';
 import appConfig from '../../../config';
 
-const ITEMS_PER_PAGE = 7;
+const ITEMS_PER_PAGE = 3;
 
 /**
  * UploadHistory component displays a paginated list of uploaded files and their status.
@@ -200,92 +200,146 @@ const UploadHistory = ({ history = [], updateHistory }) => {
   };
 
   if (history.length === 0) {
-    return null;
+    return (
+      <div className="mt-8">
+        <h2 className="text-2xl mb-4">File Transfer Status</h2>
+        <div className="space-y-4 relative">
+          {Array(ITEMS_PER_PAGE).fill(null).map((_, index) => (
+            <div 
+              key={index} 
+              className="p-4 rounded-lg backdrop-blur-md bg-opacity-80 transition-all duration-300 ease-in-out opacity-0 bg-history-item-background text-history-item-text shadow-[0_0_0_1px_var(--history-item-border-color),0_2px_4px_rgba(0,0,0,0.1)] border-[var(--history-item-outline)]"
+            >
+              <div className="flex items-center">
+                <div className="flex items-center w-3/5 transition-all duration-300">
+                  <FaFile className="text-3xl mr-4 text-gray-300" />
+                  <div className="flex flex-col overflow-hidden">
+                    <span className="text-lg font-semibold truncate">Dummy File</span>
+                    <div className="text-sm opacity-70">
+                      <span>N/A</span>
+                      <span className="mx-2">•</span>
+                      <span>N/A</span>
+                    </div>
+                  </div>
+                </div>
+                <div className="w-1/5 transition-all duration-300"></div>
+                <div className="flex items-center justify-end w-1/5 space-x-4">
+                  <span className="px-2 py-1 rounded text-white text-sm whitespace-nowrap bg-[var(--status-tag-dummy)]">N/A</span>
+                </div>
+              </div>
+            </div>
+          ))}
+          <div className="absolute inset-0 flex items-center justify-center">
+            <p className="text-center text-gray-500 opacity-50 text-lg">No files uploaded yet</p>
+          </div>
+        </div>
+      </div>
+    );
   }
 
   return (
     <div className="mt-8">
       <h2 className="text-2xl mb-4">File Transfer Status</h2>
       <div className="space-y-4">
-      {getCurrentPageItems().map((item, index) => (
-        <div 
-          key={index} 
-          className={`p-4 rounded-lg backdrop-blur-md bg-opacity-80 transition-all duration-300 ease-in-out ${
-            item.isDummy ? 'invisible opacity-0' : 'hover:bg-history-item-hover-background'
-          } bg-history-item-background text-history-item-text shadow-[0_0_0_1px_var(--history-item-border-color),0_2px_4px_rgba(0,0,0,0.1)] border-[var(--history-item-outline)]`}
-          onMouseEnter={() => setHoveredIndex(index)}
-          onMouseLeave={() => setHoveredIndex(null)}
-        >
-          <div className="flex items-center">
-            <div className={`flex items-center w-3/5 transition-all duration-300`}>
-              {item.isDummy ? <FaFile className="text-3xl mr-4 text-gray-300" /> : getFileIcon(item.fileType)}
-              <div className="flex flex-col overflow-hidden">
-                <span 
-                  className="text-lg font-semibold truncate"
-                  title={item.fileName || 'Dummy File'}
-                >
-                  {item.fileName || 'Dummy File'}
-                </span>
-                <div className="text-sm opacity-70">
-                  <span className="cursor-default no-underline">
-                    {item.isDummy ? 'N/A' : formatDate(item.timestamp, index)}
+        {getCurrentPageItems().map((item, index) => (
+          <div 
+            key={index} 
+            className={`p-4 rounded-lg backdrop-blur-md bg-opacity-80 transition-all duration-300 ease-in-out ${
+              item.isDummy ? 'invisible opacity-0' : 
+              item.status === 'Failed' || calculateTimeLeft(item.timestamp, item.expirationTime) === 'Expired' 
+                ? 'opacity-50 bg-history-item-background' 
+                : 'hover:bg-history-item-hover-background bg-history-item-background'
+            } text-history-item-text shadow-[0_0_0_1px_var(--history-item-border-color),0_2px_4px_rgba(0,0,0,0.1)] border-[var(--history-item-outline)]`}
+            onMouseEnter={() => setHoveredIndex(index)}
+            onMouseLeave={() => setHoveredIndex(null)}
+          >
+            <div className="flex items-center">
+              <div className={`flex items-center w-3/5 transition-all duration-300`}>
+                {item.isDummy ? <FaFile className="text-3xl mr-4 text-gray-300" /> : getFileIcon(item.fileType)}
+                <div className="flex flex-col overflow-hidden">
+                  <span 
+                    className="text-lg font-semibold truncate"
+                    title={item.fileName || 'Dummy File'}
+                  >
+                    {item.fileName || 'Dummy File'}
                   </span>
-                  <span className="mx-2">•</span>
-                  <span>{item.fileSize || 'N/A'}</span>
+                  <div className="text-sm opacity-70">
+                    <span className="cursor-default no-underline">
+                      {item.isDummy ? 'N/A' : formatDate(item.timestamp, index)}
+                    </span>
+                    <span className="mx-2">•</span>
+                    <span>{item.fileSize || 'N/A'}</span>
+                  </div>
                 </div>
               </div>
-            </div>
-            <div className={`${item.status === 'Completed' ? 'w-1/5' : 'w-1/3'} transition-all duration-300`}>
-              {!item.isDummy && item.status !== 'Completed' && (
-                <ProgressBar 
-                  progress={item.progress} 
-                  uploadStatus={item.status} 
-                  speed={item.speed} 
-                />
-              )}
-            </div>
-            <div className="flex items-center justify-end w-1/5 space-x-4">
-              {/* Status tag - always on one line */}
-              <span className={`px-2 py-1 rounded text-white text-sm whitespace-nowrap ${
-                item.isDummy ? 'bg-[var(--status-tag-dummy)]' :
-                item.status === 'Failed' ? 'bg-[var(--status-tag-failed)]' :
-                item.status === 'Completed' ? 
-                  (() => {
-                    const timeLeft = calculateTimeLeft(item.timestamp, item.expirationTime);
-                    if (timeLeft === 'Expired') return 'bg-[var(--status-tag-expired)]';
-                    if (timeLeft.isNearExpiry) return 'bg-[var(--status-tag-near-expiry)]';
-                    return 'bg-[var(--status-tag-active)]';
-                  })() :
-                'bg-[var(--status-tag-uploading)]'
-              }`}>
-                {item.isDummy ? 'N/A' : (item.status === 'Completed' 
-                  ? calculateTimeLeft(item.timestamp, item.expirationTime).text 
-                  : item.status)}
-              </span>
-              {!item.isDummy && (
-                <div className="flex items-center space-x-2">
-                  {/* Download button */}
-                  <a
-                    href={`${appConfig.download.usePublicDomain 
-                      ? `https://${appConfig.download.publicDomain}` 
-                      : `http://${appConfig.download.hostname}:${appConfig.download.port}`}/${item.fileId}`}
-                    download
-                    className="text-gray-400 hover:text-gray-600 cursor-pointer"
-                    title="Download file"
-                  >
-                    <FaDownload />
-                  </a>
-                  {/* Copy link button */}
-                  <button
-                    className="text-gray-400 hover:text-gray-600 cursor-pointer"
-                    onClick={() => copyToClipboard(item.fileId)}
-                    title="Copy download link"
-                  >
-                    <FaCopy />
-                  </button>
-                </div>
-              )}
-            </div>
+              <div className={`${item.status === 'Completed' ? 'w-1/5' : 'w-1/3'} transition-all duration-300`}>
+                {!item.isDummy && item.status !== 'Completed' && item.status !== 'Failed' && (
+                  <ProgressBar 
+                    progress={item.progress} 
+                    uploadStatus={item.status} 
+                    speed={item.speed} 
+                  />
+                )}
+              </div>
+              <div className="flex items-center justify-end w-1/5 space-x-4">
+                {/* Status tag - always on one line */}
+                <span className={`px-2 py-1 rounded text-white text-sm whitespace-nowrap ${
+                  item.isDummy ? 'bg-[var(--status-tag-dummy)]' :
+                  item.status === 'Failed' ? 'bg-[var(--status-tag-failed)]' :
+                  item.status === 'Completed' ? 
+                    (() => {
+                      const timeLeft = calculateTimeLeft(item.timestamp, item.expirationTime);
+                      if (timeLeft === 'Expired') return 'bg-[var(--status-tag-expired)]';
+                      if (timeLeft.isNearExpiry) return 'bg-[var(--status-tag-near-expiry)]';
+                      return 'bg-[var(--status-tag-active)]';
+                    })() :
+                  'bg-[var(--status-tag-uploading)]'
+                }`}>
+                  {item.isDummy ? 'N/A' : (item.status === 'Completed' 
+                    ? calculateTimeLeft(item.timestamp, item.expirationTime).text 
+                    : item.status)}
+                </span>
+                {!item.isDummy && (
+                  <div className="flex items-center space-x-2">
+                    {/* Download button */}
+                    <a
+                      href={`${appConfig.download.usePublicDomain 
+                        ? `https://${appConfig.download.publicDomain}` 
+                        : `http://${appConfig.download.hostname}:${appConfig.download.port}`}/${item.fileId}`}
+                      download
+                      className={`text-gray-400 hover:text-gray-600 cursor-pointer ${
+                        item.status !== 'Completed' || calculateTimeLeft(item.timestamp, item.expirationTime) === 'Expired'
+                          ? 'opacity-50 cursor-not-allowed pointer-events-none'
+                          : ''
+                      }`}
+                      title={item.status !== 'Completed' ? 'File not ready for download' : 'Download file'}
+                      onClick={(e) => {
+                        if (item.status !== 'Completed' || calculateTimeLeft(item.timestamp, item.expirationTime) === 'Expired') {
+                          e.preventDefault();
+                        }
+                      }}
+                    >
+                      <FaDownload />
+                    </a>
+                    {/* Copy link button */}
+                    <button
+                      className={`text-gray-400 hover:text-gray-600 cursor-pointer ${
+                        item.status !== 'Completed' || calculateTimeLeft(item.timestamp, item.expirationTime) === 'Expired'
+                          ? 'opacity-50 cursor-not-allowed'
+                          : ''
+                      }`}
+                      onClick={() => {
+                        if (item.status === 'Completed' && calculateTimeLeft(item.timestamp, item.expirationTime) !== 'Expired') {
+                          copyToClipboard(item.fileId);
+                        }
+                      }}
+                      title={item.status !== 'Completed' ? 'Link not available' : 'Copy download link'}
+                      disabled={item.status !== 'Completed' || calculateTimeLeft(item.timestamp, item.expirationTime) === 'Expired'}
+                    >
+                      <FaCopy />
+                    </button>
+                  </div>
+                )}
+              </div>
             </div>
           </div>
         ))}

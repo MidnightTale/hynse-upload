@@ -511,3 +511,12 @@ body {
               0 2px 4px rgba(0, 0, 0, 0.1),
               0 4px 8px rgba(0, 0, 0, 0.1);
 }
+
+.primary-link {
+  color: var(--primary-color);
+  transition: color var(--transition-duration) ease;
+}
+
+.primary-link:hover {
+  text-decoration: underline;
+}

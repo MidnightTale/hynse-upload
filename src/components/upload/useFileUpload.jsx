@@ -13,7 +13,10 @@ const UPLOAD_URL = config.upload.url;
 const useFileUpload = () => {
   const [uploadStatus, setUploadStatus] = useState('');
   const [isUploading, setIsUploading] = useState(false);
-  const [expirationTime, setExpirationTime] = useState(config.upload.defaultExpirationTime);
+  const [expirationTime, setExpirationTime] = useState(() => {
+    const savedExpiration = localStorage.getItem('expirationTime');
+    return savedExpiration ? parseInt(savedExpiration, 10) : config.upload.defaultExpirationTime;
+  });
   const [history, setHistory] = useState([]);
 
   // Load history from localStorage and remove expired items
@@ -24,7 +27,7 @@ const useFileUpload = () => {
         const currentTime = Date.now();
         const updatedHistory = savedHistory.filter(item => {
           const expirationTime = new Date(item.timestamp).getTime() + item.expirationTime * 60000;
-          return currentTime < expirationTime;
+          return currentTime < expirationTime && item.status !== 'Failed';
         });
         setHistory(updatedHistory);
         localStorage.setItem('uploadHistory', JSON.stringify(updatedHistory));
@@ -44,8 +47,9 @@ const useFileUpload = () => {
   useEffect(() => {
     if (history.length > 0 && history.length !== prevHistoryLengthRef.current) {
       try {
-        localStorage.setItem('uploadHistory', JSON.stringify(history));
-        logInfo('Upload history saved to localStorage', { historyLength: history.length });
+        const successfulUploads = history.filter(item => item.status !== 'Failed');
+        localStorage.setItem('uploadHistory', JSON.stringify(successfulUploads));
+        logInfo('Upload history saved to localStorage', { historyLength: successfulUploads.length });
       } catch (error) {
         logError('Error saving history to localStorage', { error: error.message });
       }
@@ -209,7 +213,7 @@ const useFileUpload = () => {
           });
         }
       } catch (error) {
-        updateHistoryItem(0, { status: 'Failed' });
+        updateHistoryItem(0, { status: 'Failed', progress: 0 });
         const errorMessage = error.response?.data?.error || error.message;
         const statusCode = error.response?.status || 500;
         setUploadStatus(`Upload failed: ${errorMessage}`);

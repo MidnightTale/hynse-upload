@@ -1,7 +1,7 @@
 // @perama: This component allows users to select the expiration time for uploaded files.
 // It now uses custom CSS classes defined in globals.css for easier styling.
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import config from '../../../config';
 import { logError } from '../utils/clientLogUtil';
 
@@ -9,10 +9,18 @@ const ExpirationSelector = ({ expirationTime, setExpirationTime }) => {
   const handleExpirationChange = (minutes) => {
     try {
       setExpirationTime(minutes);
+      localStorage.setItem('expirationTime', minutes.toString());
     } catch (error) {
       logError('Error setting expiration time', { error: error.message }, 500);
     }
   };
+
+  useEffect(() => {
+    const savedExpiration = localStorage.getItem('expirationTime');
+    if (savedExpiration) {
+      setExpirationTime(parseInt(savedExpiration, 10));
+    }
+  }, [setExpirationTime]);
 
   const formatExpirationTime = (minutes) => {
     if (minutes === 1) return '1 minute';

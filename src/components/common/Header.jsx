@@ -20,6 +20,11 @@ const Header = () => {
           priority
         />
       </div>
+      <div className="text-center mt-2">
+        <p className="text-gl text-gray-600 dark:text-gray-400">
+          Temporary uploads up to 1 GB are allowed. You should read the <a href="/faq" className="primary-link hover:underline">FAQ</a>.
+        </p>
+      </div>
     </header>
   );
 };
