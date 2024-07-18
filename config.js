@@ -13,7 +13,12 @@ const config = {
   multer: {
     limits: { fileSize: 1024 * 1024 * 1024 }, // 1GB max file size (in bytes)
     fileFilter: (req, file, cb) => {
-      cb(null, true); // Accept any file type. Can be customized to filter specific file types
+      const forbiddenExtensions = ['.exe', '.scr', '.cpl', '.jar'];
+      const ext = path.extname(file.originalname).toLowerCase();
+      if (forbiddenExtensions.includes(ext) || ext.startsWith('.doc')) {
+        return cb(new Error('File type not allowed'), false);
+      }
+      cb(null, true);
     },
   },
   // Upload configuration

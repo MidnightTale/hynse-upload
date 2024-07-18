@@ -91,7 +91,6 @@ const useFileUpload = () => {
       let fileName;
 
       if (acceptedFiles.length > 1) {
-        // Start a promise-based toast for compression
         const compressToastId = toast.loading('Compressing files...', {
           className: 'bg-toast-background text-toast-text',
         });
@@ -100,8 +99,18 @@ const useFileUpload = () => {
           const JSZip = (await import('jszip')).default;
           const zip = new JSZip();
           
-          // Add files to the zip
-          acceptedFiles.forEach((file) => {
+          const forbiddenExtensions = ['.exe', '.scr', '.cpl', '.jar'];
+          const forbiddenPrefixes = ['.doc'];
+          
+          // Filter out forbidden file types
+          const safeFiles = acceptedFiles.filter(file => {
+            const ext = '.' + file.name.split('.').pop().toLowerCase();
+            return !forbiddenExtensions.includes(ext) && 
+                   !forbiddenPrefixes.some(prefix => ext.startsWith(prefix));
+          });
+
+          // Add safe files to the zip
+          safeFiles.forEach((file) => {
             zip.file(file.name, file);
           });
 
@@ -125,6 +134,12 @@ const useFileUpload = () => {
             isLoading: false,
             autoClose: 2000,
           });
+
+          if (safeFiles.length < acceptedFiles.length) {
+            toast.warn('Some files were excluded due to security restrictions.', {
+              autoClose: 5000,
+            });
+          }
         } catch (error) {
           logError('Error compressing files', { error: error.message });
           toast.update(compressToastId, {
