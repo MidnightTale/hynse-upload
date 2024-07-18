@@ -22,18 +22,24 @@ export default function Home() {
   const { theme } = useTheme();
   const [showImage, setShowImage] = useState(false);
   const loadingBarRef = useRef(null);
+  const handshakeInitialized = useRef(false);
 
   useEffect(() => {
     const initHandshake = async () => {
-      try {
-        await initiateHandshake();
-      } catch (error) {
-        console.error('Failed to initialize handshake:', error);
+      if (!handshakeInitialized.current) {
+        try {
+          await initiateHandshake();
+          handshakeInitialized.current = true;
+        } catch (error) {
+          console.error('Failed to initialize handshake:', error);
+        }
       }
     };
 
     initHandshake();
+  }, []);
 
+  useEffect(() => {
     if (theme === 'light') {
       setShowImage(Math.random() < 0.0001);
     } else {
@@ -43,12 +49,8 @@ export default function Home() {
 
   useEffect(() => {
     if (loadingBarRef.current) {
-      // Start the loading bar
       loadingBarRef.current.continuousStart();
-
-      // Simulate a loading process
       setTimeout(() => {
-        // Complete the loading bar
         loadingBarRef.current.complete();
       }, 30);
     }
