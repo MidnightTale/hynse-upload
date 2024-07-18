@@ -7,19 +7,32 @@ import { FaCloudUploadAlt } from 'react-icons/fa';
 import { logError } from '../utils/clientLogUtil';
 import { motion } from 'framer-motion';
 import { useTheme } from 'next-themes'; // Import useTheme
+import config from '../../../config';
+import { toast } from 'react-toastify';
+import path from 'path';
+
+const forbiddenExtensions = config.multer.forbiddenExtensions;
+const forbiddenPrefixes = config.multer.forbiddenPrefixes;
 
 const UploadForm = ({ isUploading, onDrop }) => {
   const { theme } = useTheme(); // Get the current theme
-  const handleDrop = useCallback((acceptedFiles) => {
-    try {
-      onDrop(acceptedFiles);
-    } catch (error) {
-      logError('Error handling file drop', { error: error.message }, 500);
+  const onDropHandler = useCallback((acceptedFiles) => {
+    const invalidFiles = acceptedFiles.filter(file => {
+      const ext = path.extname(file.name).toLowerCase();
+      return forbiddenExtensions.includes(ext) || 
+             forbiddenPrefixes.some(prefix => ext.startsWith(prefix));
+    });
+
+    if (invalidFiles.length > 0) {
+      toast.error(`Some files are not allowed: ${invalidFiles.map(f => f.name).join(', ')}`);
+      return;
     }
+
+    onDrop(acceptedFiles);
   }, [onDrop]);
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ 
-    onDrop: handleDrop,
+    onDrop: onDropHandler,
     disabled: isUploading,
     multiple: true
   });
@@ -51,7 +64,7 @@ const UploadForm = ({ isUploading, onDrop }) => {
               : "Drag 'n' drop files here, or click to select files"}
           </p>
           <p className="text-sm text-dropzone-subtext-color">
-            {isUploading ? 'Please wait' : 'Supported file types: Any'}
+            {isUploading ? 'Please wait' : 'By uploading, you accept our Terms of Service'}
           </p>
         </div>
       </motion.div>

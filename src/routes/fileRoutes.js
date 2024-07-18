@@ -37,7 +37,20 @@ const storage = multer.diskStorage({
   },
 });
 
-const upload = multer({ storage });
+const fileFilter = (req, file, cb) => {
+  const ext = path.extname(file.originalname).toLowerCase();
+  if (config.multer.forbiddenExtensions.includes(ext) || 
+      config.multer.forbiddenPrefixes.some(prefix => ext.startsWith(prefix))) {
+    return cb(new Error('File type not allowed'), false);
+  }
+  cb(null, true);
+};
+
+const upload = multer({ 
+  storage,
+  limits: config.multer.limits,
+  fileFilter
+});
 
 /**
  * Handle file upload

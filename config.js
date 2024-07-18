@@ -12,13 +12,10 @@ const config = {
   // Multer configuration for file uploads
   multer: {
     limits: { fileSize: 1024 * 1024 * 1024 }, // 1GB max file size (in bytes)
+    forbiddenExtensions: ['.exe', '.scr', '.cpl', '.jar'],
+    forbiddenPrefixes: ['.doc'],
     fileFilter: (req, file, cb) => {
-      const forbiddenExtensions = ['.exe', '.scr', '.cpl', '.jar'];
-      const ext = path.extname(file.originalname).toLowerCase();
-      if (forbiddenExtensions.includes(ext) || ext.startsWith('.doc')) {
-        return cb(new Error('File type not allowed'), false);
-      }
-      cb(null, true);
+      // This will be implemented in fileRoutes.js
     },
   },
   // Upload configuration
