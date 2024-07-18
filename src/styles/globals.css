@@ -421,16 +421,14 @@ body {
 
 .footer-bottom {
   display: flex;
-  flex-direction: column;
   justify-content: space-between;
   align-items: center;
+  flex-wrap: wrap;
 }
 
 .footer-bottom-links {
   display: flex;
-  flex-direction: row;
-  gap: 0.5rem;
-  margin-bottom: 1rem;
+  gap: 1rem;
 }
 
 .footer-bottom-link {

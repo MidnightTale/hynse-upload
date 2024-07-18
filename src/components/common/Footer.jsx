@@ -17,6 +17,7 @@ const Footer = () => {
   const [isTOSOpen, setIsTOSOpen] = useState(false);
   const [hasAcceptedTOS, setHasAcceptedTOS] = useState(false);
   const [isDMCAOpen, setIsDMCAOpen] = useState(false);
+  const currentYear = new Date().getFullYear();
 
   useEffect(() => {
     const tosAccepted = localStorage.getItem('tosAccepted') === 'true';
@@ -69,11 +70,11 @@ const Footer = () => {
       </div>
       <hr className="footer-divider" />
       <div className="footer-bottom">
+        <p className="footer-copyright">© {currentYear} Hynse Network. All rights reserved.</p>
         <div className="footer-bottom-links">
           <a href="#" onClick={(e) => { e.preventDefault(); openTOS(); }} className="footer-bottom-link">Terms of Service</a>
           <a href="#" onClick={(e) => { e.preventDefault(); openDMCAIPPolicy(); }} className="footer-bottom-link">DMCA/IP Policy</a>
         </div>
-        <p className="footer-copyright">© 2023 Hynse Network. All rights reserved.</p>
       </div>
       <FAQ isOpen={isFAQOpen} onClose={() => setIsFAQOpen(false)} />
       <TermsOfService isOpen={isTOSOpen} onClose={() => setIsTOSOpen(false)} onAccept={handleTOSAccept} lastUpdated="2023-07-01" hasAccepted={hasAcceptedTOS} />
