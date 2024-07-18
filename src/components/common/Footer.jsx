@@ -7,6 +7,7 @@ import Logo from '/public/img/hynse_kaiiwa.svg';
 import ThemeSwitcher from './ThemeSwitcher';
 import FAQ from './FAQ';
 import TermsOfService from './TermsOfService';
+import DMCAIPPolicy from './DMCAIPPolicy';
 
 /**
  * The Footer component renders links to various pages and external resources.
@@ -15,6 +16,7 @@ const Footer = () => {
   const [isFAQOpen, setIsFAQOpen] = useState(false);
   const [isTOSOpen, setIsTOSOpen] = useState(false);
   const [hasAcceptedTOS, setHasAcceptedTOS] = useState(false);
+  const [isDMCAOpen, setIsDMCAOpen] = useState(false);
 
   useEffect(() => {
     const tosAccepted = localStorage.getItem('tosAccepted') === 'true';
@@ -27,6 +29,10 @@ const Footer = () => {
 
   const openTOS = () => {
     setIsTOSOpen(true);
+  };
+
+  const openDMCAIPPolicy = () => {
+    setIsDMCAOpen(true);
   };
 
   const handleTOSAccept = () => {
@@ -65,7 +71,7 @@ const Footer = () => {
       <div className="footer-bottom">
         <div className="footer-bottom-links">
           <a href="#" onClick={(e) => { e.preventDefault(); openTOS(); }} className="footer-bottom-link">Terms of Service</a>
-          <a href="#" onClick={() => openDMCAIPPolicy()} className="footer-bottom-link">DMCA/IP Policy</a>
+          <a href="#" onClick={(e) => { e.preventDefault(); openDMCAIPPolicy(); }} className="footer-bottom-link">DMCA/IP Policy</a>
         </div>
         <div className="footer-bottom-iframe">
           <iframe src="https://ko-fi.com/streamalerts/goaloverlay/sa_bd9a46e4-66c2-4ec2-9726-dbcc2c2ec84e" width="100%" height="100" style={{ border: 'none' }}></iframe>
@@ -73,6 +79,7 @@ const Footer = () => {
       </div>
       <FAQ isOpen={isFAQOpen} onClose={() => setIsFAQOpen(false)} />
       <TermsOfService isOpen={isTOSOpen} onClose={() => setIsTOSOpen(false)} onAccept={handleTOSAccept} lastUpdated="2023-07-01" hasAccepted={hasAcceptedTOS} />
+      <DMCAIPPolicy isOpen={isDMCAOpen} onClose={() => setIsDMCAOpen(false)} />
     </footer>
   );
 };
