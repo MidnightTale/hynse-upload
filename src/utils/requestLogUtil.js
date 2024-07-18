@@ -3,6 +3,7 @@
 import { logDebug } from './logUtil';
 import chalk from 'chalk';
 import config from '../../config';
+import { getIp } from './ipUtil';
 
 let nextRequestCount = 0;
 let lastNextRequestTime = 0;
@@ -23,8 +24,7 @@ export const logRequest = (req, res, next) => {
     next();
     return;
   }
-
-  const ip = req.ip || req.connection.remoteAddress;
+  const ip = getIp(req);
   const method = req.method;
   const url = req.url;
   const userAgent = req.headers['user-agent'];
