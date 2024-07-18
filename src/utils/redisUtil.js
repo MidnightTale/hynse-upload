@@ -52,27 +52,65 @@ export const getFile = async (id) => {
 };
 
 export const storeSessionKey = async (ip, sessionId, encryptedKey, salt) => {
-  await redis.set(`session:${ip}:${sessionId}`, JSON.stringify({ encryptedKey, salt }), 'EX', 3600);
-  logInfo('Session key stored', { ip, sessionId });
+  const sessionData = JSON.stringify({ encryptedKey, salt, usageCount: 0, lastHeartbeat: Date.now() });
+  await redis.set(`session:${ip}:${sessionId}`, sessionData, 'EX', 180); // 3 minutes expiration
+  logInfo('Session key stored', { ip, sessionId, encryptedKeyLength: encryptedKey.length, saltLength: salt.length });
 };
 
-export const validateSessionKey = async (ip, sessionId, providedKey, providedSalt) => {
+export const validateSessionKey = async (ip, sessionId, providedKey, providedSalt, isHeartbeat = false) => {
   const result = await redis.get(`session:${ip}:${sessionId}`);
   if (!result) {
     logWarn('Session key not found', { ip, sessionId });
     return false;
   }
 
-  const { encryptedKey, salt } = JSON.parse(result);
+  const { encryptedKey, salt, usageCount, lastHeartbeat } = JSON.parse(result);
   if (salt !== providedSalt) {
     logWarn('Invalid salt provided', { ip, sessionId });
     return false;
   }
 
+  if (usageCount >= 69 && !isHeartbeat) {
+    logWarn('Session key usage limit exceeded', { ip, sessionId, usageCount });
+    await redis.del(`session:${ip}:${sessionId}`);
+    return false;
+  }
+
+  const currentTime = Date.now();
+  if (currentTime - lastHeartbeat > 180000) { // 3 minutes
+    logWarn('Session key expired due to inactivity', { ip, sessionId, lastHeartbeat });
+    await redis.del(`session:${ip}:${sessionId}`);
+    return false;
+  }
+
   const hashedProvidedKey = crypto.scryptSync(providedKey, salt, 32).toString('hex');
   const isValid = hashedProvidedKey === encryptedKey;
-  logInfo('Session key validated', { ip, sessionId, isValid });
+  
+  if (isValid) {
+    await redis.set(`session:${ip}:${sessionId}`, JSON.stringify({ 
+      encryptedKey, 
+      salt, 
+      usageCount: isHeartbeat ? usageCount : usageCount + 1,
+      lastHeartbeat: currentTime
+    }), 'KEEPTTL');
+  }
+
+  logInfo('Session key validated', { ip, sessionId, isValid, usageCount: isHeartbeat ? usageCount : usageCount + 1 });
   return isValid;
+};
+
+export const updateHeartbeat = async (ip, sessionId) => {
+  const result = await redis.get(`session:${ip}:${sessionId}`);
+  if (!result) {
+    logWarn('Session key not found for heartbeat update', { ip, sessionId });
+    return false;
+  }
+
+  const sessionData = JSON.parse(result);
+  sessionData.lastHeartbeat = Date.now();
+  await redis.set(`session:${ip}:${sessionId}`, JSON.stringify(sessionData), 'KEEPTTL');
+  logInfo('Heartbeat updated', { ip, sessionId, newLastHeartbeat: sessionData.lastHeartbeat });
+  return true;
 };
 
 export const getSessionKey = async (ip, sessionId) => {
@@ -81,7 +119,8 @@ export const getSessionKey = async (ip, sessionId) => {
     logWarn('Session key not found', { ip, sessionId });
     return null;
   }
-  return JSON.parse(result);
+  const { encryptedKey, salt, usageCount } = JSON.parse(result);
+  return { encryptedKey, salt, usageCount };
 };
 
 export default redis;

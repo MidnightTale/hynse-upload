@@ -8,7 +8,7 @@ import path from 'path';
 import fs from 'fs';
 import { promises as fsPromises } from 'fs';
 import { logInfo, logError, logWarn, logDebug, logTrace } from '../utils/logUtil';
-import { storeFileMetadata, getFile, storeSessionKey, getSessionKey, validateSessionKey } from '../utils/redisUtil';
+import { storeFileMetadata, getFile, storeSessionKey, getSessionKey, validateSessionKey, updateHeartbeat } from '../utils/redisUtil';
 import { scheduleFileDeletion } from '../utils/cleanupUtil';
 import config from '../../config';
 import { getIp } from '../utils/ipUtil';
@@ -231,11 +231,36 @@ router.post('/request-session-key', async (req, res) => {
 
   try {
     await storeSessionKey(ip, sessionId, encryptedKey, salt);
-    logInfo('Session key requested and stored', { ip, sessionId, keyLength: key.length });
+    logInfo('Session key requested and stored', { ip, sessionId, keyLength: key.length, saltLength: salt.length });
     res.json({ key, salt });
   } catch (error) {
     logError('Error storing session key', { ip, sessionId }, error);
     res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+router.post('/heartbeat', async (req, res) => {
+  const ip = getIp(req);
+  const { sessionId, sessionKey, sessionSalt } = req.body;
+
+  if (!sessionId || !sessionKey || !sessionSalt) {
+    logWarn('Invalid heartbeat data', { ip });
+    return res.status(400).json({ error: 'Invalid heartbeat data' });
+  }
+
+  const isValid = await validateSessionKey(ip, sessionId, sessionKey, sessionSalt, true);
+  if (!isValid) {
+    logWarn('Invalid session data for heartbeat', { ip, sessionId });
+    return res.status(401).json({ error: 'Invalid session data' });
+  }
+
+  const updated = await updateHeartbeat(ip, sessionId);
+  if (updated) {
+    logInfo('Heartbeat received and processed', { ip, sessionId });
+    res.json({ message: 'Heartbeat received' });
+  } else {
+    logWarn('Session not found for heartbeat', { ip, sessionId });
+    res.status(404).json({ error: 'Session not found' });
   }
 });
 
