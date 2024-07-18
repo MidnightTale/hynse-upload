@@ -7,6 +7,7 @@ import config from '../../../config';
 import { formatFileSize, formatSpeed } from '../utils/formatUtils';
 import { logInfo, logError, logWarn } from '../utils/clientLogUtil';
 import { toast } from 'react-toastify';
+import { initiateHandshake, getSessionData } from '../utils/sessionUtil';
 
 const UPLOAD_URL = config.upload.url;
 
@@ -156,10 +157,6 @@ const useFileUpload = () => {
         fileName = acceptedFiles[0].name;
       }
 
-      const formData = new FormData();
-      formData.append('files', filesToUpload[0]);
-      formData.append('expiration', expirationTime.toString());
-
       const newHistoryItem = {
         fileName: fileName,
         fileSize: formatFileSize(filesToUpload[0].size),
@@ -181,9 +178,23 @@ const useFileUpload = () => {
 
       try {
         logInfo('Starting file upload', { fileName: fileName, fileSize: filesToUpload[0].size });
+        let { sessionId, sessionKey, sessionSalt } = getSessionData();
+        if (!sessionId || !sessionKey || !sessionSalt) {
+          logWarn('No session data found, initiating new handshake');
+          ({ sessionId, sessionKey, sessionSalt } = await initiateHandshake());
+        }
+
+        const formData = new FormData();
+        formData.append('files', filesToUpload[0]);
+        formData.append('expiration', expirationTime.toString());
+        formData.append('sessionId', sessionId);
+        formData.append('sessionKey', sessionKey);
+        formData.append('sessionSalt', sessionSalt);
+
         const response = await axios.post(UPLOAD_URL, formData, {
           headers: {
             'Content-Type': 'multipart/form-data',
+            'X-Session-Key': sessionKey,
           },
           onUploadProgress: (progressEvent) => {
             const percentCompleted = Math.round((progressEvent.loaded * 100) / progressEvent.total);
@@ -241,7 +252,7 @@ const useFileUpload = () => {
 
       setIsUploading(false);
     },
-    [expirationTime, updateHistoryItem]
+    [expirationTime, updateHistoryItem, initiateHandshake, getSessionData]
   );
 
   return {

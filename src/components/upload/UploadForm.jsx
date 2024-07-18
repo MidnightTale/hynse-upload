@@ -53,12 +53,20 @@ const UploadForm = ({ isUploading, onDrop }) => {
     onDrop(acceptedFiles);
   }, [onDrop, hasTOSAccepted]);
 
-  const { getRootProps, getInputProps, isDragActive } = useDropzone({ 
+  const { getRootProps, getInputProps, isDragActive, open } = useDropzone({ 
     onDrop: onDropHandler,
-    disabled: isUploading || !hasTOSAccepted,
+    disabled: isUploading,
     multiple: true,
     noClick: !hasTOSAccepted
   });
+
+  const handleClick = () => {
+    if (!hasTOSAccepted) {
+      setIsTOSOpen(true);
+    } else if (!isUploading) {
+      open();
+    }
+  };
 
   const animationVariants = {
     idle: { scale: 1 },
@@ -75,6 +83,7 @@ const UploadForm = ({ isUploading, onDrop }) => {
         })}
         variants={animationVariants}
         animate={isDragActive && !isUploading ? 'hover' : 'idle'}
+        onClick={handleClick}
       >
         <div className="w-full h-full border-2 border-dashed border-dropzone-color rounded-lg p-4 flex flex-col items-center justify-center">
           <input {...getInputProps()} disabled={isUploading} />

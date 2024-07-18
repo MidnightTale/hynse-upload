@@ -8,12 +8,12 @@ import path from 'path';
 import fs from 'fs';
 import { promises as fsPromises } from 'fs';
 import { logInfo, logError, logWarn, logDebug, logTrace } from '../utils/logUtil';
-import { storeFileMetadata, getFile } from '../utils/redisUtil';
+import { storeFileMetadata, getFile, storeSessionKey, getSessionKey, validateSessionKey } from '../utils/redisUtil';
 import { scheduleFileDeletion } from '../utils/cleanupUtil';
 import config from '../../config';
 import { getIp } from '../utils/ipUtil';
 import chalk from 'chalk';
-
+import crypto from 'crypto';
 
 function formatFileSize(bytes) {
   if (bytes === 0) return '0 Bytes';
@@ -61,9 +61,20 @@ const upload = multer({
  * @perama: This route handles file uploads, stores metadata in Redis, and schedules file deletion
  */
 router.post('/upload', upload.array('files'), async (req, res) => {
+  const ip = getIp(req);
+  const { sessionId, sessionKey, sessionSalt } = req.body;
+
+  logInfo('Upload request received', { ip, hasSessionData: !!sessionId && !!sessionKey && !!sessionSalt });
+
+  if (!sessionId || !sessionKey || !sessionSalt || !(await validateSessionKey(ip, sessionId, sessionKey, sessionSalt))) {
+    logWarn('Invalid session data', { ip });
+    return res.status(401).json({ error: 'Invalid session data' });
+  }
+
+  logInfo('Session data validated successfully', { ip, sessionId });
+
   const files = req.files;
   const expiration = parseInt(req.body.expiration) || 30; // Default to 30 minutes
-  const ip = getIp(req);
 
   if (config.log.logUploads) {
     logDebug(`File upload initiated - IP: ${chalk.bold(ip)}, Files: ${files.map(file => 
@@ -208,6 +219,23 @@ router.get('/:id', async (req, res) => {
     if (!res.headersSent) {
       res.status(500).json({ message: 'Internal Server Error' });
     }
+  }
+});
+
+router.post('/request-session-key', async (req, res) => {
+  const ip = getIp(req);
+  const { sessionId } = req.body;
+  const key = nanoid(32);
+  const salt = crypto.randomBytes(16).toString('hex');
+  const encryptedKey = crypto.scryptSync(key, salt, 32).toString('hex');
+
+  try {
+    await storeSessionKey(ip, sessionId, encryptedKey, salt);
+    logInfo('Session key requested and stored', { ip, sessionId, keyLength: key.length });
+    res.json({ key, salt });
+  } catch (error) {
+    logError('Error storing session key', { ip, sessionId }, error);
+    res.status(500).json({ error: 'Internal server error' });
   }
 });
 

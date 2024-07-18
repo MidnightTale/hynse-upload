@@ -2,8 +2,11 @@
 
 import Redis from 'ioredis';
 import config from '../../config';
+import { logInfo, logWarn } from './logUtil';
+import crypto from 'crypto';
 
 const redis = new Redis(config.redis);
+
 
 /**
  * Check the Redis connection status.
@@ -46,6 +49,39 @@ export const getFile = async (id) => {
   } catch (error) {
     throw new Error(`Failed to retrieve file metadata: ${error.message}`);
   }
+};
+
+export const storeSessionKey = async (ip, sessionId, encryptedKey, salt) => {
+  await redis.set(`session:${ip}:${sessionId}`, JSON.stringify({ encryptedKey, salt }), 'EX', 3600);
+  logInfo('Session key stored', { ip, sessionId });
+};
+
+export const validateSessionKey = async (ip, sessionId, providedKey, providedSalt) => {
+  const result = await redis.get(`session:${ip}:${sessionId}`);
+  if (!result) {
+    logWarn('Session key not found', { ip, sessionId });
+    return false;
+  }
+
+  const { encryptedKey, salt } = JSON.parse(result);
+  if (salt !== providedSalt) {
+    logWarn('Invalid salt provided', { ip, sessionId });
+    return false;
+  }
+
+  const hashedProvidedKey = crypto.scryptSync(providedKey, salt, 32).toString('hex');
+  const isValid = hashedProvidedKey === encryptedKey;
+  logInfo('Session key validated', { ip, sessionId, isValid });
+  return isValid;
+};
+
+export const getSessionKey = async (ip, sessionId) => {
+  const result = await redis.get(`session:${ip}:${sessionId}`);
+  if (!result) {
+    logWarn('Session key not found', { ip, sessionId });
+    return null;
+  }
+  return JSON.parse(result);
 };
 
 export default redis;

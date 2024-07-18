@@ -12,6 +12,7 @@ import ShigureUi from "/public/img/shigure-ui.webp";
 import { useTheme } from 'next-themes';
 import RibbonAnnouncement from '../components/common/RibbonAnnouncement';
 import TopLoadingBar from '../components/common/TopLoadingBar';
+import { initiateHandshake } from '../components/utils/sessionUtil';
 
 /**
  * The Home component is the main page of the Next.js application.
@@ -23,6 +24,16 @@ export default function Home() {
   const loadingBarRef = useRef(null);
 
   useEffect(() => {
+    const initHandshake = async () => {
+      try {
+        await initiateHandshake();
+      } catch (error) {
+        console.error('Failed to initialize handshake:', error);
+      }
+    };
+
+    initHandshake();
+
     if (theme === 'light') {
       setShowImage(Math.random() < 0.0001);
     } else {
