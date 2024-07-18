@@ -295,7 +295,10 @@ const UploadHistory = ({ history = [], updateHistory }) => {
                   'bg-[var(--status-tag-uploading)]'
                 }`}>
                   {item.isDummy ? 'N/A' : (item.status === 'Completed' 
-                    ? calculateTimeLeft(item.timestamp, item.expirationTime).text 
+                    ? (() => {
+                        const timeLeft = calculateTimeLeft(item.timestamp, item.expirationTime);
+                        return timeLeft === 'Expired' ? 'Expired' : timeLeft.text;
+                      })()
                     : item.status)}
                 </span>
                 {!item.isDummy && (

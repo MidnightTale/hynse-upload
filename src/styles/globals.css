@@ -57,7 +57,7 @@
   --footer-background: rgba(42, 42, 42, 0.8);
   --footer-text-color: #ffffff;
   --footer-border-color: rgba(255, 255, 255, 0.1);
-  --ribbon-background: #f1194624;
+  --ribbon-background: #fa1d1db2;
   --ribbon-text-color: #ffffff;
   --loading-bar-color: var(--primary-color);
   --pagein-button-bg: var(--button-bg);
@@ -121,7 +121,7 @@
   --footer-background: rgba(240, 240, 240, 0.8);
   --footer-text-color: #333333;
   --footer-border-color: rgba(255, 255, 255, 0.1);
-  --ribbon-background: #f1194624;
+  --ribbon-background: #ff5c7caf;
   --ribbon-text-color: #333333;
   --loading-bar-color: var(--primary-color);
   --pagein-button-bg: var(--button-bg);
@@ -300,6 +300,34 @@ body {
   .expiration-separator {
     display: block;
   }
+}
+
+.expiration-dropdown {
+  width: 100%;
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  background-color: var(--button-bg);
+  color: var(--download-icon-color);
+  border: 1px solid var(--history-item-border);
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23999' d='M10.293 3.293L6 7.586 1.707 3.293A1 1 0 00.293 4.707l5 5a1 1 0 001.414 0l5-5a1 1 0 10-1.414-1.414z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.7rem top 50%;
+  background-size: 0.65rem auto;
+  cursor: pointer;
+}
+
+.expiration-dropdown:hover {
+  background-color: var(--button-hover-bg);
+}
+
+.expiration-dropdown:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--primary-color);
 }
 
 [title] {

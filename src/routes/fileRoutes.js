@@ -105,7 +105,10 @@ router.post('/upload', upload.array('files'), async (req, res) => {
     }
 
     const results = await Promise.all(fileUploadPromises);
-    const fileUrls = results.map(result => `${req.protocol}://${req.get('host')}/d/${result.fileId}`);
+    const downloadDomain = config.download.usePublicDomain 
+      ? `https://${config.download.publicDomain}` 
+      : `http://${config.download.hostname}:${config.download.port}`;
+    const fileUrls = results.map(result => `${downloadDomain}/${result.fileId}`);
     if (config.log.logUploads) {
       logInfo(`Files uploaded successfully - IP: ${chalk.bold(ip)}, FileURLs: ${chalk.cyan(fileUrls.join(', '))}, ` +
         `Files: ${results.map((result, index) => 

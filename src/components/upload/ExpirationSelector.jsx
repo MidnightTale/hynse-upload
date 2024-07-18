@@ -1,11 +1,23 @@
 // @perama: This component allows users to select the expiration time for uploaded files.
 // It now uses custom CSS classes defined in globals.css for easier styling.
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import config from '../../../config';
 import { logError } from '../utils/clientLogUtil';
 
 const ExpirationSelector = ({ expirationTime, setExpirationTime }) => {
+  const [isDropdown, setIsDropdown] = useState(false);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsDropdown(window.innerWidth < 767);
+    };
+
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
   const handleExpirationChange = (minutes) => {
     try {
       setExpirationTime(minutes);
@@ -33,19 +45,33 @@ const ExpirationSelector = ({ expirationTime, setExpirationTime }) => {
 
   return (
     <div className="expiration-selector">
-      <div className="expiration-buttons">
-        {config.upload.expirationOptions.map((minutes, index) => (
-          <React.Fragment key={minutes}>
-            {index > 0 && <div className="expiration-separator">|</div>}
-            <button
-              onClick={() => handleExpirationChange(minutes)}
-              className={`expiration-button ${expirationTime === minutes ? 'active' : ''}`}
-            >
+      {isDropdown ? (
+        <select
+          className="expiration-dropdown"
+          value={expirationTime}
+          onChange={(e) => handleExpirationChange(parseInt(e.target.value, 10))}
+        >
+          {config.upload.expirationOptions.map((minutes) => (
+            <option key={minutes} value={minutes}>
               {formatExpirationTime(minutes)}
-            </button>
-          </React.Fragment>
-        ))}
-      </div>  
+            </option>
+          ))}
+        </select>
+      ) : (
+        <div className="expiration-buttons">
+          {config.upload.expirationOptions.map((minutes, index) => (
+            <React.Fragment key={minutes}>
+              {index > 0 && <div className="expiration-separator">|</div>}
+              <button
+                onClick={() => handleExpirationChange(minutes)}
+                className={`expiration-button ${expirationTime === minutes ? 'active' : ''}`}
+              >
+                {formatExpirationTime(minutes)}
+              </button>
+            </React.Fragment>
+          ))}
+        </div>
+      )}
     </div>
   );
 };
