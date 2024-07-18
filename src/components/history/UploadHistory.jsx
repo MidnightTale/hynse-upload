@@ -11,7 +11,7 @@ import {
   FaFileWord, FaFileExcel, FaFilePowerpoint, FaFileArchive, 
   FaFileCode, FaFileAlt, FaDownload
 } from 'react-icons/fa';
-import ProgressBar from '../upload/ProgressBar';
+import ProgressBar from './ProgressBar';
 import { formatDistanceToNow } from 'date-fns';
 import { toast } from 'react-toastify';
 import copy from 'clipboard-copy';
@@ -295,7 +295,7 @@ const UploadHistory = ({ history = [], updateHistory }) => {
           <button
             onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
             disabled={currentPage === 1}
-            className="mr-2 px-3 py-1 bg-blue-500 text-white rounded disabled:opacity-50"
+            className="mr-2 pagein-button"
           >
             <FaChevronLeft />
           </button>
@@ -305,8 +305,8 @@ const UploadHistory = ({ history = [], updateHistory }) => {
           <button
             onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
             disabled={currentPage === totalPages}
-            className="ml-2 px-3 py-1 bg-blue-500 text-white rounded disabled:opacity-50"
-          >
+            className="ml-2 pagein-button"
+          > 
             <FaChevronRight />
           </button>
         </div>

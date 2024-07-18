@@ -60,6 +60,11 @@
   --ribbon-background: #f1194624;
   --ribbon-text-color: #ffffff;
   --loading-bar-color: var(--primary-color);
+  --pagein-button-bg: var(--button-bg);
+  --pagein-button-text: var(--button-text);
+  --pagein-button-hover-bg: var(--button-hover-bg);
+  --pagein-button-active-bg: var(--button-active-bg);
+  --pagein-button-active-text: var(--button-active-text);
 }
 
 :root.light {
@@ -119,6 +124,11 @@
   --ribbon-background: #f1194624;
   --ribbon-text-color: #333333;
   --loading-bar-color: var(--primary-color);
+  --pagein-button-bg: var(--button-bg);
+  --pagein-button-text: var(--button-text);
+  --pagein-button-hover-bg: var(--button-hover-bg);
+  --pagein-button-active-bg: var(--button-active-bg);
+  --pagein-button-active-text: var(--button-active-text);
 }
 
 body {
@@ -209,42 +219,55 @@ body {
 .fade-out {
   animation: fadeOut 0.5s ease-in-out;
 }
+.dropzone-self {
+  border-top: 1px solid var(--history-item-border);
+  border-left: 1px solid var(--history-item-border);
+  border-right: 1px solid var(--history-item-border);
+  border-bottom: none;
+  border-radius: 0.5rem 0.5rem 0 0;
+  padding: 1.6rem 1.6rem 0.6rem 1.6rem;
+}
 
 /* ExpirationSelector styles */
 .expiration-selector {
-  margin-top: 1.5rem;
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-}
-
-.expiration-label {
-  margin-right: 1rem;
-  margin-bottom: 0.5rem;
-  font-size: 1rem;
-  font-weight: 500;
-  color: var(--text-color);
+  width: 100%;
+  padding: 0.6rem;
+  border-radius: 0px 0px 0.5rem 0.5rem;
+  background-color: var(--history-item-background);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-top: none;
+  border-left: 1px solid var(--history-item-border);
+  border-right: 1px solid var(--history-item-border);
+  border-bottom: 1px solid var(--history-item-border);
+  transition: background-color var(--transition-duration) ease;
 }
 
 .expiration-buttons {
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: column;
+  width: 100%;
   gap: 0.5rem;
-  flex: 1;
+  border-radius: 0.5rem;
+  padding: 0.1rem;
+  border: 1px solid var(--history-item-border);
+  background-color: var(--app-background)
 }
 
 .expiration-button {
+  flex: 1;
   padding: 0.5rem 1rem;
   border-radius: 0.5rem;
   font-size: 0.875rem;
   font-weight: 500;
   transition: all 0.2s ease-in-out;
-  background-color: var(--button-bg);
-  color: var(--button-text);
+  background-color: transparent;
+  color: var(--download-icon-color);
   border: none;
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
-  margin: 0.25rem;
+  white-space: nowrap;
+  text-align: center;
 }
 
 .expiration-button:hover {
@@ -258,6 +281,27 @@ body {
               0 2px 4px rgba(0, 0, 0, 0.1),
               0 4px 8px rgba(0, 0, 0, 0.1);
 }
+
+.expiration-separator {
+  display: none;
+  color: var(--button-hover-bg);
+  opacity: 0.5;
+  align-self: center;
+}
+
+/* Media query for larger screens */
+@media (min-width: 767px) {
+  .expiration-buttons {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .expiration-separator {
+    display: block;
+  }
+}
+
 [title] {
   position: relative;
   cursor: help;
@@ -435,4 +479,35 @@ body {
     margin: 3rem;
     padding: 3rem;
   }
+}
+
+.pagein-button {
+  background-color: var(--pagein-button-bg);
+  color: var(--pagein-button-text);
+  transition: background-color var(--transition-duration) ease,
+              color var(--transition-duration) ease;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  border: none;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.pagein-button:hover:not(:disabled) {
+  background-color: var(--pagein-button-hover-bg);
+}
+
+.pagein-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.pagein-button.active {
+  background-color: var(--pagein-button-active-bg);
+  color: var(--pagein-button-active-text);
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.1),
+              0 2px 4px rgba(0, 0, 0, 0.1),
+              0 4px 8px rgba(0, 0, 0, 0.1);
 }

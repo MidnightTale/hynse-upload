@@ -25,20 +25,19 @@ const ExpirationSelector = ({ expirationTime, setExpirationTime }) => {
 
   return (
     <div className="expiration-selector">
-      <label htmlFor="expiration" className="expiration-label">
-        Select expiration time:
-      </label>
       <div className="expiration-buttons">
-        {config.upload.expirationOptions.map((minutes) => (
-          <button
-            key={minutes}
-            onClick={() => handleExpirationChange(minutes)}
-            className={`expiration-button ${expirationTime === minutes ? 'active' : ''}`}
-          >
-            {formatExpirationTime(minutes)}
-          </button>
+        {config.upload.expirationOptions.map((minutes, index) => (
+          <React.Fragment key={minutes}>
+            {index > 0 && <div className="expiration-separator">|</div>}
+            <button
+              onClick={() => handleExpirationChange(minutes)}
+              className={`expiration-button ${expirationTime === minutes ? 'active' : ''}`}
+            >
+              {formatExpirationTime(minutes)}
+            </button>
+          </React.Fragment>
         ))}
-      </div>
+      </div>  
     </div>
   );
 };

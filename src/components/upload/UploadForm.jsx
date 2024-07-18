@@ -30,13 +30,12 @@ const UploadForm = ({ isUploading, onDrop }) => {
   };
 
   return (
-    <div className="mb-8 relative">
+    <div className="relative">
       <motion.div
         {...getRootProps({
-          className: `p-8 rounded-lg backdrop-blur-md bg-opacity-80 transition-all duration-300 ease-in-out flex flex-col items-center justify-center h-64 text-center cursor-pointer
+          className: `dropzone-self backdrop-blur-md bg-opacity-80 transition-all duration-300 ease-in-out flex flex-col items-center justify-center h-64 text-center cursor-pointer
             ${isDragActive ? 'bg-history-item-hover-background' : 'bg-history-item-background'}
-            ${isUploading ? 'opacity-50 cursor-not-allowed' : 'hover:bg-history-item-hover-background'}
-            shadow-[0_0_0_1px_var(--history-item-border-color),0_2px_4px_rgba(0,0,0,0.1)]`,
+            ${isUploading ? 'opacity-50 cursor-not-allowed' : 'hover:bg-history-item-hover-background'}`,
         })}
         variants={animationVariants}
         animate={isDragActive && !isUploading ? 'hover' : 'idle'}
