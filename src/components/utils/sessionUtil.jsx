@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { logInfo, logError } from './clientLogUtil';
+import { logInfo, logWarn, logError } from './clientLogUtil';
 
 const generateSessionId = () => {
   return Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);

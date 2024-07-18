@@ -10,6 +10,8 @@ import { logInfo, logError, logWarn } from './src/utils/logUtil';
 import { checkRedisStatus } from './src/utils/redisUtil';
 import fileRoutes from './src/routes/fileRoutes';
 import { logRequest } from './src/utils/requestLogUtil';
+import rateLimit from 'express-rate-limit';
+import { getIp } from './src/utils/ipUtil';
 
 const checkConfigFile = () => {
   const configPath = path.join(process.cwd(), 'config.js');
@@ -26,6 +28,10 @@ const handle = app.getRequestHandler();
 const server = express();
 const downloadServer = express();
 
+// Configure Express to trust the first proxy
+server.set('trust proxy', 1);
+downloadServer.set('trust proxy', 1);
+
 // Middleware setup
 server.use(express.json());
 server.use(express.urlencoded({ extended: true }));
@@ -36,6 +42,27 @@ server.use(logRequest);
 // Custom file routes
 server.use('/api', fileRoutes);
 
+// Define rate limit rules
+const apiLimiter = rateLimit({
+  windowMs: 1 * 60 * 1000, // 1 minute
+  max: 60, // Limit each IP to 60 requests per windowMs
+  message: 'Too many requests from this IP, please try again later.',
+  standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
+  legacyHeaders: false, // Disable the `X-RateLimit-*` headers
+  keyGenerator: (req) => getIp(req),
+});
+
+const downloadLimiter = rateLimit({
+  windowMs: 1 * 60 * 1000, // 1 minute
+  max: 30, // Limit each IP to 30 download requests per minute
+  message: 'Too many download requests from this IP, please try again later.',
+  keyGenerator: (req) => getIp(req),
+});
+
+// Apply rate limiting to all routes
+server.use(apiLimiter);
+
+downloadServer.use('/api/download', downloadLimiter);
 
 // Handle Next.js requests
 server.all('*', (req, res) => {

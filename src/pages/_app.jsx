@@ -6,8 +6,6 @@ import CustomToast from '../components/notifications/CustomToast';
 import { ThemeProvider } from '../components/common/ThemeProvider';
 import React from 'react';
 import TopLoadingBar from '../components/common/TopLoadingBar';
-import { useEffect } from 'react';
-import { requestSessionKey } from '../components/utils/sessionUtil';
 
 /**
  * Custom App component for Next.js.
@@ -17,18 +15,6 @@ import { requestSessionKey } from '../components/utils/sessionUtil';
  * @returns {JSX.Element} The rendered component with CustomToast, ThemeProvider, and TopLoadingBar.
  */
 function MyApp({ Component, pageProps }) {
-  useEffect(() => {
-    const initializeSession = async () => {
-      try {
-        await requestSessionKey();
-      } catch (error) {
-        console.error('Failed to initialize session:', error);
-      }
-    };
-
-    initializeSession();
-  }, []);
-
   return (
     <ThemeProvider>
       <TopLoadingBar />
