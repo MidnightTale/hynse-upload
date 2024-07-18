@@ -13,10 +13,7 @@ const UPLOAD_URL = config.upload.url;
 const useFileUpload = () => {
   const [uploadStatus, setUploadStatus] = useState('');
   const [isUploading, setIsUploading] = useState(false);
-  const [expirationTime, setExpirationTime] = useState(() => {
-    const savedExpiration = localStorage.getItem('expirationTime');
-    return savedExpiration ? parseInt(savedExpiration, 10) : config.upload.defaultExpirationTime;
-  });
+  const [expirationTime, setExpirationTime] = useState(config.upload.defaultExpirationTime);
   const [history, setHistory] = useState([]);
 
   // Load history from localStorage and remove expired items
