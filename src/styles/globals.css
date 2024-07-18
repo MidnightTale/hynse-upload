@@ -639,6 +639,11 @@ body {
   border: 1px solid var(--history-item-border-color);
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
+@media (max-width: 767px) {
+  .tos-card {
+    max-width: 95%;
+  }
+}
 
 .tos-overlay.open .tos-card {
   opacity: 1;
@@ -704,7 +709,11 @@ body {
   border: 1px solid var(--history-item-border-color);
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
-
+@media (max-width: 767px) {
+  .dmca-card {
+    max-width: 95%;
+  }
+}
 .dmca-overlay.open .dmca-card {
   opacity: 1;
   transform: scale(1);
@@ -726,4 +735,12 @@ body {
   font-size: 1.5rem;
   cursor: pointer;
   color: var(--text-color);
+}
+
+.footer-copyright {
+  text-align: center;
+  font-size: 0.8rem;
+  color: var(--text-color);
+  opacity: 0.7;
+  margin-top: 1rem;
 }

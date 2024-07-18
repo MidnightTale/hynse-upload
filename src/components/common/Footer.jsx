@@ -73,9 +73,7 @@ const Footer = () => {
           <a href="#" onClick={(e) => { e.preventDefault(); openTOS(); }} className="footer-bottom-link">Terms of Service</a>
           <a href="#" onClick={(e) => { e.preventDefault(); openDMCAIPPolicy(); }} className="footer-bottom-link">DMCA/IP Policy</a>
         </div>
-        <div className="footer-bottom-iframe">
-          <iframe src="https://ko-fi.com/streamalerts/goaloverlay/sa_bd9a46e4-66c2-4ec2-9726-dbcc2c2ec84e" width="100%" height="100" style={{ border: 'none' }}></iframe>
-        </div>
+        <p className="footer-copyright">© 2023 Hynse Network. All rights reserved.</p>
       </div>
       <FAQ isOpen={isFAQOpen} onClose={() => setIsFAQOpen(false)} />
       <TermsOfService isOpen={isTOSOpen} onClose={() => setIsTOSOpen(false)} onAccept={handleTOSAccept} lastUpdated="2023-07-01" hasAccepted={hasAcceptedTOS} />
