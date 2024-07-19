@@ -44,3 +44,5 @@ README.md
 # CLI: A command-line interface is provided for administrative tasks like listing files and clearing the console.
 # 5. Error Handling: Proper error handling mechanisms are in place to manage failed uploads and other errors.
 .cursorignore
+public/img/surprise_me_pocketnill.jpg
+public/img/surprise_me_2.jpg

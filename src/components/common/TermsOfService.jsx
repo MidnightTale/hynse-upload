@@ -50,7 +50,7 @@ const TermsOfService = ({ isOpen, onClose, onAccept, lastUpdated, hasAccepted })
               <span className="text-primary-color">Consequences of Violation</span>
             </h3>
             <p className="tos-content">
-              Breaking these rules isn't cool, folks. If you violate these terms, we'll have to take action. This could mean <span className="highlight-red">immediate blocking of your IP address</span> from using our service. We don't have user accounts, so it's a one-strike policy. Play nice, and we'll all have a good time!
+              Breaking these rules isn't cool, folks. If you violate these terms, I'll have to take action. This could mean <span className="highlight-red">immediate blocking of your IP address</span> from using my service. I don't have user accounts, so it's a one-strike policy. Play nice, and we'll all have a good time!
             </p>
           </div>
         </div>
@@ -72,11 +72,11 @@ const TermsOfService = ({ isOpen, onClose, onAccept, lastUpdated, hasAccepted })
 const tosItems = [
   {
     title: "The Basics",
-    content: "Hey there! By using our cool file-sharing service, you're agreeing to play nice. No illegal or harmful stuff, okay?"
+    content: "Hey there! By using my cool file-sharing service, you're agreeing to play nice. No illegal or harmful stuff, okay?"
   },
   {
     title: "File Safety",
-    content: "We're doing our best, but we can't guarantee your files will be safe forever. Don't upload anything you can't bear to lose!"
+    content: "I'm doing my best, but I can't guarantee your files will be safe forever. Don't upload anything you can't bear to lose!"
   },
   {
     title: "Expiration",
@@ -84,15 +84,15 @@ const tosItems = [
   },
   {
     title: "Content Removal",
-    content: "If we spot anything fishy, we might have to remove it. Don't take it personally!"
+    content: "If I spot anything fishy, I might have to remove it. Don't take it personally!"
   },
   {
     title: "Use at Your Own Risk",
-    content: "Using our service is at your own risk. We're not responsible if things go sideways."
+    content: "Using my service is at your own risk. I'm not responsible if things go sideways."
   },
   {
     title: "Availability",
-    content: "We'll try to keep things running smoothly, but sometimes stuff happens. No promises on 24/7 availability."
+    content: "I'll try to keep things running smoothly, but sometimes stuff happens. No promises on 24/7 availability."
   },
   {
     title: "Download Links",
@@ -100,11 +100,11 @@ const tosItems = [
   },
   {
     title: "Updates to Terms",
-    content: "We might update these terms now and then. If you keep using the service, we'll assume you're cool with the changes."
+    content: "I might update these terms now and then. If you keep using the service, I'll assume you're cool with the changes."
   },
   {
     title: "No Funny Business",
-    content: "Don't try to break our service or use it for anything shady. We're all about sharing, not causing trouble."
+    content: "Don't try to break my service or use it for anything shady. I'm all about sharing, not causing trouble."
   },
   {
     title: "Respect Copyright",

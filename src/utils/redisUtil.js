@@ -27,15 +27,17 @@ export const checkRedisStatus = async () => {
  */
 export const storeFileMetadata = async (fileId, fileData, expiration) => {
   try {
-    const serializedData = [
-      `filePath:${fileData.filePath}`,
-      `originalName:${fileData.originalName}`,
-      `fileSize:${fileData.fileSize}`,
-      `mimeType:${fileData.mimeType}`,
-      `uploadedBy:${fileData.uploadedBy}`
-    ].join('|');
-
-    await redis.set(fileId, serializedData, 'EX', expiration);
+    const essentialData = {
+      filePath: fileData.filePath,
+      originalName: fileData.originalName,
+      fileSize: fileData.fileSize,
+      mimeType: fileData.mimeType,
+      uploadedBy: fileData.uploadedBy,
+      uploadDate: fileData.uploadDate,
+      expiration: expiration,
+    };
+    logInfo('File metadata stored', { id: fileId, data: essentialData });
+    await redis.set(fileId, JSON.stringify(essentialData), 'EX', expiration);
   } catch (error) {
     throw new Error(`Failed to store file metadata: ${error.message}`);
   }
@@ -57,6 +59,8 @@ export const getFile = async (id) => {
       const [key, value] = item.split(':');
       parsedResult[key] = value;
     });
+    logInfo('File metadata retrieved', { id, result: parsedResult });
+    logInfo(result);
     return parsedResult;
   } catch (error) {
     throw new Error(`Failed to retrieve file metadata: ${error.message}`);

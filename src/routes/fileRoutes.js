@@ -95,9 +95,9 @@ router.post('/upload', upload.array('files'), async (req, res) => {
         originalName: file.originalname,
         fileSize: file.size,
         mimeType: file.mimetype,
-        status: 'Completed',
-        progress: 100,
         uploadedBy: ip, // Store the IP address with the file metadata
+        uploadDate: new Date().toISOString(),
+        expiration: expiration 
       };
 
       const uploadExpiration = expiration * 60; // Convert minutes to seconds

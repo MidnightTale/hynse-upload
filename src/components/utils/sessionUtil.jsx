@@ -7,9 +7,14 @@ const generateSessionId = () => {
 
 export const initiateHandshake = async () => {
   try {
-    const sessionId = generateSessionId();
-    sessionStorage.setItem('sessionId', sessionId);
-    logInfo('Session ID generated', { sessionIdLength: sessionId.length });
+    let sessionId = localStorage.getItem('sessionId');
+    if (!sessionId) {
+      sessionId = generateSessionId();
+      localStorage.setItem('sessionId', sessionId);
+      logInfo('New Session ID generated and stored', { sessionIdLength: sessionId.length });
+    } else {
+      logInfo('Existing Session ID retrieved', { sessionIdLength: sessionId.length });
+    }
 
     const response = await axios.post('/api/request-session-key', { sessionId });
     const { key, salt } = response.data;
@@ -28,7 +33,7 @@ export const initiateHandshake = async () => {
 
 export const getSessionData = () => {
   return {
-    sessionId: sessionStorage.getItem('sessionId'),
+    sessionId: localStorage.getItem('sessionId'),
     sessionKey: sessionStorage.getItem('sessionKey'),
     sessionSalt: sessionStorage.getItem('sessionSalt'),
   };

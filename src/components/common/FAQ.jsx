@@ -111,7 +111,7 @@ const FAQ = ({ isOpen, onClose }) => {
               <span className="text-primary-color">How can I get support or report issues?</span>
             </h3>
             <p className="faq-answer">
-              Join our <span className="highlight-red">Discord support server</span>! It's the best place to get help, report problems, or just chat about the service. I'm usually hanging out there, ready to assist.
+              Join my <span className="highlight-red">Discord support server</span>! It's the best place to get help, report problems, or just chat about the service. I'm usually hanging out there, ready to assist.
             </p>
           </div>
           <div className="faq-item">
