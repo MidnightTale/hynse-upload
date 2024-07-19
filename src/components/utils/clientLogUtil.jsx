@@ -48,11 +48,9 @@ export const logError = (message, details, statusCode) => {
   console.error(formatLog('ERROR', message, details));
   
   if (config.log.showErrorToasts) {
-    const icon = errorIcons[statusCode] || errorIcons[500];
     
     toast.error(
       <div className="flex items-center">
-        <img src={icon} alt="Error Icon" className="w-12 h-12 mr-3" />
         <div>
           <p>{message}</p>
           <p className="text-sm opacity-70">Check console for more details (Ctrl+Shift+J)</p>
