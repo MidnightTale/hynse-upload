@@ -12,5 +12,5 @@ export const getIp = (req) => {
   if (forwardedFor) {
     return forwardedFor.split(',')[0].trim();
   }
-  return req.socket.remoteAddress || 'Unknown';
+  return req.socket.remoteAddress || config.ip.unknownIpLabel;
 };

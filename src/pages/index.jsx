@@ -5,7 +5,6 @@ import React, { useEffect, useState, useRef } from 'react';
 import FileUpload from '../components/upload/FileUpload';
 import Header from '../components/common/Header';
 import Footer from '../components/common/Footer';
-import UploadHistory from '../components/history/UploadHistory';
 import CustomToast from '../components/notifications/CustomToast';
 import Image from 'next/image';
 import ShigureUi from "/public/img/shigure-ui.webp";

@@ -1,7 +1,7 @@
 // This utility provides logging functions with different log levels and formats.
 
 import chalk from 'chalk';
-import appConfig from '../../config';
+import config from './../../config';
 import { isMainThread, threadId as workerThreadId } from 'worker_threads';
 
 const threadId = isMainThread ? 0 : workerThreadId;
@@ -17,7 +17,7 @@ const logLevels = {
 };
 
 const sanitizeDetails = (details) => {
-  if (!appConfig.log.sanitize) return details;
+  if (!config.log.sanitize) return details;
 
   const sanitized = { ...details };
   if (sanitized.ip) {
@@ -45,7 +45,7 @@ const formatLog = (level, message, details, error) => {
 };
 
 const log = (level, message, details, error) => {
-  if (logLevels[appConfig.log.level.toLowerCase()] >= logLevels[level.toLowerCase()]) {
+  if (logLevels[config.log.level.toLowerCase()] >= logLevels[level.toLowerCase()]) {
     console[level.toLowerCase()](formatLog(level.toUpperCase(), message, details, error));
   }
 };

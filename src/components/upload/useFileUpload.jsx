@@ -125,7 +125,7 @@ const useFileUpload = () => {
 
           const randomString = Math.random().toString(36).substring(2, 8);
           const timestamp = Date.now();
-          fileName = `archive_${timestamp}_${randomString}.zip`;
+          fileName = `${config.upload.archivePrefix}_${timestamp}_${randomString}.zip`;
           filesToUpload = [new File([content], fileName, { type: 'application/zip' })];
 
           // Update toast to show completion

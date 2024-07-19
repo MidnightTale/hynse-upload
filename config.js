@@ -8,6 +8,9 @@ const config = {
   redis: {
     host: 'localhost', // Redis server host (e.g., 'localhost', '127.0.0.1', or remote IP)
     port: 6379, // Redis server port (default: 6379)
+    keyPrefix: {
+      session: 'session:',
+    },
   },
   // Multer configuration for file uploads
   multer: {
@@ -30,6 +33,7 @@ const config = {
     url: '/api/upload', // API endpoint for file uploads
     defaultExpirationTime: 60, // Default expiration time option in minutes
     expirationOptions: [ 60, 180, 720, 1440, 4320], // Available expiration time options in minutes
+    archivePrefix: 'archive',
   },
   // Rate limiting configuration
   rateLimit: {
@@ -44,6 +48,7 @@ const config = {
     logDownloads: true, // Set to true to log download requests
     logRequests: true, // Set to true to log incoming requests
     traceErrors: true, // Set to true to include stack traces for errors
+    showErrorToasts: true, // Set to true to show error toasts
   },
   // Error simulation configuration
   errorSimulation: {
@@ -79,6 +84,18 @@ const config = {
     enabled: true, // Set to true to enable admin features
     username: 'admin', // Default admin username
     password: 'changeme', // Default admin password (change this!)
+    jwtExpirationTime: '1h',
+  },
+  // Session configuration
+  session: {
+    expirationTime: 180000, // Session expiration time in milliseconds (3 minutes)
+    usageLimit: 69, // Maximum number of session key uses
+  },
+  // Cleanup configuration
+  cleanup: {
+    deletionDelay: 0, // Delay in milliseconds before file deletion
+    schedulerInterval: 60000, // Interval in milliseconds to run the cleanup scheduler
+    batchSize: 100, // Number of files to process in each cleanup batch
   },
 };
 

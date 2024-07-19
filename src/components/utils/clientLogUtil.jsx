@@ -68,18 +68,17 @@ export const logError = (message, details, statusCode) => {
         </div>
       </div>,
       {
-        position: "bottom-right",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
+        position: config.toast.position,
+        autoClose: config.toast.autoClose,
+        hideProgressBar: config.toast.hideProgressBar,
+        closeOnClick: config.toast.closeOnClick,
+        pauseOnHover: config.toast.pauseOnHover,
+        draggable: config.toast.draggable,
         className: 'bg-toast-background text-toast-text',
       }
     );
   }
 };
-
 /**
  * Log a debug message.
  * @param {string} message - The log message.

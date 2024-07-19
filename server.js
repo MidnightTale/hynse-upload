@@ -12,6 +12,7 @@ import fileRoutes from './src/routes/fileRoutes';
 import { logRequest } from './src/utils/requestLogUtil';
 import rateLimit from 'express-rate-limit';
 import { getIp } from './src/utils/ipUtil';
+import adminRoutes from './src/routes/adminRoutes';
 
 const checkConfigFile = () => {
   const configPath = path.join(process.cwd(), 'config.js');
@@ -41,7 +42,7 @@ server.use(logRequest);
 
 // Custom file routes
 server.use('/api', fileRoutes);
-
+server.use('/api/admin', adminRoutes);
 // Define rate limit rules
 const apiLimiter = rateLimit({
   windowMs: 1 * 60 * 1000, // 1 minute
