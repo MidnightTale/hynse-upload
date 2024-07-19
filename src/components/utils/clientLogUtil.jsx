@@ -3,15 +3,6 @@
 
 import { toast } from 'react-toastify';
 import config from '../../../config';
-
-const errorIcons = {
-  403: 'https://raw.githubusercontent.com/SAWARATSUKI/KawaiiLogos/main/ResponseCode/403%20Forbidden.png',
-  404: 'https://raw.githubusercontent.com/SAWARATSUKI/KawaiiLogos/main/ResponseCode/404%20NotFound.png',
-  418: 'https://raw.githubusercontent.com/SAWARATSUKI/KawaiiLogos/main/ResponseCode/418%20I\'m%20a%20teapot.png',
-  500: 'https://raw.githubusercontent.com/SAWARATSUKI/KawaiiLogos/main/ResponseCode/500%20InternalServerError.png',
-  503: 'https://raw.githubusercontent.com/SAWARATSUKI/KawaiiLogos/main/ResponseCode/503%20ServiceUnavailable.png',
-};
-
 /**
  * Format a log message with timestamp and details.
  * @param {string} level - The log level (e.g., 'INFO', 'WARN', 'ERROR').
@@ -68,17 +59,18 @@ export const logError = (message, details, statusCode) => {
         </div>
       </div>,
       {
-        position: config.toast.position,
-        autoClose: config.toast.autoClose,
-        hideProgressBar: config.toast.hideProgressBar,
-        closeOnClick: config.toast.closeOnClick,
-        pauseOnHover: config.toast.pauseOnHover,
-        draggable: config.toast.draggable,
+        position: "bottom-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
         className: 'bg-toast-background text-toast-text',
       }
     );
   }
 };
+
 /**
  * Log a debug message.
  * @param {string} message - The log message.

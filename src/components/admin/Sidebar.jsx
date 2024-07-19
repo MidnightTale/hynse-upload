@@ -1,6 +1,6 @@
 import React from 'react';
 import { useRouter } from 'next/router';
-import { FaHome, FaCog, FaSignOutAlt } from 'react-icons/fa';
+import { FaHome, FaCog, FaSignOutAlt, FaFileAlt } from 'react-icons/fa';
 
 const Sidebar = ({ activeTab, setActiveTab }) => {
   const router = useRouter();
@@ -29,6 +29,14 @@ const Sidebar = ({ activeTab, setActiveTab }) => {
               className={`flex items-center w-full p-2 rounded hover:bg-history-item-hover-background text-history-item-text transition-colors duration-200 ${activeTab === 'settings' ? 'bg-history-item-hover-background' : ''}`}
             >
               <FaCog className="mr-3" /> Settings
+            </button>
+          </li>
+          <li>
+            <button
+              onClick={() => setActiveTab('filemanager')}
+              className={`flex items-center w-full p-2 rounded hover:bg-history-item-hover-background text-history-item-text transition-colors duration-200 ${activeTab === 'filemanager' ? 'bg-history-item-hover-background' : ''}`}
+            >
+              <FaFileAlt className="mr-3" /> File Manager
             </button>
           </li>
         </ul>

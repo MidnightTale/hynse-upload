@@ -4,6 +4,7 @@ import Sidebar from './Sidebar';
 import Overview from './Overview';
 import Settings from './Settings';
 import TopLoadingBar from './TopLoadingBar';
+import FileManager from './FileManager';
 
 const AdminDashboard = () => {
   const router = useRouter();
@@ -28,6 +29,8 @@ const AdminDashboard = () => {
         return <Overview />;
       case 'settings':
         return <Settings />;
+      case 'filemanager':
+        return <FileManager />;
       default:
         return <Overview />;
     }

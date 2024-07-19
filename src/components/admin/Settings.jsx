@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import { FaSave, FaCheck, FaTimes, FaLock, FaBackspace } from 'react-icons/fa';
-import appConfig from '../../../config';
 
 const Settings = () => {
   const [appConfig, setAppConfig] = useState(null);
