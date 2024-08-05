@@ -1,6 +1,6 @@
 [![Banner](https://github.com/MidnightTale/hynse-upload/raw/main/public/img/banner.png)](https://github.com/MidnightTale/hynse-upload/blob/main/public/img/banner.png)
 > [!WARNING]
-> This project is currently under active development. While it's functional, some features may be incomplete or subject to change. Use with caution in production environments.
+> This project is currently under non-active development. While it's functional, some features may be incomplete or subject to change. Use with caution in production environments.
 
 # 🚀 Hynse Upload
 
